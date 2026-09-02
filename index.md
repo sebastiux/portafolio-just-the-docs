@@ -10,15 +10,15 @@ nav_order: 1
 **Integrantes:** Juan Pablo Martha, Carlos Sebastián Ortega, Santiago Alejandro Velázquez
 
 Contenido:
-- [1. Proyecto y equipo](#1-descripción-del-proyecto) (esta página)
+- [1. Proyecto y equipo](#descripción-del-proyecto) (esta página)
 - [2. Características técnicas y necesidades]({{ '/01-especificaciones/' | relative_url }})
 - [3. Diagramas a bloques (mecánico y eléctrico/electrónico)]({{ '/02-diagramas-a-bloques/' | relative_url }})
 
-> Estado: **versión preliminar para revisión con asesores**. Los valores marcados con **(H)** son hipótesis de ingeniería, no datos del reglamento, y requieren validación por prototipo o por el comité organizador.
+> Estado: **versión preliminar para revisión con asesores**. Los valores marcados con **(H)** son hipótesis de ingeniería, no datos del reglamento, y requieren validación por prototipo.
 
 ---
 
-## 1) Descripción del proyecto
+## Descripción del proyecto
 
 Como proyecto de la clase de **Integración Mecatrónica Otoño 2026**, el equipo manufacturará un rover lunar teledirigido capaz de completar la misión propuesta: recorrer un terreno lunar emulado, recolectar muestras (rocas), almacenarlas a bordo, depositarlas en un contenedor y accionar un tablero de interruptores y botones, todo dentro del tiempo de misión.
 
@@ -52,19 +52,6 @@ El rover se organiza en cinco subsistemas. El detalle eléctrico está en [Diagr
 - Proyecto **100 % teledirigido** (Raspberry Pi + control Xbox + enlace Wi-Fi).
 - Se asume una envolvente de **100 cm por lado** y **10 rocas** por misión, según el análisis del reglamento (ver [supuestos]({{ '/01-especificaciones/' | relative_url }}#4-supuestos-y-contradicciones-detectadas-en-el-reglamento)).
 - Faltan por definir con los asesores: presupuesto techo, costo objetivo por subsistema, proveedores y método de verificación de cada métrica.
-
----
-
-## 2) Equipo de trabajo
-
-**Clase:** Integración Mecatrónica, Otoño 2026  
-**Institución:** IBERO
-
-| Integrante |
-|:-----------|
-| Juan Pablo Martha |
-| Carlos Sebastián Ortega |
-| Santiago Alejandro Velázquez |
 
 ---
 
