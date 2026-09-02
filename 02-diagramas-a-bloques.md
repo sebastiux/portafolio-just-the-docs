@@ -11,7 +11,7 @@ Esta página documenta la arquitectura del rover en dos vistas: **mecánica** y 
 | Diagrama | Estado |
 |:---------|:-------|
 | Eléctrico / electrónico | Versión 1 publicada (sección 1) |
-| Mecánico | En elaboración (sección 2) |
+| Mecánico | Versión preliminar publicada, sin nomenclatura (sección 2) |
 
 ---
 
@@ -75,7 +75,29 @@ Puntos del diagrama que conviene revisar contra la [tabla de métricas]({{ '/01-
 
 ## 2) Diagrama mecánico
 
-> **En elaboración.** Esta sección se completará con el diagrama a bloques mecánico (chasis, tracción, suspensión, brazo, pinza y tolva) cuando el equipo lo entregue.
+Versión preliminar entregada por el equipo (fecha anotada en la hoja: **26/08/26**). Es un diagrama de bloques por **iconos**, sin texto ni leyenda.
+
+[![Figura 2 — Diagrama mecánico a bloques (versión preliminar)]({{ '/assets/img/rover/diagrama-mecanico.jpg' | relative_url }})]({{ '/assets/img/rover/diagrama-mecanico.jpg' | relative_url }})
+**Figura 2:** Diagrama mecánico a bloques, versión preliminar. Haz clic en la imagen para verla a tamaño completo.
+
+### Lectura del diagrama
+
+Lo que se puede afirmar mirando la hoja, sin interpretar los iconos:
+
+- Hay un **elemento único en la parte superior** del que salen dos ramas hacia dos agrupaciones de bloques prácticamente **idénticas entre sí**, una a la izquierda y otra a la derecha de la hoja.
+- Dentro de cada agrupación se repiten varias **cadenas de bloques** con la misma estructura.
+- Los bloques se conectan con **líneas de un solo tipo**: no hay distinción gráfica entre unión, transmisión o soporte.
+- Los bloques con el icono de **brazo articulado** aparecen resaltados con un fondo más oscuro; la hoja no explica qué significa ese resaltado.
+
+### Pendientes antes de dar la sección por cerrada
+
+Este diagrama todavía **no es interpretable sin la persona que lo dibujó**. Falta:
+
+1. **Nomenclatura.** Ningún bloque tiene etiqueta. Sin nombres no se puede verificar contra la [tabla de métricas]({{ '/01-especificaciones/' | relative_url }}) ni contrastarlo con el diagrama eléctrico de la sección 1.
+2. **Leyenda de iconos.** Los iconos son genéricos (motor, rodamiento, eslabón, brazo, cuña). La correspondencia icono → pieza real es una suposición, no un dato.
+3. **Semántica de las líneas.** Definir qué representa una conexión: unión mecánica fija, articulación, transmisión de par o soporte estructural.
+4. **Correspondencia con la sección 1.** El diagrama eléctrico declara **6 motores DC**, **4 servos de dirección** y **3 servos de brazo**. Este diagrama muestra cadenas de bloques repetidas en dos agrupaciones simétricas; hay que confirmar si el conteo de actuadores coincide con esa arquitectura o si hay una discrepancia.
+5. **Versión vectorial.** La sección 1 usa SVG (texto seleccionable, escala sin pérdida). Esta es una imagen rasterizada; conviene redibujarla en el mismo formato una vez que existan las etiquetas.
 
 ---
 
