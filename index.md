@@ -4,9 +4,10 @@ title: Proyecto y equipo
 nav_order: 1
 ---
 
-# Rover Lunar TMR 2026
+# Rover Lunar
 
-Documentación del proyecto del **Equipo Rover**: diseño y manufactura de un rover lunar **100 % teledirigido** para el Torneo Mexicano de Robótica **TMR 2026 (UTBIS Puebla)**.
+**Equipo de Integración Mecatrónica Otoño 2026**  
+**Integrantes:** Juan Pablo Martha, Carlos Sebastián Ortega, Santiago Alejandro Velázquez
 
 Contenido:
 - [1. Proyecto y equipo](#1-descripción-del-proyecto) (esta página)
@@ -19,7 +20,7 @@ Contenido:
 
 ## 1) Descripción del proyecto
 
-El **Equipo Rover** manufacturará un rover lunar teledirigido capaz de completar la misión de la categoría: recorrer un terreno lunar emulado, recolectar muestras (rocas), almacenarlas a bordo, depositarlas en un contenedor y accionar un tablero de interruptores y botones, todo dentro del tiempo de misión.
+Como proyecto de la clase de **Integración Mecatrónica Otoño 2026**, el equipo manufacturará un rover lunar teledirigido capaz de completar la misión propuesta: recorrer un terreno lunar emulado, recolectar muestras (rocas), almacenarlas a bordo, depositarlas en un contenedor y accionar un tablero de interruptores y botones, todo dentro del tiempo de misión.
 
 La operación es **completamente remota**: no hay navegación autónoma. Un operador controla el rover desde una laptop con un **control de Xbox**, viendo en tiempo real el video de la cámara a bordo a través de un enlace **Wi-Fi**. Por eso los sensores del rover se especifican por su valor para el operador (latencia, cuadros por segundo, canales visibles) y no por desempeño autónomo.
 
@@ -56,18 +57,14 @@ El rover se organiza en cinco subsistemas. El detalle eléctrico está en [Diagr
 
 ## 2) Equipo de trabajo
 
-**Nombre del equipo:** Equipo Rover  
-**Competencia:** TMR 2026 (UTBIS Puebla)  
+**Clase:** Integración Mecatrónica, Otoño 2026  
 **Institución:** IBERO
 
-| Integrante | Rol / subsistema a cargo |
-|:-----------|:-------------------------|
-| (nombre) | Coordinación e integración |
-| (nombre) | Mecánica: chasis, tracción y brazo |
-| (nombre) | Eléctrica / electrónica: alimentación y drivers |
-| (nombre) | Software y teleoperación: Raspberry Pi, ESP32, estación de control |
-
-> Sustituye "(nombre)" por los integrantes reales y ajusta los roles según la organización del equipo.
+| Integrante |
+|:-----------|
+| Juan Pablo Martha |
+| Carlos Sebastián Ortega |
+| Santiago Alejandro Velázquez |
 
 ---
 

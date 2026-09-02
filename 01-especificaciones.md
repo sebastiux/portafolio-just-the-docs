@@ -6,10 +6,10 @@ nav_order: 2
 
 # Características técnicas y necesidades
 
-Esta página identifica **qué debe cubrir el rover** para completar la misión del TMR 2026. Parte de una lista de **13 necesidades** y las traduce en **70 métricas objetivo** agrupadas en ocho bloques, cada una con un valor marginal (mínimo aceptable) y un valor ideal.
+Esta página identifica **qué debe cubrir el rover** para completar la misión del proyecto de la clase de Integración Mecatrónica Otoño 2026. Parte de una lista de **13 necesidades** y las traduce en **70 métricas objetivo** agrupadas en ocho bloques, cada una con un valor marginal (mínimo aceptable) y un valor ideal.
 
 Fuente: tabla de especificaciones objetivo del equipo, versión preliminar para revisión con asesores.
-[Descargar la tabla completa (.xlsx)]({{ '/assets/files/Especificaciones_Rover_Lunar_TMR2026.xlsx' | relative_url }})
+[Descargar la tabla completa (.xlsx)]({{ '/assets/files/Especificaciones_Rover_Lunar.xlsx' | relative_url }})
 
 > Operación **100 % teledirigida** (Raspberry Pi + control Xbox + enlace Wi‑Fi). Los sensores se especifican por su valor para el operador, no por desempeño autónomo.
 
