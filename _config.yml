@@ -1,5 +1,5 @@
 title: Portafolio
-description: Repositorio base para enseñar y crear documentación en GitHub Pages con Just the Docs
+description: Documentación del Rover Lunar TMR 2026 del Equipo Rover (proyecto, especificaciones y diagramas a bloques)
 
 # GitHub Pages: modo recomendado
 remote_theme: just-the-docs/just-the-docs
@@ -29,7 +29,7 @@ search:
 # Ejemplo de enlace auxiliar (aparece arriba a la derecha)
 aux_links:
   "Repositorio en GitHub":
-    - "https://github.com/HuberGiron/portafolio-just-the-docs"
+    - "https://github.com/sebastiux/portafolio-just-the-docs"
 
 # Enlaces
 permalink: pretty

@@ -1,24 +1,76 @@
 ---
 layout: default
-title: Inicio
+title: Proyecto y equipo
 nav_order: 1
 ---
 
-# Plantilla de documentación con Just the Docs
+# Rover Lunar TMR 2026
 
-Este repositorio está diseñado para entender como utilizar la plantilla de repositorio que utiliza **"Just the docs"** de Jekyll y el lenguaje **"Markdown"**:
-
-1. **Crear y publicar** el sitio en GitHub Pages.
-2. Aprender la **estructura** típica de un repo de documentación.
-3. Dominar **Markdown** (texto, listas, tablas, código).
-4. Configurar la **navegación** (sidebar, secciones, orden).
-5. Agregar **imágenes, videos** y otros recursos.
-6. Ajustar **estilos** (logo, colores, footer).
-
+Documentación del proyecto del **Equipo Rover**: diseño y manufactura de un rover lunar **100 % teledirigido** para el Torneo Mexicano de Robótica **TMR 2026 (UTBIS Puebla)**.
 
 Contenido:
-- [1. Publicar en GitHub Pages](01-publicar-en-github-pages.md)
-- [2. Estructura del repositorio](02-estructura-del-repo.md)
-- [3. Escribir en Markdown](03-markdown.md)
-- [4. Personalización visual](04-estilos.md)
+- [1. Proyecto y equipo](#1-descripción-del-proyecto) (esta página)
+- [2. Características técnicas y necesidades]({{ '/01-especificaciones/' | relative_url }})
+- [3. Diagramas a bloques (mecánico y eléctrico/electrónico)]({{ '/02-diagramas-a-bloques/' | relative_url }})
 
+> Estado: **versión preliminar para revisión con asesores**. Los valores marcados con **(H)** son hipótesis de ingeniería, no datos del reglamento, y requieren validación por prototipo o por el comité organizador.
+
+---
+
+## 1) Descripción del proyecto
+
+El **Equipo Rover** manufacturará un rover lunar teledirigido capaz de completar la misión de la categoría: recorrer un terreno lunar emulado, recolectar muestras (rocas), almacenarlas a bordo, depositarlas en un contenedor y accionar un tablero de interruptores y botones, todo dentro del tiempo de misión.
+
+La operación es **completamente remota**: no hay navegación autónoma. Un operador controla el rover desde una laptop con un **control de Xbox**, viendo en tiempo real el video de la cámara a bordo a través de un enlace **Wi-Fi**. Por eso los sensores del rover se especifican por su valor para el operador (latencia, cuadros por segundo, canales visibles) y no por desempeño autónomo.
+
+### Misión que debe cumplir
+
+| Etapa | Qué debe hacer el rover | Referencia |
+|:------|:------------------------|:-----------|
+| Navegación | Atravesar valles, surcos y pendientes de ±30° sin volcar ni atascarse. | Necesidad 4 |
+| Recolección | Sujetar rocas de tamaño y color variables sin dañarlas ni soltarlas. | Necesidad 5 |
+| Almacenamiento | Alojar a bordo todas las muestras (se asumen 10) y depositarlas dentro del contenedor. | Necesidad 6 |
+| Tablero | Accionar 2 interruptores y 2 botones en un rango vertical de 0 a 1 m con el brazo. | Necesidad 7 |
+| Registro | Registrar y georreferenciar rocas y relieves durante la misión. | Necesidad 9 |
+| Tiempo | Completar la misión en 10 min (+5 min de mantenimiento guiado). | Necesidad 8 |
+
+### Arquitectura general
+
+El rover se organiza en cinco subsistemas. El detalle eléctrico está en [Diagramas a bloques]({{ '/02-diagramas-a-bloques/' | relative_url }}).
+
+| Subsistema | Función | Componentes principales |
+|:-----------|:--------|:------------------------|
+| **Visión y control** | Recibe los comandos del operador y transmite el video. | Raspberry Pi (CPU), cámara, enlace Wi-Fi |
+| **Velocidad (tracción)** | Mueve el rover en el terreno. | ESP32, 3 puentes H, 6 motores DC |
+| **Dirección** | Orienta las ruedas. | ESP32, 4 servos |
+| **Brazo** | Acciona el tablero y manipula las muestras. | ESP32, 3 servos, pinza |
+| **Alimentación** | Energiza todo el sistema con lógica separada de potencia. | Batería 11.7 V · 18 A, regulador de 3 salidas (12 V, 5 V, 3.3 V) |
+
+### Alcance y supuestos
+
+- Proyecto **100 % teledirigido** (Raspberry Pi + control Xbox + enlace Wi-Fi).
+- Se asume una envolvente de **100 cm por lado** y **10 rocas** por misión, según el análisis del reglamento (ver [supuestos]({{ '/01-especificaciones/' | relative_url }}#4-supuestos-y-contradicciones-detectadas-en-el-reglamento)).
+- Faltan por definir con los asesores: presupuesto techo, costo objetivo por subsistema, proveedores y método de verificación de cada métrica.
+
+---
+
+## 2) Equipo de trabajo
+
+**Nombre del equipo:** Equipo Rover  
+**Competencia:** TMR 2026 (UTBIS Puebla)  
+**Institución:** IBERO
+
+| Integrante | Rol / subsistema a cargo |
+|:-----------|:-------------------------|
+| (nombre) | Coordinación e integración |
+| (nombre) | Mecánica: chasis, tracción y brazo |
+| (nombre) | Eléctrica / electrónica: alimentación y drivers |
+| (nombre) | Software y teleoperación: Raspberry Pi, ESP32, estación de control |
+
+> Sustituye "(nombre)" por los integrantes reales y ajusta los roles según la organización del equipo.
+
+---
+
+## Siguiente sección
+
+[Características técnicas y necesidades]({{ '/01-especificaciones/' | relative_url }})
