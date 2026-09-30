@@ -337,3 +337,86 @@ video {
   height: 100%;
   border: 0;
 }
+/* ===== Visor STL (assets/js/stl-viewer.js) ===== */
+.stl-viewer {
+  position: relative;
+  width: 100%;
+  height: 340px;
+  margin: 0.5rem 0 0.25rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f5f6f8;
+  touch-action: none;
+}
+.stl-viewer--tall { height: 560px; }
+.stl-viewer canvas { display: block; width: 100% !important; height: 100% !important; cursor: grab; }
+.stl-viewer canvas:active { cursor: grabbing; }
+
+.stl-viewer__status {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #6B7280;
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+
+.stl-viewer__bar {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+.stl-viewer__bar button,
+.stl-viewer__slider {
+  font: inherit;
+  font-size: 0.8rem;
+  color: #333333;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 0.25rem 0.6rem;
+}
+.stl-viewer__bar button { cursor: pointer; }
+.stl-viewer__bar button:hover { border-color: #E00034; color: #E00034; }
+.stl-viewer__slider { display: flex; align-items: center; gap: 0.4rem; }
+.stl-viewer__slider input { accent-color: #E00034; width: 110px; }
+
+.stl-viewer__legend {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  margin: 0 !important;
+  padding: 0.4rem 0.6rem !important;
+  list-style: none;
+  font-size: 0.75rem;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+}
+.stl-viewer__legend li { margin: 0.1rem 0 !important; padding: 0 !important; display: flex; align-items: center; gap: 0.4rem; }
+.stl-viewer__legend li::before { content: none !important; }
+.stl-viewer__legend span { width: 10px; height: 10px; border-radius: 2px; display: inline-block; flex: none; }
+
+/* Rejilla de visores por pieza */
+.stl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.stl-grid figure { margin: 0; }
+.stl-grid .stl-viewer { height: 260px; }
+.stl-grid figcaption { font-size: 0.85rem; color: #4B5563; }
+.stl-grid figcaption a { font-size: 0.8rem; }
+
+@media (max-width: 600px) {
+  .stl-viewer--tall { height: 440px; }
+  .stl-viewer__legend { font-size: 0.7rem; }
+}

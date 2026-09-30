@@ -13,6 +13,7 @@ Contenido:
 - [1. Proyecto y equipo](#descripción-del-proyecto) (esta página)
 - [2. Características técnicas y necesidades]({{ '/01-especificaciones/' | relative_url }})
 - [3. Diagramas a bloques (mecánico y eléctrico/electrónico)]({{ '/02-diagramas-a-bloques/' | relative_url }})
+- [4. Brazos robóticos (impresión 3D y corte láser)]({{ '/03-brazos-roboticos/' | relative_url }})
 
 > Estado: **versión preliminar para revisión con asesores**. Los valores marcados con **(H)** son hipótesis de ingeniería, no datos del reglamento, y requieren validación por prototipo.
 
