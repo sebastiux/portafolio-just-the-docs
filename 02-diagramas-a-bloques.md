@@ -104,7 +104,3 @@ Este diagrama todavía **no es interpretable sin la persona que lo dibujó**. Fa
 ## Sección anterior
 
 [Características técnicas y necesidades]({{ '/01-especificaciones/' | relative_url }})
-
-## Siguiente sección
-
-[Brazos robóticos]({{ '/03-brazos-roboticos/' | relative_url }})
