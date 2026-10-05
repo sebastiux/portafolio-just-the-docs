@@ -59,12 +59,12 @@ Brazo de **3 GDL más pinza**, cortado con láser en **MDF de 3 mm**. Es un **Me
 
 ## 2) Arquitectura
 
-| Articulación | Actuador | Mecanismo |
-|:-------------|:---------|:----------|
-| **Base** (giro) | Servo SG90 | Plato giratorio sobre la base |
-| **Hombro** | Servo SG90 | Eslabón accionado desde la base |
-| **Codo** | Servo SG90 | Eslabón accionado desde la base |
-| **Pinza** | Servo SG90 | Mordazas accionadas por eslabones |
+| Articulación | Actuador | Mecanismo | Control manual |
+|:-------------|:---------|:----------|:---------------|
+| **Base** (giro) | Servo SG90 | Plato giratorio sobre la base | Potenciómetro |
+| **Hombro** | Servo SG90 | Eslabón accionado desde la base | Potenciómetro |
+| **Codo** | Servo SG90 | Eslabón accionado desde la base | Potenciómetro |
+| **Pinza** | Servo SG90 | Mordazas accionadas por eslabones | Interruptor |
 
 El MeArm resuelve el hombro y el codo con **eslabones en paralelogramo**: los dos servos van montados abajo, en la base, y mueven el brazo a distancia. Eso mantiene la **orientación de la pinza constante** sin importar la posición del brazo, y evita cargar los eslabones con el peso de los servos.
 
@@ -222,7 +222,7 @@ El armado sigue la **guía oficial de 13 pasos** del autor del MeArm [[3](#refer
 |:---------|:------|
 | Controlador | **PCB propia** con **ESP32-C3 Super Mini** |
 | Actuadores | **4 servos SG90** |
-| Control manual | **3 potenciómetros** (un eje cada uno) y **1 interruptor** para la pinza |
+| Control manual | **3 potenciómetros** (uno por servo de movimiento) y **1 interruptor** para la pinza |
 | Control remoto | **App servida por el propio ESP32-C3** |
 | Alimentación | Batería o fuente de laboratorio |
 | Esquemático / KiCad | **[Pendiente]** <!-- PENDIENTE: subir el proyecto de KiCad o, como mínimo, el esquemático en PDF. --> |
@@ -232,7 +232,20 @@ El armado sigue la **guía oficial de 13 pasos** del autor del MeArm [[3](#refer
 | Captura de la app | **[Pendiente]** |
 | Alimentación de los servos | **[Pendiente]** <!-- PENDIENTE: 4 SG90 en movimiento simultáneo pueden pedir picos de varios amperes. Documentar de dónde sale esa corriente y si hay capacitor de desacople. --> |
 
-> Hay **3 potenciómetros para 4 servos**. Falta explicar cómo se controla el cuarto eje: el interruptor de la pinza cubre uno, pero conviene dejar escrito el mapeo completo.
+### Mapeo de los controles
+
+Cada uno de los 4 servos tiene su propio control: los **3 servos de movimiento** se manejan con un potenciómetro cada uno, de forma proporcional, y el **servo de la pinza** con un interruptor de dos posiciones (abrir y cerrar).
+
+| Control | Tipo de señal | Actúa sobre |
+|:--------|:--------------|:------------|
+| Potenciómetro 1 | Analógica, proporcional | Servo de la **base** (giro) |
+| Potenciómetro 2 | Analógica, proporcional | Servo del **hombro** |
+| Potenciómetro 3 | Analógica, proporcional | Servo del **codo** |
+| Interruptor | Digital, dos posiciones | Servo de la **pinza** (abrir / cerrar) |
+
+<!-- PENDIENTE: confirmar qué potenciómetro corresponde a qué articulación en la PCB
+     física, y si el interruptor manda la pinza a dos ángulos fijos o a dos extremos
+     de recorrido. -->
 
 ---
 
