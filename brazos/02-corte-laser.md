@@ -243,9 +243,13 @@ Cada uno de los 4 servos tiene su propio control: los **3 servos de movimiento**
 | Potenciómetro 3 | Analógica, proporcional | Servo del **codo** |
 | Interruptor | Digital, dos posiciones | Servo de la **pinza** (abrir / cerrar) |
 
-<!-- PENDIENTE: confirmar qué potenciómetro corresponde a qué articulación en la PCB
-     física, y si el interruptor manda la pinza a dos ángulos fijos o a dos extremos
-     de recorrido. -->
+El interruptor **no lleva el servo de la pinza de extremo a extremo de su recorrido**: alterna entre **dos ángulos fijos**, provisionalmente **20°** (cerrada) y **80°** (abierta). Eso evita que el SG90 quede empujando contra el tope mecánico de la mordaza, que es lo que hace que un servo se caliente y consuma corriente de forma sostenida sin estar moviéndose.
+
+> **Los valores 20° y 80° son provisionales**, no medidos sobre el brazo armado. Hay que ajustarlos a la apertura real que necesita la pelota de la prueba (R8) y verificar que en la posición de cerrado la mordaza sujete sin forzar el servo.
+
+<!-- PENDIENTE: medir los dos ángulos reales de la pinza sobre el brazo armado y
+     sustituir 20/80. El valor de cerrado depende del diámetro de la pelota de espuma.
+     Confirmar también contra el firmware cuando se publique. -->
 
 ---
 

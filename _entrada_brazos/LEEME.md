@@ -42,7 +42,8 @@ confirmada y hasta entonces no se pueden republicar. Tampoco subas `OldVersions/
 8. ¿Las piezas `Part 09`, `Part 23` y `Part 27 - Sticky Foot` no se usaron?
 9. ESP32-C3: pinout completo (servos, 3 potenciómetros, interruptor) y de dónde sale la
    corriente de los 4 SG90.
-10. ¿Cómo se controla el cuarto eje, si solo hay 3 potenciómetros?
+10. Ángulos reales de la pinza abierta y cerrada (en la página van 20° y 80° como
+    valores provisionales, sin medir).
 11. Medidas generales del brazo láser **armado** (no las del STEP).
 12. Diámetro de la pelota de espuma y resultado de cada intento.
 13. ¿El brazo impreso tiene 8 o 9 piezas? El repositorio tiene 8.
