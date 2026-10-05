@@ -24,10 +24,12 @@ El brazo impreso **no es un diseño original del equipo**. Parte de un modelo pu
 | Diseño base | **"Brazo Robótico — Robotic Arm"**, modelo **#449747** en Printables |
 | Autor del diseño base | **RACBOTS** |
 | Fuente | <https://www.printables.com/model/449747> |
-| Licencia del original | **[Pendiente]** <!-- PENDIENTE: abrir la ficha de Printables y copiar la licencia exacta que declara RACBOTS (CC BY, CC BY-NC, CC BY-SA...). De ella depende si estas piezas se pueden republicar en este repositorio. --> |
+| Licencia del original | **[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)** (Atribución 4.0 Internacional), según declara la ficha de Printables |
+| Qué permite esa licencia | Redistribuir, modificar y usar comercialmente, **siempre con atribución** |
+| Modificaciones del equipo | **Sí**: cambios cosméticos sobre las piezas |
 | Aporte del equipo | Cambios cosméticos sobre las piezas, laminado y parámetros de impresión, impresión, ensamble físico, electrónica y pruebas |
 
-> **Atribución obligatoria.** Mientras no se confirme la licencia del modelo original, los STL publicados en esta página son **redistribución de un trabajo ajeno**. Si la licencia resulta ser NonCommercial o ShareAlike, hay que ajustar la licencia de este repositorio o retirar los archivos y dejar solo el enlace a Printables.
+> **Atribución (CC BY 4.0).** Las piezas de esta página derivan de **"Brazo Robótico — Robotic Arm"** de **RACBOTS**, publicado en [Printables (#449747)](https://www.printables.com/model/449747) bajo [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). **El equipo modificó el diseño original** (cambios cosméticos). Los STL que se descargan desde esta página son obra derivada y se redistribuyen bajo la misma atribución.
 
 <!-- PENDIENTE: el documento de entrega menciona 9 piezas STL; en este repositorio hay 8 (base, tapa, brazo-1, brazo-2, soporte-pinza, pinon-servo, pinon-pinza, pinzas). Confirmar cuál es el conteo correcto y, si falta una, subirla. -->
 

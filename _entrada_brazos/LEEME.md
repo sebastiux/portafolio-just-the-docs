@@ -38,7 +38,6 @@ confirmada y hasta entonces no se pueden republicar. Tampoco subas `OldVersions/
 4. Kerf medido y compensación aplicada.
 5. ¿Se mandaron los DXF a la máquina sin modificar (sin reescalar ni compensar)?
 6. ¿Quién subió el MeArm a GrabCAD y qué licencia declara esa página?
-7. ¿Qué licencia declara RACBOTS en Printables #449747?
 8. ¿Las piezas `Part 09`, `Part 23` y `Part 27 - Sticky Foot` no se usaron?
 9. ESP32-C3: pinout completo (servos, 3 potenciómetros, interruptor) y de dónde sale la
    corriente de los 4 SG90.
