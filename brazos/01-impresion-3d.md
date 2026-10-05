@@ -15,7 +15,25 @@ Esta página documenta la fabricación del brazo robótico por **impresión 3D (
 
 ---
 
-## 1) Parámetros de impresión
+## 1) Origen del diseño y créditos
+
+El brazo impreso **no es un diseño original del equipo**. Parte de un modelo publicado por terceros, al que se le hicieron cambios cosméticos.
+
+| Dato | Valor |
+|:-----|:------|
+| Diseño base | **"Brazo Robótico — Robotic Arm"**, modelo **#449747** en Printables |
+| Autor del diseño base | **RACBOTS** |
+| Fuente | <https://www.printables.com/model/449747> |
+| Licencia del original | **[Pendiente]** <!-- PENDIENTE: abrir la ficha de Printables y copiar la licencia exacta que declara RACBOTS (CC BY, CC BY-NC, CC BY-SA...). De ella depende si estas piezas se pueden republicar en este repositorio. --> |
+| Aporte del equipo | Cambios cosméticos sobre las piezas, laminado y parámetros de impresión, impresión, ensamble físico, electrónica y pruebas |
+
+> **Atribución obligatoria.** Mientras no se confirme la licencia del modelo original, los STL publicados en esta página son **redistribución de un trabajo ajeno**. Si la licencia resulta ser NonCommercial o ShareAlike, hay que ajustar la licencia de este repositorio o retirar los archivos y dejar solo el enlace a Printables.
+
+<!-- PENDIENTE: el documento de entrega menciona 9 piezas STL; en este repositorio hay 8 (base, tapa, brazo-1, brazo-2, soporte-pinza, pinon-servo, pinon-pinza, pinzas). Confirmar cuál es el conteo correcto y, si falta una, subirla. -->
+
+---
+
+## 2) Parámetros de impresión
 
 Los parámetros salen del proyecto de **Creality Print 6.3** que usó el equipo (archivo `Base_2_v2.3mf`, fecha 29/09/26). Es el perfil de fábrica **0.20mm Standard** para la Ender‑3 V3 KE, sin modificaciones de soporte ni relleno.
 
@@ -83,7 +101,7 @@ Los parámetros salen del proyecto de **Creality Print 6.3** que usó el equipo 
 
 ### Por qué estos parámetros funcionan para estas piezas
 
-- **Sin soportes:** todas las piezas se modelaron para imprimirse **acostadas sobre su cara plana** (eslabones de 5–12 mm de espesor, engranes de 5–7 mm, pinzas de 6 mm), así que no hay voladizos que los necesiten.
+- **Sin soportes:** todas las piezas están modeladas para imprimirse **acostadas sobre su cara plana** (eslabones de 5–12 mm de espesor, engranes de 5–7 mm, pinzas de 6 mm), así que no hay voladizos que los necesiten.
 - **Compensación de pata de elefante (0.15 mm):** importa en los **engranes** y en las **pinzas**, donde un primer escalón ensanchado haría que los dientes rocen.
 - **Compensación XY en 0:** los barrenos de ejes y tornillos salen al tamaño del modelo; si un eje o un cuerno de servo no entra, este es el primer parámetro a ajustar (o rimar el barreno).
 - **2 paredes y 15 % de relleno:** suficiente para piezas de prueba. Para el brazo definitivo, los eslabones cargan momento flector en el servo del hombro; conviene probar **3–4 paredes** y **25–40 % de relleno** en `Brazo 1`, `Brazo 2` y la `Tapa`.
@@ -92,7 +110,7 @@ Los parámetros salen del proyecto de **Creality Print 6.3** que usó el equipo 
 
 ---
 
-## 2) Ensamble
+## 3) Ensamble
 
 <div class="stl-viewer stl-viewer--tall" data-assembly="{{ '/assets/stl/brazo-impreso/ensamble.json' | relative_url }}" data-base="{{ '/assets/stl/brazo-impreso/' | relative_url }}"></div>
 
@@ -115,7 +133,7 @@ Los parámetros salen del proyecto de **Creality Print 6.3** que usó el equipo 
 
 ---
 
-## 3) Piezas individuales
+## 4) Piezas individuales
 
 Dimensiones medidas sobre cada STL (caja envolvente en la orientación de impresión, X × Y × Z). La **masa máxima** supone la pieza 100 % sólida en PLA (1.24 g/cm³); con 2 paredes y 15 % de relleno la masa real será **menor**.
 
@@ -168,7 +186,26 @@ Dimensiones medidas sobre cada STL (caja envolvente en la orientación de impres
 
 ---
 
-## 4) Observaciones del diseño
+## 5) Electrónica y control
+
+| Elemento | Valor |
+|:---------|:------|
+| Controlador | **Arduino Uno** |
+| Actuadores | **4 servos SG90** |
+| Pin base (giro) | **D9** |
+| Pin hombro | **D10** |
+| Pin codo | **D11** |
+| Pin pinza | **D6** |
+| Interfaz de control | **Por USB**, con el script `brazo_gui.py` desde la computadora |
+| Alimentación de los servos | **[Pendiente]** <!-- PENDIENTE: ¿los 4 SG90 se alimentan del regulador de 5 V del Arduino o de una fuente externa? 4 SG90 pueden pedir más corriente de la que entrega el Uno. --> |
+| Firmware del Arduino | **[Pendiente]** <!-- PENDIENTE: publicar el .ino que recibe los comandos por serial. --> |
+| `brazo_gui.py` | **[Pendiente]** <!-- PENDIENTE: publicar el script y una captura de la interfaz. --> |
+
+> **Diferencia con el brazo de corte láser.** Este brazo se controla con **Arduino Uno por cable USB**; el de corte láser usa una **PCB propia con ESP32-C3** y una app servida por el propio microcontrolador. Son dos arquitecturas de control distintas a propósito.
+
+---
+
+## 6) Observaciones del diseño
 
 - **Grados de libertad:** el brazo articula en la base (giro), el hombro (horquilla de la tapa) y el codo (brazo 1 → brazo 2), más la apertura de la pinza: **3 GDL + pinza**.
 - **Alcance:** los dos eslabones suman **170 mm** (80 + 90) más la pinza.
