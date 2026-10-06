@@ -1,0 +1,146 @@
+[
+ {
+  "id": "P-01",
+  "archivo": "base.stl",
+  "cad": "Base 2 v2",
+  "nombre": "Base (alojamiento servo)",
+  "color": "#4B5563",
+  "dim_mm": [
+   44.98,
+   44.98,
+   24.0
+  ],
+  "volumen_cm3": 23.45,
+  "masa_max_g": 29.1,
+  "triangulos": 17744,
+  "cerrada": true
+ },
+ {
+  "id": "P-02",
+  "archivo": "tapa.stl",
+  "cad": "Tapa v2",
+  "nombre": "Tapa giratoria",
+  "color": "#E00034",
+  "dim_mm": [
+   37.99,
+   38.0,
+   29.5
+  ],
+  "volumen_cm3": 12.85,
+  "masa_max_g": 15.9,
+  "triangulos": 5618,
+  "cerrada": true
+ },
+ {
+  "id": "P-03",
+  "archivo": "brazo-1.stl",
+  "cad": "Brazo 1 v1",
+  "nombre": "Brazo 1",
+  "color": "#F59E0B",
+  "dim_mm": [
+   16.5,
+   80.0,
+   5.0
+  ],
+  "volumen_cm3": 3.63,
+  "masa_max_g": 4.5,
+  "triangulos": 870,
+  "cerrada": true
+ },
+ {
+  "id": "P-04",
+  "archivo": "brazo-2.stl",
+  "cad": "Brazo 2 v1_FINAL_FInal",
+  "nombre": "Brazo 2",
+  "color": "#2563EB",
+  "dim_mm": [
+   17.0,
+   90.0,
+   12.02
+  ],
+  "volumen_cm3": 5.93,
+  "masa_max_g": 7.4,
+  "triangulos": 4142,
+  "cerrada": false
+ },
+ {
+  "id": "P-05",
+  "archivo": "soporte-pinza.stl",
+  "cad": "Soporte Pinza v1",
+  "nombre": "Soporte de pinza",
+  "color": "#10B981",
+  "dim_mm": [
+   29.0,
+   44.0,
+   4.0
+  ],
+  "volumen_cm3": 2.43,
+  "masa_max_g": 3.0,
+  "triangulos": 1170,
+  "cerrada": true
+ },
+ {
+  "id": "P-06",
+  "archivo": "pinon-servo.stl",
+  "cad": "Piñon Servo v1",
+  "nombre": "Piñón del servo",
+  "color": "#8B5CF6",
+  "dim_mm": [
+   20.0,
+   20.0,
+   5.0
+  ],
+  "volumen_cm3": 0.64,
+  "masa_max_g": 0.8,
+  "triangulos": 1548,
+  "cerrada": true
+ },
+ {
+  "id": "P-07",
+  "archivo": "pinon-pinza.stl",
+  "cad": "Piñon pinza 1 v1",
+  "nombre": "Piñón de pinza",
+  "color": "#EC4899",
+  "dim_mm": [
+   27.97,
+   27.95,
+   7.0
+  ],
+  "volumen_cm3": 1.73,
+  "masa_max_g": 2.1,
+  "triangulos": 2342,
+  "cerrada": true
+ },
+ {
+  "id": "P-08",
+  "archivo": "pinza-derecha.stl",
+  "cad": "Pinza derecha v1",
+  "nombre": "Pinza derecha",
+  "color": "#0EA5E9",
+  "dim_mm": [
+   70.23,
+   24.3,
+   6.15
+  ],
+  "volumen_cm3": 1.92,
+  "masa_max_g": 2.4,
+  "triangulos": 1624,
+  "cerrada": true
+ },
+ {
+  "id": "P-09",
+  "archivo": "pinza-izquierda.stl",
+  "cad": "Pinza izquierda v1_MIR_MIR3",
+  "nombre": "Pinza izquierda",
+  "color": "#0284C7",
+  "dim_mm": [
+   70.23,
+   24.77,
+   6.15
+  ],
+  "volumen_cm3": 1.85,
+  "masa_max_g": 2.3,
+  "triangulos": 1856,
+  "cerrada": true
+ }
+]

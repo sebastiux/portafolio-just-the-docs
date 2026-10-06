@@ -9,13 +9,63 @@ stl_viewer: true
 
 # Brazo impreso en 3D
 
-Esta página documenta la fabricación del brazo robótico por **impresión 3D (FDM)** en PLA: los **parámetros de impresión** que se usaron, el **ensamble** y cada una de las **9 piezas** con su visor 3D.
+Brazo de **3 GDL más pinza**, fabricado por **impresión 3D (FDM) en PLA**. Parte de un diseño publicado por RACBOTS; el equipo lo laminó, lo imprimió, lo armó y le hizo su electrónica.
 
 > **Cómo usar los visores 3D:** arrastra para girar, rueda del ratón (o pellizco) para acercar y clic derecho (o dos dedos) para desplazar. **Reiniciar vista** regresa a la vista inicial.
 
+| Rúbrica | Entregable | Estado |
+|:--|:---|:---|
+| R1 | Planos de las piezas | ✅ 9 planos A4 + resumen |
+| R2 | Render de cada pieza | ✅ 9 renders |
+| R3 | Ensamble en CAD | ⚠️ Captura de Inventor sí; el STEP exportado viene sin geometría |
+| R4 | Render del ensamble | ✅ 3 vistas |
+| R5 | Visor 3D en la página | ✅ |
+| R6 | Proceso de fabricación | ✅ Parámetros de impresión; faltan fotos y video |
+| R7 | Ensamble físico | ⏳ faltan fotos |
+| R8 | Prueba tomando un objeto | ⏳ falta video |
+
 ---
 
-## 1) Origen del diseño y créditos
+## 1) Descripción general
+
+| Dato | Valor |
+|:-----|:------|
+| Grados de libertad | **3 GDL + pinza** (base, hombro, codo y apertura de pinza) |
+| Material | **PLA** (Creality Hyper PLA, 1.75 mm) |
+| Piezas impresas | **9** |
+| Volumen de PLA | **54.43 cm³**, masa máxima **67.5 g** sin servos ni tornillería |
+| Actuadores | **4 servos SG90** |
+| Control | **Arduino Uno** por USB |
+| Envolvente del ensamble CAD | 174.0 × 48.1 × 117.5 mm en la pose exportada |
+| Medidas del brazo armado | **[Pendiente]** <!-- PENDIENTE: medir el brazo físico. --> |
+| Foto del brazo armado | **[Pendiente]** <!-- PENDIENTE: foto en assets/img/brazos/impreso3d/ --> |
+
+---
+
+## 2) Arquitectura
+
+### Cadena cinemática
+| Orden | Pieza | Función en el brazo |
+|:-----:|:------|:--------------------|
+| 1 | Base | Aloja el **servo de giro** de la base; se fija a la superficie de montaje con 3 orejas atornilladas. |
+| 2 | Tapa | Plato giratorio sobre el servo de la base, con una **horquilla** de dos postes donde articula el brazo 1. |
+| 3 | Brazo 1 | Primer eslabón (80 mm). Un extremo con ranura para el eje de la horquilla y otro con ventana para el servo del codo. |
+| 4 | Brazo 2 | Segundo eslabón (90 mm), con alojamiento para el siguiente servo en el extremo. |
+| 5 | Soporte de pinza | Marco con ventana rectangular para el **servo de la pinza**. |
+| 6 | Piñón del servo | Engrane motriz montado en el eje del servo de la pinza. |
+| 7 | Piñón de pinza | Engrane conducido que transmite el giro a las mordazas. |
+| 8 | Pinza derecha | Mordaza con sector dentado que engrana con el piñón de pinza; el filo serrado sujeta la muestra. |
+| 9 | Pinza izquierda | La misma pieza en espejo. Las dos cierran a la vez, movidas por el mismo piñón. |
+
+- **Grados de libertad:** el brazo articula en la base (giro), el hombro (horquilla de la tapa) y el codo (brazo 1 → brazo 2), más la apertura de la pinza: **3 GDL + pinza**.
+- **Alcance:** los dos eslabones suman **170 mm** (80 + 90) más la pinza.
+- **Masa:** como máximo **67 g** de piezas impresas, sin servos ni tornillería.
+- **Transmisión de la pinza:** el servo mueve la pinza a través de un par de engranes (piñón del servo de 20 mm → piñón de pinza de 28 mm), que reduce la velocidad y aumenta el par de cierre.
+- **Apertura de la pinza:** en la pose del ensamble CAD las dos mordazas quedan separadas **19.3 mm** entre centros. Es el dato a contrastar con el diámetro de la pelota de la prueba.
+
+---
+
+## 3) Origen del diseño y créditos
 
 El brazo impreso **no es un diseño original del equipo**. Parte de un modelo publicado por terceros, al que se le hicieron cambios cosméticos.
 
@@ -35,7 +85,124 @@ El brazo impreso **no es un diseño original del equipo**. Parte de un modelo pu
 
 ---
 
-## 2) Parámetros de impresión
+## 4) Piezas, planos y renders (R1 y R2)
+
+Las 9 piezas se miden directamente sobre sus STL. La masa supone la pieza **100 % sólida** en PLA (1.24 g/cm³); con 2 paredes y 15 % de relleno la masa real será **menor**.
+
+**Descargas:**
+
+- [Plano completo, 9 páginas (PDF)]({{ '/assets/brazos/impreso3d/planos/planos-brazo-impreso-completo.pdf' | relative_url }})
+
+| Render | Pieza | Nombre | Nombre en el CAD | Medidas (mm) | Volumen (cm³) | Masa máx. (g) | Archivos |
+|:------:|:------|:-------|:-----------------|:-------------|--------------:|--------------:|:---------|
+| <img src="{{ '/assets/brazos/impreso3d/render/piezas/P-01.png' | relative_url }}" alt="P-01" width="86" loading="lazy"> | **P-01** | Base (alojamiento servo) | `Base 2 v2` | 44.98 × 44.98 × 24.00 | 23.45 | 29.1 | [STL]({{ '/assets/stl/brazo-impreso/base.stl' | relative_url }}) · [Plano]({{ '/assets/brazos/impreso3d/planos/P-01.pdf' | relative_url }}) |
+| <img src="{{ '/assets/brazos/impreso3d/render/piezas/P-02.png' | relative_url }}" alt="P-02" width="86" loading="lazy"> | **P-02** | Tapa giratoria | `Tapa v2` | 37.99 × 38.00 × 29.50 | 12.85 | 15.9 | [STL]({{ '/assets/stl/brazo-impreso/tapa.stl' | relative_url }}) · [Plano]({{ '/assets/brazos/impreso3d/planos/P-02.pdf' | relative_url }}) |
+| <img src="{{ '/assets/brazos/impreso3d/render/piezas/P-03.png' | relative_url }}" alt="P-03" width="86" loading="lazy"> | **P-03** | Brazo 1 | `Brazo 1 v1` | 16.50 × 80.00 × 5.00 | 3.63 | 4.5 | [STL]({{ '/assets/stl/brazo-impreso/brazo-1.stl' | relative_url }}) · [Plano]({{ '/assets/brazos/impreso3d/planos/P-03.pdf' | relative_url }}) |
+| <img src="{{ '/assets/brazos/impreso3d/render/piezas/P-04.png' | relative_url }}" alt="P-04" width="86" loading="lazy"> | **P-04** | Brazo 2 | `Brazo 2 v1_FINAL_FInal` | 17.00 × 90.00 × 12.02 | 5.93 | 7.4 | [STL]({{ '/assets/stl/brazo-impreso/brazo-2.stl' | relative_url }}) · [Plano]({{ '/assets/brazos/impreso3d/planos/P-04.pdf' | relative_url }}) |
+| <img src="{{ '/assets/brazos/impreso3d/render/piezas/P-05.png' | relative_url }}" alt="P-05" width="86" loading="lazy"> | **P-05** | Soporte de pinza | `Soporte Pinza v1` | 29.00 × 44.00 × 4.00 | 2.43 | 3.0 | [STL]({{ '/assets/stl/brazo-impreso/soporte-pinza.stl' | relative_url }}) · [Plano]({{ '/assets/brazos/impreso3d/planos/P-05.pdf' | relative_url }}) |
+| <img src="{{ '/assets/brazos/impreso3d/render/piezas/P-06.png' | relative_url }}" alt="P-06" width="86" loading="lazy"> | **P-06** | Piñón del servo | `Piñon Servo v1` | 20.00 × 20.00 × 5.00 | 0.64 | 0.8 | [STL]({{ '/assets/stl/brazo-impreso/pinon-servo.stl' | relative_url }}) · [Plano]({{ '/assets/brazos/impreso3d/planos/P-06.pdf' | relative_url }}) |
+| <img src="{{ '/assets/brazos/impreso3d/render/piezas/P-07.png' | relative_url }}" alt="P-07" width="86" loading="lazy"> | **P-07** | Piñón de pinza | `Piñon pinza 1 v1` | 27.97 × 27.95 × 7.00 | 1.73 | 2.1 | [STL]({{ '/assets/stl/brazo-impreso/pinon-pinza.stl' | relative_url }}) · [Plano]({{ '/assets/brazos/impreso3d/planos/P-07.pdf' | relative_url }}) |
+| <img src="{{ '/assets/brazos/impreso3d/render/piezas/P-08.png' | relative_url }}" alt="P-08" width="86" loading="lazy"> | **P-08** | Pinza derecha | `Pinza derecha v1` | 70.23 × 24.30 × 6.15 | 1.92 | 2.4 | [STL]({{ '/assets/stl/brazo-impreso/pinza-derecha.stl' | relative_url }}) · [Plano]({{ '/assets/brazos/impreso3d/planos/P-08.pdf' | relative_url }}) |
+| <img src="{{ '/assets/brazos/impreso3d/render/piezas/P-09.png' | relative_url }}" alt="P-09" width="86" loading="lazy"> | **P-09** | Pinza izquierda | `Pinza izquierda v1_MIR_MIR3` | 70.23 × 24.77 × 6.15 | 1.85 | 2.3 | [STL]({{ '/assets/stl/brazo-impreso/pinza-izquierda.stl' | relative_url }}) · [Plano]({{ '/assets/brazos/impreso3d/planos/P-09.pdf' | relative_url }}) |
+
+### Cómo se generaron
+
+| Paso | Script |
+|:-----|:-------|
+| Medidas y render de cada pieza | `tools/f3_salidas_piezas_impreso.py` |
+| Planos A4 y plano resumen | `tools/f3_planos_impreso.py` |
+
+A diferencia del brazo de corte láser, estas piezas **no son planas**, así que cada plano lleva **tres vistas** (planta, alzado y lateral) a la misma escala. Son **siluetas proyectadas** de la malla: contorno exterior, sin aristas internas ni líneas ocultas. Sirven para identificar y acotar la pieza; no son planos de taller con cortes y tolerancias.
+
+> **Una malla abierta.** P-04 (Brazo 2) no es una malla cerrada. Un STL no estanco puede dar problemas al laminar (relleno impredecible o paredes perdidas). Conviene repararlo antes de volver a imprimir esa pieza.
+
+### Visores por pieza
+
+<div class="stl-grid">
+  <figure>
+    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/base.stl' | relative_url }}" data-color="#4B5563"></div>
+    <figcaption><strong>Base</strong> · <a href="{{ '/assets/stl/brazo-impreso/base.stl' | relative_url }}" download>Descargar STL</a></figcaption>
+  </figure>
+  <figure>
+    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/tapa.stl' | relative_url }}" data-color="#E00034"></div>
+    <figcaption><strong>Tapa</strong> · <a href="{{ '/assets/stl/brazo-impreso/tapa.stl' | relative_url }}" download>Descargar STL</a></figcaption>
+  </figure>
+  <figure>
+    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/brazo-1.stl' | relative_url }}" data-color="#F59E0B"></div>
+    <figcaption><strong>Brazo 1</strong> · <a href="{{ '/assets/stl/brazo-impreso/brazo-1.stl' | relative_url }}" download>Descargar STL</a></figcaption>
+  </figure>
+  <figure>
+    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/brazo-2.stl' | relative_url }}" data-color="#2563EB"></div>
+    <figcaption><strong>Brazo 2</strong> · <a href="{{ '/assets/stl/brazo-impreso/brazo-2.stl' | relative_url }}" download>Descargar STL</a></figcaption>
+  </figure>
+  <figure>
+    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/soporte-pinza.stl' | relative_url }}" data-color="#10B981"></div>
+    <figcaption><strong>Soporte de pinza</strong> · <a href="{{ '/assets/stl/brazo-impreso/soporte-pinza.stl' | relative_url }}" download>Descargar STL</a></figcaption>
+  </figure>
+  <figure>
+    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/pinon-servo.stl' | relative_url }}" data-color="#8B5CF6"></div>
+    <figcaption><strong>Piñón del servo</strong> · <a href="{{ '/assets/stl/brazo-impreso/pinon-servo.stl' | relative_url }}" download>Descargar STL</a></figcaption>
+  </figure>
+  <figure>
+    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/pinon-pinza.stl' | relative_url }}" data-color="#EC4899"></div>
+    <figcaption><strong>Piñón de pinza</strong> · <a href="{{ '/assets/stl/brazo-impreso/pinon-pinza.stl' | relative_url }}" download>Descargar STL</a></figcaption>
+  </figure>
+  <figure>
+    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/pinza-derecha.stl' | relative_url }}" data-color="#0EA5E9"></div>
+    <figcaption><strong>Pinza derecha</strong> · <a href="{{ '/assets/stl/brazo-impreso/pinza-derecha.stl' | relative_url }}" download>Descargar STL</a></figcaption>
+  </figure>
+  <figure>
+    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/pinza-izquierda.stl' | relative_url }}" data-color="#0284C7"></div>
+    <figcaption><strong>Pinza izquierda</strong> · <a href="{{ '/assets/stl/brazo-impreso/pinza-izquierda.stl' | relative_url }}" download>Descargar STL</a></figcaption>
+  </figure>
+</div>
+
+---
+
+## 5) Ensamble en CAD (R3)
+
+El ensamble se armó en **Autodesk Inventor 2026** (`Assembly_PLA.iam`).
+
+[![Ensamble del brazo impreso abierto en Inventor 2026]({{ '/assets/img/brazos/impreso3d/captura-inventor-impreso.webp' | relative_url }})]({{ '/assets/img/brazos/impreso3d/captura-inventor-impreso.webp' | relative_url }})
+**Figura 1:** `Assembly_PLA.iam` en Inventor 2026, con el árbol de componentes visible.
+
+| Dato del ensamble | Valor |
+|:------------------|:------|
+| Piezas impresas | 9 |
+| Servos | 4 × SG90 |
+| Envolvente | 174.0 × 48.1 × 117.5 mm |
+
+> **De dónde salen estas posiciones.** El STEP que exportó Inventor para este ensamble **viene sin geometría**: trae la estructura, las posiciones y los colores, pero cero sólidos. Aun así sirve, porque sus **transformaciones de ensamble sí están completas**, y son las que se aplican a los STL. Lo genera `tools/f2_ensamble_impreso.py`.
+>
+> **Corrección de escala en las mordazas.** Sus dos STL se exportaron **2.54 veces más grandes** que el resto (un dedo de 178 mm en un brazo con eslabones de 80 y 90 mm), así que se reescalan por 1/2.54. Dos comprobaciones de que la escala es la correcta: quedan en 70 × 25 × 6 mm, igual que las mordazas del archivo `pinzas.stl` original, y caen **simétricas** respecto al soporte, a 42.7 y 40.7 mm de su centro.
+
+- **Descarga del STEP: [Pendiente]** <!-- PENDIENTE: el STEP exportado no trae sólidos, así que no se publica. Reexportarlo cuando se resuelva. -->
+- **Los servos no aparecen en el ensamble: [Pendiente]** <!-- PENDIENTE: falta el STL de SERVO_SG90_mm exportado desde Inventor. Las 4 posiciones de servo sí están en el STEP; se probó sustituirlo por el modelo de SG90 del brazo de corte láser y no asienta, porque ese modelo tiene otro origen local. -->
+
+---
+
+## 6) Renderizado del ensamble (R4)
+
+[![Render isométrico del ensamble]({{ '/assets/brazos/impreso3d/render/ensamble-iso.png' | relative_url }})]({{ '/assets/brazos/impreso3d/render/ensamble-iso.png' | relative_url }})
+**Figura 2:** Vista isométrica de las 9 piezas en sus posiciones reales del CAD.
+
+[![Render lateral del ensamble]({{ '/assets/brazos/impreso3d/render/ensamble-lateral.png' | relative_url }})]({{ '/assets/brazos/impreso3d/render/ensamble-lateral.png' | relative_url }})
+**Figura 3:** Vista lateral.
+
+[![Render superior del ensamble]({{ '/assets/brazos/impreso3d/render/ensamble-superior.png' | relative_url }})]({{ '/assets/brazos/impreso3d/render/ensamble-superior.png' | relative_url }})
+**Figura 4:** Vista superior.
+
+---
+
+## 7) Visor 3D (R5)
+
+<div class="stl-viewer stl-viewer--tall" data-assembly="{{ '/assets/stl/brazo-impreso/ensamble/ensamble-cad.json' | relative_url }}" data-base="{{ '/assets/stl/brazo-impreso/ensamble/' | relative_url }}"></div>
+
+**Figura 5:** Ensamble interactivo, en coordenadas reales del CAD. Usa **Separar piezas** para la vista explosionada.
+
+---
+
+## 8) Fabricación: impresión 3D (R6)
 
 Los parámetros salen del proyecto de **Creality Print 6.3** que usó el equipo (archivo `Base_2_v2.3mf`, fecha 29/09/26). Es el perfil de fábrica **0.20mm Standard** para la Ender‑3 V3 KE, sin modificaciones de soporte ni relleno.
 
@@ -110,93 +277,19 @@ Los parámetros salen del proyecto de **Creality Print 6.3** que usó el equipo 
 
 > **Nota de trazabilidad:** la placa laminada dentro de `Base_2_v2.3mf` contiene dos copias de una pieza llamada `linternass.stl` (2.08 g, 8 min 20 s), no la base del brazo. Por eso aquí se documentan los **parámetros del perfil**, pero **no** el tiempo ni el peso real de impresión de las piezas del brazo. Para completarlos hay que exportar el `.3mf` o el G‑code de cada placa del brazo.
 
----
-
-## 3) Ensamble
-
-<div class="stl-viewer stl-viewer--tall" data-assembly="{{ '/assets/stl/brazo-impreso/ensamble/ensamble-cad.json' | relative_url }}" data-base="{{ '/assets/stl/brazo-impreso/ensamble/' | relative_url }}"></div>
-
-**Figura 1:** Ensamble en coordenadas reales del CAD. Usa **Separar piezas** para la vista explosionada.
-
-> **De dónde salen estas posiciones.** El STEP que exportó Inventor para este ensamble **viene sin geometría**: trae la estructura, las posiciones y los colores, pero cero sólidos. Aun así sirve, porque sus **transformaciones de ensamble sí están completas**, y son las que se aplican a los STL. Lo genera `tools/f2_ensamble_impreso.py`.
->
-> **Corrección de escala en las mordazas.** Sus dos STL se exportaron **2.54 veces más grandes** que el resto (un dedo de 178 mm en un brazo con eslabones de 80 y 90 mm), así que se reescalan por 1/2.54. Dos comprobaciones de que la escala es la correcta: quedan en 70 × 25 × 6 mm, igual que las mordazas del archivo `pinzas.stl` original, y caen **simétricas** respecto al soporte, a 42.7 y 40.7 mm de su centro.
-
-### Cadena cinemática
-
-| Orden | Pieza | Función en el brazo |
-|:-----:|:------|:--------------------|
-| 1 | Base | Aloja el **servo de giro** de la base; se fija a la superficie de montaje con 3 orejas atornilladas. |
-| 2 | Tapa | Plato giratorio sobre el servo de la base, con una **horquilla** de dos postes donde articula el brazo 1. |
-| 3 | Brazo 1 | Primer eslabón (80 mm). Un extremo con ranura para el eje de la horquilla y otro con ventana para el servo del codo. |
-| 4 | Brazo 2 | Segundo eslabón (90 mm), con alojamiento para el siguiente servo en el extremo. |
-| 5 | Soporte de pinza | Marco con ventana rectangular para el **servo de la pinza**. |
-| 6 | Piñón del servo | Engrane motriz montado en el eje del servo de la pinza. |
-| 7 | Piñón de pinza | Engrane conducido que transmite el giro a las mordazas. |
-| 8 | Pinza derecha | Mordaza con sector dentado que engrana con el piñón de pinza; el filo serrado sujeta la muestra. |
-| 9 | Pinza izquierda | La misma pieza en espejo. Las dos cierran a la vez, movidas por el mismo piñón. |
+- **Fotos y video de la impresión: [Pendiente]** <!-- PENDIENTE: JPG/WebP, lado largo 1600 px, máx. 500 KB, sin EXIF, con alt. -->
 
 ---
 
-## 4) Piezas individuales
+## 9) Ensamble físico (R7)
 
-Dimensiones medidas sobre cada STL (caja envolvente en la orientación de impresión, X × Y × Z). La **masa máxima** supone la pieza 100 % sólida en PLA (1.24 g/cm³); con 2 paredes y 15 % de relleno la masa real será **menor**.
+**[Pendiente]**
 
-| Pieza | Archivo | Dimensiones (mm) | Volumen (cm³) | Masa máx. (g) | Triángulos |
-|:------|:--------|:-----------------|--------------:|--------------:|-----------:|
-| Base | `Base_2_v2.stl` | 45.0 × 45.0 × 24.0 | 23.45 | 29.1 | 17 744 |
-| Tapa | `Tapa_v2.stl` | 38.0 × 38.0 × 29.5 | 12.85 | 15.9 | 5 618 |
-| Brazo 1 | `Brazo_1_v1.stl` | 16.5 × 80.0 × 5.0 | 3.63 | 4.5 | 870 |
-| Brazo 2 | `Brazo_2_v1_FINAL_FInal.stl` | 17.0 × 90.0 × 12.0 | 5.93 | 7.4 | 4 142 |
-| Soporte de pinza | `Soporte_Pinza_v1.stl` | 29.0 × 44.0 × 4.0 | 2.43 | 3.0 | 1 170 |
-| Piñón del servo | `Piñon_Servo_v1.stl` | 20.0 × 20.0 × 5.0 | 0.64 | 0.8 | 1 548 |
-| Piñón de pinza | `Piñon_pinza_1_v1.stl` | 28.0 × 28.0 × 7.0 | 1.73 | 2.1 | 2 342 |
-| Pinza derecha | `Pinza derecha v1.stl` | 70.2 × 24.3 × 6.2 | 1.92 | 2.4 | 1 624 |
-| Pinza izquierda | `Pinza izquierda v1_MIR_MIR3.stl` | 70.2 × 24.8 × 6.2 | 1.85 | 2.3 | 1 856 |
-| **Total** | | | **54.43** | **67.5** | |
-
-<div class="stl-grid">
-  <figure>
-    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/base.stl' | relative_url }}" data-color="#4B5563"></div>
-    <figcaption><strong>Base</strong> · <a href="{{ '/assets/stl/brazo-impreso/base.stl' | relative_url }}" download>Descargar STL</a></figcaption>
-  </figure>
-  <figure>
-    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/tapa.stl' | relative_url }}" data-color="#E00034"></div>
-    <figcaption><strong>Tapa</strong> · <a href="{{ '/assets/stl/brazo-impreso/tapa.stl' | relative_url }}" download>Descargar STL</a></figcaption>
-  </figure>
-  <figure>
-    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/brazo-1.stl' | relative_url }}" data-color="#F59E0B"></div>
-    <figcaption><strong>Brazo 1</strong> · <a href="{{ '/assets/stl/brazo-impreso/brazo-1.stl' | relative_url }}" download>Descargar STL</a></figcaption>
-  </figure>
-  <figure>
-    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/brazo-2.stl' | relative_url }}" data-color="#2563EB"></div>
-    <figcaption><strong>Brazo 2</strong> · <a href="{{ '/assets/stl/brazo-impreso/brazo-2.stl' | relative_url }}" download>Descargar STL</a></figcaption>
-  </figure>
-  <figure>
-    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/soporte-pinza.stl' | relative_url }}" data-color="#10B981"></div>
-    <figcaption><strong>Soporte de pinza</strong> · <a href="{{ '/assets/stl/brazo-impreso/soporte-pinza.stl' | relative_url }}" download>Descargar STL</a></figcaption>
-  </figure>
-  <figure>
-    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/pinon-servo.stl' | relative_url }}" data-color="#8B5CF6"></div>
-    <figcaption><strong>Piñón del servo</strong> · <a href="{{ '/assets/stl/brazo-impreso/pinon-servo.stl' | relative_url }}" download>Descargar STL</a></figcaption>
-  </figure>
-  <figure>
-    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/pinon-pinza.stl' | relative_url }}" data-color="#EC4899"></div>
-    <figcaption><strong>Piñón de pinza</strong> · <a href="{{ '/assets/stl/brazo-impreso/pinon-pinza.stl' | relative_url }}" download>Descargar STL</a></figcaption>
-  </figure>
-  <figure>
-    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/pinza-derecha.stl' | relative_url }}" data-color="#0EA5E9"></div>
-    <figcaption><strong>Pinza derecha</strong> · <a href="{{ '/assets/stl/brazo-impreso/pinza-derecha.stl' | relative_url }}" download>Descargar STL</a></figcaption>
-  </figure>
-  <figure>
-    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/pinza-izquierda.stl' | relative_url }}" data-color="#0284C7"></div>
-    <figcaption><strong>Pinza izquierda</strong> · <a href="{{ '/assets/stl/brazo-impreso/pinza-izquierda.stl' | relative_url }}" download>Descargar STL</a></figcaption>
-  </figure>
-</div>
+<!-- PENDIENTE: fotos del armado en assets/img/brazos/impreso3d/, sin EXIF. -->
 
 ---
 
-## 5) Electrónica y control
+## 10) Electrónica y control
 
 | Elemento | Valor |
 |:---------|:------|
@@ -215,13 +308,30 @@ Dimensiones medidas sobre cada STL (caja envolvente en la orientación de impres
 
 ---
 
-## 6) Observaciones del diseño
+## 11) Pruebas (R8)
 
-- **Grados de libertad:** el brazo articula en la base (giro), el hombro (horquilla de la tapa) y el codo (brazo 1 → brazo 2), más la apertura de la pinza: **3 GDL + pinza**.
-- **Alcance:** los dos eslabones suman **170 mm** (80 + 90) más la pinza.
-- **Masa:** como máximo **67 g** de piezas impresas, sin servos ni tornillería.
-- **Transmisión de la pinza:** el servo mueve la pinza a través de un par de engranes (piñón del servo de 20 mm → piñón de pinza de 28 mm), que reduce la velocidad y aumenta el par de cierre.
-- **Apertura de la pinza:** en la pose del ensamble CAD las dos mordazas quedan separadas **19.3 mm** entre centros. Es el dato a contrastar con el diámetro de la pelota de la prueba.
+**[Pendiente]**
+
+<!-- PENDIENTE: video del brazo tomando la pelota roja de espuma, tabla de intentos y diámetro de la pelota. Contrastar contra la apertura de 19.3 mm entre mordazas. -->
+
+---
+
+## 12) Componentes comerciales
+
+| Componente | Cantidad | Nota |
+|:-----------|:--------:|:-----|
+| Servo SG90 | 4 | Uno por GDL más la pinza |
+| Arduino Uno | 1 | Control por USB |
+| Filamento PLA 1.75 mm | — | 67 g como máximo para las 9 piezas |
+| Tornillería y ejes | — | **[Pendiente]** <!-- PENDIENTE: medidas y cantidades. --> |
+
+---
+
+## Referencias
+
+1. Página de referencia del curso: <https://hubergiron.github.io/cnc/diseno-mecanico-cnc/>
+2. RACBOTS, *Brazo Robótico — Robotic Arm*, Printables #449747 (CC BY 4.0): <https://www.printables.com/model/449747>
+3. Licencia Creative Commons Atribución 4.0 Internacional: <https://creativecommons.org/licenses/by/4.0/>
 
 ---
 
