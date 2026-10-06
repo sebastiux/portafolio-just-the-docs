@@ -1,0 +1,419 @@
+{
+ "resumen": {
+  "<= 1.5 mm": 6,
+  "1.5 - 4 mm": 12,
+  "> 4 mm": 13
+ },
+ "sin_pareja": [
+  "A-01",
+  "A-11",
+  "A-18",
+  "A-22",
+  "B-01"
+ ],
+ "parejas": [
+  {
+   "step": "Part 26 - Straight Lever-3",
+   "dxf": "B-05",
+   "step_mm": [
+    87.94,
+    8.0
+   ],
+   "dxf_mm": [
+    88.0,
+    8.0
+   ],
+   "dif_mm": 0.06
+  },
+  {
+   "step": "Part 26 - Straight Lever-2",
+   "dxf": "B-06",
+   "step_mm": [
+    87.94,
+    8.0
+   ],
+   "dxf_mm": [
+    88.0,
+    8.0
+   ],
+   "dif_mm": 0.06
+  },
+  {
+   "step": "Part 26 - Straight Lever-1",
+   "dxf": "B-07",
+   "step_mm": [
+    87.94,
+    8.0
+   ],
+   "dxf_mm": [
+    88.0,
+    8.0
+   ],
+   "dif_mm": 0.06
+  },
+  {
+   "step": "Part 22-2",
+   "dxf": "A-14",
+   "step_mm": [
+    32.64,
+    18.67
+   ],
+   "dxf_mm": [
+    32.47,
+    18.46
+   ],
+   "dif_mm": 0.2
+  },
+  {
+   "step": "Part 05 - Rectangular Side Part-1",
+   "dxf": "B-10",
+   "step_mm": [
+    60.0,
+    45.0
+   ],
+   "dxf_mm": [
+    60.0,
+    43.8
+   ],
+   "dif_mm": 1.2
+  },
+  {
+   "step": "Part 10 - the Pig-1",
+   "dxf": "A-16",
+   "step_mm": [
+    53.7,
+    35.98
+   ],
+   "dxf_mm": [
+    54.2,
+    34.6
+   ],
+   "dif_mm": 1.38
+  },
+  {
+   "step": "Part 12 - Cradle Ends-2",
+   "dxf": "A-24",
+   "step_mm": [
+    50.0,
+    19.0
+   ],
+   "dxf_mm": [
+    51.7,
+    19.0
+   ],
+   "dif_mm": 1.7
+  },
+  {
+   "step": "Part 12 - Cradle Ends-1",
+   "dxf": "A-23",
+   "step_mm": [
+    50.0,
+    19.0
+   ],
+   "dxf_mm": [
+    51.7,
+    19.0
+   ],
+   "dif_mm": 1.7
+  },
+  {
+   "step": "Part 20-2",
+   "dxf": "B-02",
+   "step_mm": [
+    33.0,
+    24.0
+   ],
+   "dxf_mm": [
+    31.25,
+    23.72
+   ],
+   "dif_mm": 1.75
+  },
+  {
+   "step": "Part 14-1",
+   "dxf": "A-05",
+   "step_mm": [
+    54.25,
+    25.21
+   ],
+   "dxf_mm": [
+    54.2,
+    27.03
+   ],
+   "dif_mm": 1.82
+  },
+  {
+   "step": "Part 25 - Left Hand Central lever-1",
+   "dxf": "A-06",
+   "step_mm": [
+    91.91,
+    12.0
+   ],
+   "dxf_mm": [
+    89.97,
+    12.0
+   ],
+   "dif_mm": 1.94
+  },
+  {
+   "step": "Part 19 - Collar-1",
+   "dxf": "A-26",
+   "step_mm": [
+    39.0,
+    25.0
+   ],
+   "dxf_mm": [
+    36.6,
+    24.98
+   ],
+   "dif_mm": 2.4
+  },
+  {
+   "step": "Part 16-2",
+   "dxf": "A-13",
+   "step_mm": [
+    22.92,
+    5.97
+   ],
+   "dxf_mm": [
+    24.02,
+    8.4
+   ],
+   "dif_mm": 2.43
+  },
+  {
+   "step": "Part 02-2",
+   "dxf": "A-08",
+   "step_mm": [
+    44.65,
+    21.0
+   ],
+   "dxf_mm": [
+    47.34,
+    21.56
+   ],
+   "dif_mm": 2.69
+  },
+  {
+   "step": "Part 21-2",
+   "dxf": "A-21",
+   "step_mm": [
+    42.5,
+    24.0
+   ],
+   "dxf_mm": [
+    39.64,
+    25.8
+   ],
+   "dif_mm": 2.86
+  },
+  {
+   "step": "Part 01-2",
+   "dxf": "A-09",
+   "step_mm": [
+    44.48,
+    20.37
+   ],
+   "dxf_mm": [
+    47.5,
+    20.62
+   ],
+   "dif_mm": 3.02
+  },
+  {
+   "step": "Part 08 - Long Servo Mounting Arm-1",
+   "dxf": "B-03",
+   "step_mm": [
+    44.93,
+    12.0
+   ],
+   "dxf_mm": [
+    46.77,
+    15.76
+   ],
+   "dif_mm": 3.76
+  },
+  {
+   "step": "Part 24 - Central lever RHS-1",
+   "dxf": "B-08",
+   "step_mm": [
+    91.91,
+    12.0
+   ],
+   "dxf_mm": [
+    93.89,
+    15.76
+   ],
+   "dif_mm": 3.76
+  },
+  {
+   "step": "Part 17 - Base-1",
+   "dxf": "B-04",
+   "step_mm": [
+    145.0,
+    95.0
+   ],
+   "dxf_mm": [
+    145.0,
+    90.7
+   ],
+   "dif_mm": 4.3
+  },
+  {
+   "step": "Part 15-2",
+   "dxf": "A-07",
+   "step_mm": [
+    24.0,
+    8.4
+   ],
+   "dxf_mm": [
+    26.08,
+    15.02
+   ],
+   "dif_mm": 6.62
+  },
+  {
+   "step": "Part 04-5",
+   "dxf": "A-03",
+   "step_mm": [
+    10.0,
+    9.93
+   ],
+   "dxf_mm": [
+    5.38,
+    3.1
+   ],
+   "dif_mm": 6.83
+  },
+  {
+   "step": "Part 04-7",
+   "dxf": "A-17",
+   "step_mm": [
+    10.0,
+    9.93
+   ],
+   "dxf_mm": [
+    8.0,
+    3.0
+   ],
+   "dif_mm": 6.93
+  },
+  {
+   "step": "Part 04-6",
+   "dxf": "A-12",
+   "step_mm": [
+    10.0,
+    9.93
+   ],
+   "dxf_mm": [
+    8.0,
+    3.0
+   ],
+   "dif_mm": 6.93
+  },
+  {
+   "step": "Part 04-4",
+   "dxf": "A-02",
+   "step_mm": [
+    10.0,
+    9.93
+   ],
+   "dxf_mm": [
+    2.94,
+    2.94
+   ],
+   "dif_mm": 7.06
+  },
+  {
+   "step": "Part 04-1",
+   "dxf": "A-04",
+   "step_mm": [
+    10.0,
+    9.93
+   ],
+   "dxf_mm": [
+    2.94,
+    2.94
+   ],
+   "dif_mm": 7.06
+  },
+  {
+   "step": "Part 03 - Right Hand Side-1",
+   "dxf": "A-15",
+   "step_mm": [
+    60.0,
+    53.9
+   ],
+   "dxf_mm": [
+    51.7,
+    50.96
+   ],
+   "dif_mm": 8.3
+  },
+  {
+   "step": "Part 11 - Central Section Of Central Lever-1",
+   "dxf": "A-19",
+   "step_mm": [
+    60.0,
+    24.0
+   ],
+   "dxf_mm": [
+    50.7,
+    25.04
+   ],
+   "dif_mm": 9.3
+  },
+  {
+   "step": "Part 18 - Square Servo Mount-1",
+   "dxf": "B-09",
+   "step_mm": [
+    68.19,
+    68.19
+   ],
+   "dxf_mm": [
+    60.0,
+    52.68
+   ],
+   "dif_mm": 15.51
+  },
+  {
+   "step": "Part 13 - Cradle Base-1",
+   "dxf": "A-25",
+   "step_mm": [
+    50.0,
+    45.0
+   ],
+   "dxf_mm": [
+    39.64,
+    25.8
+   ],
+   "dif_mm": 19.2
+  },
+  {
+   "step": "Part 06-1",
+   "dxf": "A-10",
+   "step_mm": [
+    122.95,
+    12.01
+   ],
+   "dxf_mm": [
+    103.38,
+    15.64
+   ],
+   "dif_mm": 19.57
+  },
+  {
+   "step": "Part 07-1",
+   "dxf": "A-20",
+   "step_mm": [
+    89.94,
+    11.99
+   ],
+   "dxf_mm": [
+    56.81,
+    11.98
+   ],
+   "dif_mm": 33.13
+  }
+ ]
+}

@@ -29,7 +29,7 @@ RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DXF = os.path.join(RAIZ, "_entrada_brazos/laser/dxf")
 DEST = os.path.join(RAIZ, "assets/brazos/laser/corte")
 HOJAS = {"A": "Mearm_1_0_150x200_A.dxf", "B": "Mearm_1_0_150x200_B.dxf"}
-AREA_MIN = 60.0     # mm2; por debajo se marca "por confirmar", no se numera
+AREA_PEQUENA = 60.0  # mm2; solo marca la pieza como pequeña en el JSON, no la excluye
 APLANADO, PRECISION = 0.05, 0.02
 
 
@@ -70,7 +70,7 @@ def ordenar(polys):
     return sorted(polys, key=clave)
 
 
-def dibujar(destino, titulo, piezas, dudosas, mn, mx):
+def dibujar(destino, titulo, piezas, mn, mx):
     fig, ax = plt.subplots(figsize=(8.5, 11), dpi=150)
     for num, p in piezas:
         ax.fill(*p.exterior.xy, color="#c9b089", ec="#333", lw=0.6, zorder=1)
@@ -80,8 +80,6 @@ def dibujar(destino, titulo, piezas, dudosas, mn, mx):
         ax.text(c.x, c.y, num, fontsize=7, fontweight="bold",
                 ha="center", va="center", zorder=4,
                 bbox=dict(boxstyle="round,pad=0.15", fc="white", ec="none", alpha=0.75))
-    for p in dudosas:
-        ax.fill(*p.exterior.xy, color="#ff5555", ec="#900", lw=0.6, zorder=3)
     ax.set_aspect("equal"); ax.set_title(titulo, fontsize=10)
     ax.set_xlim(mn[0]-6, mx[0]+6); ax.set_ylim(mn[1]-6, mx[1]+6)
     ax.set_xlabel("mm"); ax.tick_params(labelsize=7)
@@ -93,13 +91,9 @@ def main():
     salida = {}
     for tag, archivo in HOJAS.items():
         polys, descartadas, (mn, mx) = extraer(os.path.join(DXF, archivo))
-        grandes = ordenar([p for p in polys if p.area >= AREA_MIN])
-        dudosas = [p for p in polys if p.area < AREA_MIN]
-        numeradas = [(f"{tag}-{i:02d}", p) for i, p in enumerate(grandes, 1)]
+        numeradas = [(f"{tag}-{i:02d}", p) for i, p in enumerate(ordenar(polys), 1)]
         dibujar(os.path.join(DEST, f"hoja-{tag.lower()}.png"),
-                f"Hoja {tag} — {len(numeradas)} piezas numeradas"
-                + (f" + {len(dudosas)} figuras sueltas por confirmar (rojo)" if dudosas else ""),
-                numeradas, dudosas, mn, mx)
+                f"Hoja {tag} — {len(numeradas)} piezas", numeradas, mn, mx)
         salida[tag] = {
             "hoja_mm": [round(float(mx[0]-mn[0]), 2), round(float(mx[1]-mn[1]), 2)],
             "origen_mm": [round(float(mn[0]), 2), round(float(mn[1]), 2)],
@@ -108,20 +102,16 @@ def main():
                         "ancho_mm": round(p.bounds[2]-p.bounds[0], 2),
                         "alto_mm": round(p.bounds[3]-p.bounds[1], 2),
                         "agujeros": len(p.interiors),
+                        "pequena": bool(p.area < AREA_PEQUENA),
                         "wkt": p.wkt} for n, p in numeradas],
-            "por_confirmar": [{"area_mm2": round(p.area, 2),
-                               "ancho_mm": round(p.bounds[2]-p.bounds[0], 2),
-                               "alto_mm": round(p.bounds[3]-p.bounds[1], 2),
-                               "centro_mm": [round(p.centroid.x, 1), round(p.centroid.y, 1)],
-                               "wkt": p.wkt} for p in dudosas],
         }
-        print(f"Hoja {tag}: {len(numeradas)} piezas, {len(dudosas)} por confirmar, "
+        peq = sum(1 for n, p in numeradas if p.area < AREA_PEQUENA)
+        print(f"Hoja {tag}: {len(numeradas)} piezas ({peq} de menos de {AREA_PEQUENA:.0f} mm2), "
               f"{len(descartadas)} entidades descartadas {descartadas}")
     with open(os.path.join(DEST, "piezas.json"), "w", encoding="utf-8") as f:
         json.dump(salida, f, ensure_ascii=False, indent=1)
     tot = sum(len(v["piezas"]) for v in salida.values())
-    dud = sum(len(v["por_confirmar"]) for v in salida.values())
-    print(f"\nTOTAL: {tot} piezas numeradas + {dud} figuras por confirmar")
+    print(f"\nTOTAL: {tot} piezas")
 
 
 if __name__ == "__main__":

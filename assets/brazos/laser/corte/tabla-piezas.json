@@ -1,0 +1,362 @@
+[
+ {
+  "id": "A-01",
+  "hoja": "A",
+  "ancho_mm": 2.64,
+  "alto_mm": 2.66,
+  "area_mm2": 5.39,
+  "agujeros": 0,
+  "volumen_cm3": 0.016,
+  "triangulos": 60
+ },
+ {
+  "id": "A-02",
+  "hoja": "A",
+  "ancho_mm": 3.0,
+  "alto_mm": 3.0,
+  "area_mm2": 6.87,
+  "agujeros": 0,
+  "volumen_cm3": 0.021,
+  "triangulos": 60
+ },
+ {
+  "id": "A-03",
+  "hoja": "A",
+  "ancho_mm": 5.4,
+  "alto_mm": 3.14,
+  "area_mm2": 16.68,
+  "agujeros": 0,
+  "volumen_cm3": 0.05,
+  "triangulos": 12
+ },
+ {
+  "id": "A-04",
+  "hoja": "A",
+  "ancho_mm": 3.0,
+  "alto_mm": 3.0,
+  "area_mm2": 6.87,
+  "agujeros": 0,
+  "volumen_cm3": 0.021,
+  "triangulos": 60
+ },
+ {
+  "id": "A-05",
+  "hoja": "A",
+  "ancho_mm": 49.8,
+  "alto_mm": 29.76,
+  "area_mm2": 640.02,
+  "agujeros": 3,
+  "volumen_cm3": 1.92,
+  "triangulos": 536
+ },
+ {
+  "id": "A-06",
+  "hoja": "A",
+  "ancho_mm": 90.0,
+  "alto_mm": 12.0,
+  "area_mm2": 760.04,
+  "agujeros": 3,
+  "volumen_cm3": 2.28,
+  "triangulos": 352
+ },
+ {
+  "id": "A-07",
+  "hoja": "A",
+  "ancho_mm": 26.08,
+  "alto_mm": 15.02,
+  "area_mm2": 301.75,
+  "agujeros": 2,
+  "volumen_cm3": 0.905,
+  "triangulos": 3068
+ },
+ {
+  "id": "A-08",
+  "hoja": "A",
+  "ancho_mm": 47.84,
+  "alto_mm": 21.58,
+  "area_mm2": 461.88,
+  "agujeros": 1,
+  "volumen_cm3": 1.386,
+  "triangulos": 8464
+ },
+ {
+  "id": "A-09",
+  "hoja": "A",
+  "ancho_mm": 47.4,
+  "alto_mm": 20.72,
+  "area_mm2": 452.76,
+  "agujeros": 2,
+  "volumen_cm3": 1.358,
+  "triangulos": 7236
+ },
+ {
+  "id": "A-10",
+  "hoja": "A",
+  "ancho_mm": 103.38,
+  "alto_mm": 15.64,
+  "area_mm2": 1083.6,
+  "agujeros": 7,
+  "volumen_cm3": 3.251,
+  "triangulos": 716
+ },
+ {
+  "id": "A-11",
+  "hoja": "A",
+  "ancho_mm": 35.26,
+  "alto_mm": 9.54,
+  "area_mm2": 259.85,
+  "agujeros": 1,
+  "volumen_cm3": 0.78,
+  "triangulos": 168
+ },
+ {
+  "id": "A-12",
+  "hoja": "A",
+  "ancho_mm": 8.0,
+  "alto_mm": 3.0,
+  "area_mm2": 24.0,
+  "agujeros": 0,
+  "volumen_cm3": 0.072,
+  "triangulos": 12
+ },
+ {
+  "id": "A-13",
+  "hoja": "A",
+  "ancho_mm": 8.42,
+  "alto_mm": 24.02,
+  "area_mm2": 124.23,
+  "agujeros": 1,
+  "volumen_cm3": 0.373,
+  "triangulos": 112
+ },
+ {
+  "id": "A-14",
+  "hoja": "A",
+  "ancho_mm": 25.68,
+  "alto_mm": 25.44,
+  "area_mm2": 256.56,
+  "agujeros": 2,
+  "volumen_cm3": 0.77,
+  "triangulos": 360
+ },
+ {
+  "id": "A-15",
+  "hoja": "A",
+  "ancho_mm": 50.96,
+  "alto_mm": 51.7,
+  "area_mm2": 2214.71,
+  "agujeros": 4,
+  "volumen_cm3": 6.644,
+  "triangulos": 440
+ },
+ {
+  "id": "A-16",
+  "hoja": "A",
+  "ancho_mm": 54.2,
+  "alto_mm": 34.6,
+  "area_mm2": 1018.38,
+  "agujeros": 1,
+  "volumen_cm3": 3.055,
+  "triangulos": 1544
+ },
+ {
+  "id": "A-17",
+  "hoja": "A",
+  "ancho_mm": 8.0,
+  "alto_mm": 3.0,
+  "area_mm2": 24.0,
+  "agujeros": 0,
+  "volumen_cm3": 0.072,
+  "triangulos": 12
+ },
+ {
+  "id": "A-18",
+  "hoja": "A",
+  "ancho_mm": 31.4,
+  "alto_mm": 24.8,
+  "area_mm2": 455.7,
+  "agujeros": 3,
+  "volumen_cm3": 1.367,
+  "triangulos": 312
+ },
+ {
+  "id": "A-19",
+  "hoja": "A",
+  "ancho_mm": 50.7,
+  "alto_mm": 25.04,
+  "area_mm2": 793.86,
+  "agujeros": 7,
+  "volumen_cm3": 2.382,
+  "triangulos": 624
+ },
+ {
+  "id": "A-20",
+  "hoja": "A",
+  "ancho_mm": 12.0,
+  "alto_mm": 56.9,
+  "area_mm2": 399.73,
+  "agujeros": 4,
+  "volumen_cm3": 1.199,
+  "triangulos": 604
+ },
+ {
+  "id": "A-21",
+  "hoja": "A",
+  "ancho_mm": 39.64,
+  "alto_mm": 25.8,
+  "area_mm2": 675.7,
+  "agujeros": 4,
+  "volumen_cm3": 2.027,
+  "triangulos": 332
+ },
+ {
+  "id": "A-22",
+  "hoja": "A",
+  "ancho_mm": 35.04,
+  "alto_mm": 29.74,
+  "area_mm2": 537.15,
+  "agujeros": 4,
+  "volumen_cm3": 1.611,
+  "triangulos": 10688
+ },
+ {
+  "id": "A-23",
+  "hoja": "A",
+  "ancho_mm": 19.0,
+  "alto_mm": 51.7,
+  "area_mm2": 738.28,
+  "agujeros": 1,
+  "volumen_cm3": 2.215,
+  "triangulos": 336
+ },
+ {
+  "id": "A-24",
+  "hoja": "A",
+  "ancho_mm": 19.0,
+  "alto_mm": 51.7,
+  "area_mm2": 809.81,
+  "agujeros": 3,
+  "volumen_cm3": 2.429,
+  "triangulos": 200
+ },
+ {
+  "id": "A-25",
+  "hoja": "A",
+  "ancho_mm": 39.64,
+  "alto_mm": 25.8,
+  "area_mm2": 675.66,
+  "agujeros": 4,
+  "volumen_cm3": 2.027,
+  "triangulos": 332
+ },
+ {
+  "id": "A-26",
+  "hoja": "A",
+  "ancho_mm": 36.6,
+  "alto_mm": 24.98,
+  "area_mm2": 442.87,
+  "agujeros": 5,
+  "volumen_cm3": 1.329,
+  "triangulos": 3456
+ },
+ {
+  "id": "B-01",
+  "hoja": "B",
+  "ancho_mm": 26.08,
+  "alto_mm": 25.14,
+  "area_mm2": 238.6,
+  "agujeros": 2,
+  "volumen_cm3": 0.716,
+  "triangulos": 7948
+ },
+ {
+  "id": "B-02",
+  "hoja": "B",
+  "ancho_mm": 32.76,
+  "alto_mm": 25.14,
+  "area_mm2": 389.52,
+  "agujeros": 4,
+  "volumen_cm3": 1.169,
+  "triangulos": 8324
+ },
+ {
+  "id": "B-03",
+  "hoja": "B",
+  "ancho_mm": 47.0,
+  "alto_mm": 15.8,
+  "area_mm2": 419.58,
+  "agujeros": 3,
+  "volumen_cm3": 1.259,
+  "triangulos": 408
+ },
+ {
+  "id": "B-04",
+  "hoja": "B",
+  "ancho_mm": 90.7,
+  "alto_mm": 145.0,
+  "area_mm2": 9664.25,
+  "agujeros": 9,
+  "volumen_cm3": 28.993,
+  "triangulos": 856
+ },
+ {
+  "id": "B-05",
+  "hoja": "B",
+  "ancho_mm": 8.0,
+  "alto_mm": 88.0,
+  "area_mm2": 676.07,
+  "agujeros": 2,
+  "volumen_cm3": 2.028,
+  "triangulos": 252
+ },
+ {
+  "id": "B-06",
+  "hoja": "B",
+  "ancho_mm": 8.0,
+  "alto_mm": 88.0,
+  "area_mm2": 676.26,
+  "agujeros": 2,
+  "volumen_cm3": 2.029,
+  "triangulos": 268
+ },
+ {
+  "id": "B-07",
+  "hoja": "B",
+  "ancho_mm": 8.0,
+  "alto_mm": 88.0,
+  "area_mm2": 676.06,
+  "agujeros": 2,
+  "volumen_cm3": 2.028,
+  "triangulos": 252
+ },
+ {
+  "id": "B-08",
+  "hoja": "B",
+  "ancho_mm": 15.76,
+  "alto_mm": 93.9,
+  "area_mm2": 1069.17,
+  "agujeros": 5,
+  "volumen_cm3": 3.208,
+  "triangulos": 472
+ },
+ {
+  "id": "B-09",
+  "hoja": "B",
+  "ancho_mm": 60.0,
+  "alto_mm": 52.68,
+  "area_mm2": 2430.05,
+  "agujeros": 14,
+  "volumen_cm3": 7.29,
+  "triangulos": 636
+ },
+ {
+  "id": "B-10",
+  "hoja": "B",
+  "ancho_mm": 60.0,
+  "alto_mm": 43.8,
+  "area_mm2": 2163.18,
+  "agujeros": 12,
+  "volumen_cm3": 6.49,
+  "triangulos": 568
+ }
+]
