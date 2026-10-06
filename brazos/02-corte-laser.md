@@ -166,10 +166,11 @@ Ejemplos: la base mide 95 × 145 mm en el STEP y 90.7 × 145 mm en el DXF; `Part
 
 **[Pendiente]**
 
-<!-- PENDIENTE: generar desde el STEP tres renders (isométrico, lateral y superior) a
-     1600 x 1200 con fondo claro, MDF en #B08A5A y servos en azul. Descartar los cuerpos
-     de volumen cero: Part 17 - Base aparece duplicada, con un cuerpo de 33.4 cm3 y otro
-     de volumen 0. Guardar en assets/brazos/laser/render/. -->
+<!-- Generado por tools/f2_renders_mearm.py. Nota: NO hay que descartar cuerpos de
+     volumen cero. cascadio parte algunas piezas en varios cuerpos según la orientación
+     de sus caras: la base sale como 'Part 17 - Base' (solo tapas, 22 274 mm2) y
+     'Part 17 - Base_1' (solo cantos, 2 202 mm2). Ninguno es duplicado; descartar el de
+     volumen cero deja la placa sin caras. -->
 
 ---
 

@@ -1,0 +1,80 @@
+{
+  "note": "Generado por tools/f2_ensamble_mearm.py desde el STEP de Inventor. Coordenadas reales del ensamble CAD, en mm.",
+  "parts": [
+    {
+      "name": "Estructura de MDF (31 placas)",
+      "file": "ensamble-mdf.stl",
+      "color": "#B08A5A",
+      "position": [
+        47.033,
+        28.041,
+        -11.625
+      ],
+      "explode": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Servo SG90 (1)",
+      "file": "servo-1.stl",
+      "color": "#2563EB",
+      "position": [
+        18.304,
+        28.092,
+        -11.685
+      ],
+      "explode": [
+        -28.88,
+        0.05,
+        -63.76
+      ]
+    },
+    {
+      "name": "Servo SG90 (2)",
+      "file": "servo-2.stl",
+      "color": "#2563EB",
+      "position": [
+        21.731,
+        56.766,
+        38.765
+      ],
+      "explode": [
+        -40.23,
+        45.67,
+        -34.59
+      ]
+    },
+    {
+      "name": "Servo SG90 (3)",
+      "file": "servo-3.stl",
+      "color": "#2563EB",
+      "position": [
+        23.082,
+        -0.447,
+        38.766
+      ],
+      "explode": [
+        -38.89,
+        -46.26,
+        -35.32
+      ]
+    },
+    {
+      "name": "Servo SG90 (4)",
+      "file": "servo-4.stl",
+      "color": "#2563EB",
+      "position": [
+        124.425,
+        26.308,
+        93.576
+      ],
+      "explode": [
+        61.5,
+        -1.38,
+        33.4
+      ]
+    }
+  ]
+}
