@@ -17,7 +17,7 @@ Brazo de **3 GDL más pinza**, fabricado por **impresión 3D (FDM) en PLA**. Par
 |:--|:---|:---|
 | R1 | Planos de las piezas | ✅ 9 planos A4 + resumen |
 | R2 | Render de cada pieza | ✅ 9 renders |
-| R3 | Ensamble en CAD | ⚠️ Captura de Inventor sí; el STEP exportado viene sin geometría |
+| R3 | Ensamble en CAD | ⚠️ Captura de Inventor y posiciones reales; el STEP exportado viene sin geometría |
 | R4 | Render del ensamble | ✅ 3 vistas |
 | R5 | Visor 3D en la página | ✅ |
 | R6 | Proceso de fabricación | ✅ Parámetros de impresión; faltan fotos y video |
@@ -36,7 +36,7 @@ Brazo de **3 GDL más pinza**, fabricado por **impresión 3D (FDM) en PLA**. Par
 | Volumen de PLA | **54.43 cm³**, masa máxima **67.5 g** sin servos ni tornillería |
 | Actuadores | **4 servos SG90** |
 | Control | **Arduino Uno** por USB |
-| Envolvente del ensamble CAD | 174.0 × 48.1 × 117.5 mm en la pose exportada |
+| Envolvente del ensamble CAD | 174.0 × 58.1 × 117.5 mm en la pose exportada |
 | Medidas del brazo armado | **[Pendiente]** <!-- PENDIENTE: medir el brazo físico. --> |
 | Foto del brazo armado | **[Pendiente]** <!-- PENDIENTE: foto en assets/img/brazos/impreso3d/ --> |
 
@@ -169,22 +169,25 @@ El ensamble se armó en **Autodesk Inventor 2026** (`Assembly_PLA.iam`).
 | Dato del ensamble | Valor |
 |:------------------|:------|
 | Piezas impresas | 9 |
-| Servos | 4 × SG90 |
-| Envolvente | 174.0 × 48.1 × 117.5 mm |
+| Servos | 4 × SG90, colocados |
+| Elementos en el visor | 13 |
+| Envolvente | 174.0 × 58.1 × 117.5 mm |
 
 > **De dónde salen estas posiciones.** El STEP que exportó Inventor para este ensamble **viene sin geometría**: trae la estructura, las posiciones y los colores, pero cero sólidos. Aun así sirve, porque sus **transformaciones de ensamble sí están completas**, y son las que se aplican a los STL. Lo genera `tools/f2_ensamble_impreso.py`.
 >
-> **Corrección de escala en las mordazas.** Sus dos STL se exportaron **2.54 veces más grandes** que el resto (un dedo de 178 mm en un brazo con eslabones de 80 y 90 mm), así que se reescalan por 1/2.54. Dos comprobaciones de que la escala es la correcta: quedan en 70 × 25 × 6 mm, igual que las mordazas del archivo `pinzas.stl` original, y caen **simétricas** respecto al soporte, a 42.7 y 40.7 mm de su centro.
+> **Corrección de escala.** Las dos mordazas y el servo se exportaron aparte, y los tres salieron **2.54 veces más grandes** que el resto, así que se reescalan por 1/2.54. Cada corrección se comprobó contra un dato independiente:
+>
+> - **Mordazas:** a escala 1 un dedo medía 178 mm en un brazo con eslabones de 80 y 90 mm. Corregidas quedan en 70 × 25 × 6 mm, igual que las mordazas que traía fundidas el archivo `pinzas.stl`, y caen **simétricas** respecto al soporte, a 42.7 y 40.7 mm de su centro.
+> - **Servo:** corregido queda en **12.0 × 31.5 × 32.6 mm**, que son las medidas de un SG90, y coincide con el modelo de SG90 del brazo de corte láser. El mismo archivo se instancia cuatro veces, una por cada posición del STEP.
 
 - **Descarga del STEP: [Pendiente]** <!-- PENDIENTE: el STEP exportado no trae sólidos, así que no se publica. Reexportarlo cuando se resuelva. -->
-- **Los servos no aparecen en el ensamble: [Pendiente]** <!-- PENDIENTE: falta el STL de SERVO_SG90_mm exportado desde Inventor. Las 4 posiciones de servo sí están en el STEP; se probó sustituirlo por el modelo de SG90 del brazo de corte láser y no asienta, porque ese modelo tiene otro origen local. -->
 
 ---
 
 ## 6) Renderizado del ensamble (R4)
 
 [![Render isométrico del ensamble]({{ '/assets/brazos/impreso3d/render/ensamble-iso.png' | relative_url }})]({{ '/assets/brazos/impreso3d/render/ensamble-iso.png' | relative_url }})
-**Figura 2:** Vista isométrica de las 9 piezas en sus posiciones reales del CAD.
+**Figura 2:** Vista isométrica. Las 9 piezas impresas más los 4 servos SG90, en sus posiciones reales del CAD.
 
 [![Render lateral del ensamble]({{ '/assets/brazos/impreso3d/render/ensamble-lateral.png' | relative_url }})]({{ '/assets/brazos/impreso3d/render/ensamble-lateral.png' | relative_url }})
 **Figura 3:** Vista lateral.
@@ -198,7 +201,7 @@ El ensamble se armó en **Autodesk Inventor 2026** (`Assembly_PLA.iam`).
 
 <div class="stl-viewer stl-viewer--tall" data-assembly="{{ '/assets/stl/brazo-impreso/ensamble/ensamble-cad.json' | relative_url }}" data-base="{{ '/assets/stl/brazo-impreso/ensamble/' | relative_url }}"></div>
 
-**Figura 5:** Ensamble interactivo, en coordenadas reales del CAD. Usa **Separar piezas** para la vista explosionada.
+**Figura 5:** Ensamble interactivo: las **9 piezas impresas** y los **4 servos SG90**, en coordenadas reales del CAD. Usa **Separar piezas** para la vista explosionada.
 
 ---
 

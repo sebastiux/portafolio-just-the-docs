@@ -1,5 +1,5 @@
 {
- "note": "Posiciones reales del ensamble CAD, extraídas de las transformaciones del STEP de Inventor. Las dos mordazas se reescalaron por 1/2.54: su exportación salía 2.54 veces más grande que el resto.",
+ "note": "Posiciones reales del ensamble CAD, extraídas de las transformaciones del STEP de Inventor. Las dos mordazas y el servo se reescalaron por 1/2.54: esas exportaciones salían 2.54 veces más grandes que el resto.",
  "parts": [
   {
    "name": "Base (alojamiento servo)",
@@ -11,9 +11,9 @@
     72.321
    ],
    "explode": [
-    44.52,
-    -1.08,
-    -32.28
+    44.38,
+    -4.51,
+    -32.18
    ]
   },
   {
@@ -26,9 +26,9 @@
     96.821
    ],
    "explode": [
-    52.65,
-    -0.87,
-    -15.87
+    52.45,
+    -4.91,
+    -15.81
    ]
   },
   {
@@ -41,9 +41,9 @@
     113.825
    ],
    "explode": [
-    48.58,
-    17.62,
-    18.83
+    49.74,
+    13.4,
+    19.28
    ]
   },
   {
@@ -56,9 +56,9 @@
     155.162
    ],
    "explode": [
-    15.2,
-    0.73,
-    52.85
+    15.07,
+    -7.21,
+    52.4
    ]
   },
   {
@@ -71,9 +71,9 @@
     148.901
    ],
    "explode": [
-    -25.71,
-    -0.84,
-    48.61
+    -25.1,
+    -11.93,
+    47.46
    ]
   },
   {
@@ -86,9 +86,9 @@
     139.656
    ],
    "explode": [
-    -41.31,
-    0.4,
-    36.31
+    -39.84,
+    -14.55,
+    35.02
    ]
   },
   {
@@ -101,9 +101,9 @@
     140.125
    ],
    "explode": [
-    -46.9,
-    -16.97,
-    23.17
+    -44.24,
+    -24.29,
+    21.86
    ]
   },
   {
@@ -116,9 +116,9 @@
     141.882
    ],
    "explode": [
-    -51.82,
-    11.1,
-    14.73
+    -52.57,
+    6.2,
+    14.94
    ]
   },
   {
@@ -131,9 +131,69 @@
     141.955
    ],
    "explode": [
-    -52.18,
-    -8.44,
-    15.2
+    -51.23,
+    -13.33,
+    14.93
+   ]
+  },
+  {
+   "name": "Servo SG90",
+   "file": "servo-1.stl",
+   "color": "#1D4ED8",
+   "position": [
+    311.211,
+    324.129,
+    74.321
+   ],
+   "explode": [
+    45.94,
+    -8.2,
+    -29.1
+   ]
+  },
+  {
+   "name": "Servo SG90",
+   "file": "servo-2.stl",
+   "color": "#1D4ED8",
+   "position": [
+    291.783,
+    348.808,
+    154.799
+   ],
+   "explode": [
+    39.93,
+    11.56,
+    36.02
+   ]
+  },
+  {
+   "name": "Servo SG90",
+   "file": "servo-3.stl",
+   "color": "#1D4ED8",
+   "position": [
+    310.89,
+    335.206,
+    113.821
+   ],
+   "explode": [
+    54.18,
+    -0.4,
+    -9.47
+   ]
+  },
+  {
+   "name": "Servo SG90",
+   "file": "servo-4.stl",
+   "color": "#1D4ED8",
+   "position": [
+    237.768,
+    331.0,
+    142.075
+   ],
+   "explode": [
+    -16.45,
+    -8.85,
+    51.73
    ]
   }
  ]
