@@ -186,20 +186,20 @@ El ensamble se armó en **Autodesk Inventor 2026** (`Assembly_PLA.iam`).
 
 ## 6) Renderizado del ensamble (R4)
 
-[![Render isométrico del ensamble]({{ '/assets/brazos/impreso3d/render/ensamble-iso.png' | relative_url }})]({{ '/assets/brazos/impreso3d/render/ensamble-iso.png' | relative_url }})
+[![Render isométrico del ensamble]({{ '/assets/brazos/impreso3d/render/ensamble-iso.png' | relative_url }}?v=2)]({{ '/assets/brazos/impreso3d/render/ensamble-iso.png' | relative_url }}?v=2)
 **Figura 2:** Vista isométrica. Las 9 piezas impresas más los 4 servos SG90, en sus posiciones reales del CAD.
 
-[![Render lateral del ensamble]({{ '/assets/brazos/impreso3d/render/ensamble-lateral.png' | relative_url }})]({{ '/assets/brazos/impreso3d/render/ensamble-lateral.png' | relative_url }})
+[![Render lateral del ensamble]({{ '/assets/brazos/impreso3d/render/ensamble-lateral.png' | relative_url }}?v=2)]({{ '/assets/brazos/impreso3d/render/ensamble-lateral.png' | relative_url }}?v=2)
 **Figura 3:** Vista lateral.
 
-[![Render superior del ensamble]({{ '/assets/brazos/impreso3d/render/ensamble-superior.png' | relative_url }})]({{ '/assets/brazos/impreso3d/render/ensamble-superior.png' | relative_url }})
+[![Render superior del ensamble]({{ '/assets/brazos/impreso3d/render/ensamble-superior.png' | relative_url }}?v=2)]({{ '/assets/brazos/impreso3d/render/ensamble-superior.png' | relative_url }}?v=2)
 **Figura 4:** Vista superior.
 
 ---
 
 ## 7) Visor 3D (R5)
 
-<div class="stl-viewer stl-viewer--tall" data-assembly="{{ '/assets/stl/brazo-impreso/ensamble/ensamble-cad.json' | relative_url }}" data-base="{{ '/assets/stl/brazo-impreso/ensamble/' | relative_url }}"></div>
+<div class="stl-viewer stl-viewer--tall" data-assembly="{{ '/assets/stl/brazo-impreso/ensamble/ensamble-cad.json' | relative_url }}?v=2" data-base="{{ '/assets/stl/brazo-impreso/ensamble/' | relative_url }}"></div>
 
 **Figura 5:** Ensamble interactivo: las **9 piezas impresas** y los **4 servos SG90**, en coordenadas reales del CAD. Usa **Separar piezas** para la vista explosionada.
 

@@ -194,20 +194,20 @@ El caso más claro y verificable con un calibrador es **la base**: mide **145.00
 
 ## 6) Renderizado del ensamble (R4)
 
-[![Render isométrico del ensamble]({{ '/assets/brazos/laser/render/ensamble-iso.png' | relative_url }})]({{ '/assets/brazos/laser/render/ensamble-iso.png' | relative_url }})
+[![Render isométrico del ensamble]({{ '/assets/brazos/laser/render/ensamble-iso.png' | relative_url }}?v=2)]({{ '/assets/brazos/laser/render/ensamble-iso.png' | relative_url }}?v=2)
 **Figura 4:** Vista isométrica. MDF en color madera, servos SG90 en azul.
 
-[![Render lateral del ensamble]({{ '/assets/brazos/laser/render/ensamble-lateral.png' | relative_url }})]({{ '/assets/brazos/laser/render/ensamble-lateral.png' | relative_url }})
+[![Render lateral del ensamble]({{ '/assets/brazos/laser/render/ensamble-lateral.png' | relative_url }}?v=2)]({{ '/assets/brazos/laser/render/ensamble-lateral.png' | relative_url }}?v=2)
 **Figura 5:** Vista lateral. Se aprecian los eslabones en paralelogramo del hombro y el codo.
 
-[![Render superior del ensamble]({{ '/assets/brazos/laser/render/ensamble-superior.png' | relative_url }})]({{ '/assets/brazos/laser/render/ensamble-superior.png' | relative_url }})
+[![Render superior del ensamble]({{ '/assets/brazos/laser/render/ensamble-superior.png' | relative_url }}?v=2)]({{ '/assets/brazos/laser/render/ensamble-superior.png' | relative_url }}?v=2)
 **Figura 6:** Vista superior, con la pinza y su sector dentado.
 
 ---
 
 ## 7) Visor 3D (R5)
 
-<div class="stl-viewer stl-viewer--tall" data-assembly="{{ '/assets/stl/brazo-laser/ensamble.json' | relative_url }}" data-base="{{ '/assets/stl/brazo-laser/' | relative_url }}"></div>
+<div class="stl-viewer stl-viewer--tall" data-assembly="{{ '/assets/stl/brazo-laser/ensamble.json' | relative_url }}?v=2" data-base="{{ '/assets/stl/brazo-laser/' | relative_url }}"></div>
 
 **Figura 7:** Ensamble interactivo. Usa **Separar piezas** para apartar los servos de la estructura.
 
