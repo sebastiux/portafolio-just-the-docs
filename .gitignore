@@ -4,3 +4,7 @@ _site/
 .jekyll-metadata
 .bundle/
 vendor/
+
+# artefactos de Python
+__pycache__/
+*.pyc
