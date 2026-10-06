@@ -17,7 +17,7 @@ Contenido:
 - [2. Brazo impreso en 3D]({{ '/brazos/impresion-3d/' | relative_url }})
 - [3. Brazo cortado con láser]({{ '/brazos/corte-laser/' | relative_url }})
 
-> Estado: **en elaboración**. El brazo impreso en 3D ya tiene piezas y parámetros documentados. El brazo de corte láser tiene la estructura de su página y los datos de diseño verificados, pero le faltan los archivos de fabricación, la electrónica y la evidencia física.
+> Estado: **en elaboración**. El brazo de corte láser tiene documentados su diseño, sus 36 piezas y su ensamble 3D; le faltan los parámetros de corte y la evidencia física (fotos, video y pruebas). El brazo impreso en 3D tiene sus parámetros de impresión y sus piezas, y espera el STEP de su ensamble.
 
 ---
 
@@ -35,7 +35,7 @@ El objetivo es documentar cada proceso de principio a fin (modelo, parámetros d
 | Brazo | Proceso | Diseño base | Control | Estado |
 |:------|:--------|:------------|:--------|:-------|
 | [Brazo impreso en 3D]({{ '/brazos/impresion-3d/' | relative_url }}) | Impresión 3D (FDM, PLA) | Printables #449747, de RACBOTS | Arduino Uno por USB | 8 piezas documentadas con visor 3D |
-| [Brazo cortado con láser]({{ '/brazos/corte-laser/' | relative_url }}) | Corte láser (MDF 3 mm) | MeArm v1.0, de Benjamin Gray | PCB propia con ESP32-C3 | Estructura lista; faltan archivos y evidencia |
+| [Brazo cortado con láser]({{ '/brazos/corte-laser/' | relative_url }}) | Corte láser (MDF 3 mm) | MeArm v1.0, de Benjamin Gray | PCB propia con ESP32-C3 | 36 piezas con plano, DXF y render; visor 3D |
 
 > **Ninguno de los dos diseños es original del equipo.** Ambos parten de modelos publicados por terceros; el aporte propio es la fabricación, el ensamble, la electrónica y las pruebas. Cada página declara su autor, su fuente y su licencia.
 
@@ -43,12 +43,12 @@ El objetivo es documentar cada proceso de principio a fin (modelo, parámetros d
 
 | # | Entregable | Impreso 3D | Corte láser |
 |:--|:-----------|:-----------|:------------|
-| R1 | Planos de las piezas | ⏸ | ⏸ Por generar desde los DXF |
-| R2 | Render de cada pieza | ⏸ | ⏸ Por generar desde los DXF |
-| R3 | Ensamble en CAD | ⏸ | ✅ Hecho en Inventor; falta la captura |
-| R4 | Render del ensamble | ⏸ | ⏸ Por generar desde el STEP |
-| R5 | Visor 3D en la página | ✅ Ensamble y 8 piezas | ⏸ Por generar |
-| R6 | Proceso de fabricación | ✅ Parámetros de impresión | ❌ Faltan parámetros, fotos y video |
+| R1 | Planos de las piezas | ⏸ Falta el STEP del ensamble | ✅ 36 planos A4 + resumen de 38 páginas |
+| R2 | Render de cada pieza | ⏸ | ✅ 36 renders |
+| R3 | Ensamble en CAD | ⏸ El STEP exportado viene sin geometría | ✅ STEP y captura de Inventor |
+| R4 | Render del ensamble | ⏸ | ✅ 3 vistas |
+| R5 | Visor 3D en la página | ✅ Ensamble y 8 piezas, posiciones aproximadas | ✅ Coordenadas reales del CAD |
+| R6 | Proceso de fabricación | ✅ Parámetros de impresión | ❌ Faltan parámetros de corte, fotos y video |
 | R7 | Ensamble físico | ❌ Faltan fotos | ❌ Faltan fotos |
 | R8 | Prueba tomando un objeto | ❌ Falta video | ❌ Falta video |
 
