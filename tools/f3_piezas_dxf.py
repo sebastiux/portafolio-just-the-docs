@@ -30,7 +30,7 @@ DXF = os.path.join(RAIZ, "_entrada_brazos/laser/dxf")
 DEST = os.path.join(RAIZ, "assets/brazos/laser/corte")
 HOJAS = {"A": "Mearm_1_0_150x200_A.dxf", "B": "Mearm_1_0_150x200_B.dxf"}
 AREA_PEQUENA = 60.0  # mm2; solo marca la pieza como pequeña en el JSON, no la excluye
-APLANADO, PRECISION = 0.05, 0.02
+APLANADO, PRECISION = 0.02, 0.02   # sagita al aplanar curvas, y redondeo para cerrar contornos
 
 
 def extraer(ruta):
