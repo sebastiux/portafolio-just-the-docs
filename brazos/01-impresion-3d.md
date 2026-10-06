@@ -114,11 +114,13 @@ Los parámetros salen del proyecto de **Creality Print 6.3** que usó el equipo 
 
 ## 3) Ensamble
 
-<div class="stl-viewer stl-viewer--tall" data-assembly="{{ '/assets/stl/brazo-impreso/ensamble.json' | relative_url }}" data-base="{{ '/assets/stl/brazo-impreso/' | relative_url }}"></div>
+<div class="stl-viewer stl-viewer--tall" data-assembly="{{ '/assets/stl/brazo-impreso/ensamble/ensamble-cad.json' | relative_url }}" data-base="{{ '/assets/stl/brazo-impreso/ensamble/' | relative_url }}"></div>
 
-**Figura 1:** Vista de conjunto de las 8 piezas. Usa **Separar piezas** para ver la vista explosionada.
+**Figura 1:** Ensamble en coordenadas reales del CAD. Usa **Separar piezas** para la vista explosionada.
 
-> **Importante:** los STL se exportaron cada uno en su **orientación de impresión**, no en coordenadas del ensamble. Las posiciones de este visor son **aproximadas** (cadena vertical base → tapa → brazo 1 → brazo 2 → soporte → engranes → pinzas) y sirven para identificar las piezas, **no** como ensamble dimensional. Para un ensamble exacto se necesitan los STL exportados desde el ensamble CAD con la opción de conservar coordenadas.
+> **Faltan las dos mordazas.** El ensamble muestra **7 de las 9 piezas**, colocadas con las posiciones reales del CAD. Las mordazas no aparecen porque `pinzas.stl` trae **las dos en un solo archivo** y no está en el marco de coordenadas de cada pieza: al separarlas y aplicarles su transformación, ninguna de las dos asignaciones posibles las deja cerca del soporte (quedan a unos 90 mm). Se resuelve exportando `Pinza derecha v1` y `Pinza izquierda v1_MIR_MIR3` como STL independientes. Las dos mordazas sí se ven bien en su visor individual, más abajo.
+>
+> **De dónde salen estas posiciones.** El STEP que exportó Inventor para este ensamble **viene sin geometría** (estructura y posiciones, cero sólidos), así que no sirve para el visor. Pero sus transformaciones de ensamble sí están completas, y son las que se aplicaron a los STL. Las genera `tools/f2_ensamble_impreso.py`.
 
 ### Cadena cinemática
 

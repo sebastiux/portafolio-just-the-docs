@@ -172,9 +172,17 @@ async function initAssembly(container) {
 
   const legend = document.createElement('ul');
   legend.className = 'stl-viewer__legend';
+  // Agrupa las entradas que comparten nombre y color: un ensamble con 31 placas
+  // iguales no debe producir 31 renglones de leyenda.
+  const grupos = new Map();
   spec.parts.forEach((p) => {
+    const clave = `${p.name}\u0000${p.color}`;
+    grupos.set(clave, (grupos.get(clave) || 0) + 1);
+  });
+  grupos.forEach((n, clave) => {
+    const [nombre, color] = clave.split('\u0000');
     const li = document.createElement('li');
-    li.innerHTML = `<span style="background:${p.color}"></span>${p.name}`;
+    li.innerHTML = `<span style="background:${color}"></span>${nombre}${n > 1 ? ` (${n})` : ''}`;
     legend.appendChild(li);
   });
   container.appendChild(legend);

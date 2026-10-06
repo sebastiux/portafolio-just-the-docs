@@ -1,80 +1,530 @@
 {
-  "note": "Generado por tools/f2_ensamble_mearm.py desde el STEP de Inventor. Coordenadas reales del ensamble CAD, en mm.",
-  "parts": [
-    {
-      "name": "Estructura de MDF (31 placas)",
-      "file": "ensamble-mdf.stl",
-      "color": "#B08A5A",
-      "position": [
-        47.033,
-        28.041,
-        -11.625
-      ],
-      "explode": [
-        0.0,
-        0.0,
-        0.0
-      ]
-    },
-    {
-      "name": "Servo SG90 (1)",
-      "file": "servo-1.stl",
-      "color": "#2563EB",
-      "position": [
-        18.304,
-        28.092,
-        -11.685
-      ],
-      "explode": [
-        -28.88,
-        0.05,
-        -63.76
-      ]
-    },
-    {
-      "name": "Servo SG90 (2)",
-      "file": "servo-2.stl",
-      "color": "#2563EB",
-      "position": [
-        21.731,
-        56.766,
-        38.765
-      ],
-      "explode": [
-        -40.23,
-        45.67,
-        -34.59
-      ]
-    },
-    {
-      "name": "Servo SG90 (3)",
-      "file": "servo-3.stl",
-      "color": "#2563EB",
-      "position": [
-        23.082,
-        -0.447,
-        38.766
-      ],
-      "explode": [
-        -38.89,
-        -46.26,
-        -35.32
-      ]
-    },
-    {
-      "name": "Servo SG90 (4)",
-      "file": "servo-4.stl",
-      "color": "#2563EB",
-      "position": [
-        124.425,
-        26.308,
-        93.576
-      ],
-      "explode": [
-        61.5,
-        -1.38,
-        33.4
-      ]
-    }
-  ]
+ "note": "Generado por tools/f2_ensamble_mearm.py desde el STEP de Inventor. Coordenadas reales del ensamble CAD, en mm.",
+ "parts": [
+  {
+   "name": "Placa de MDF",
+   "file": "placa-01.stl",
+   "color": "#B08A5A",
+   "position": [
+    156.541,
+    36.034,
+    99.528
+   ],
+   "explode": [
+    80.91,
+    5.91,
+    25.37
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-02.stl",
+   "color": "#B08A5A",
+   "position": [
+    156.739,
+    17.94,
+    99.528
+   ],
+   "explode": [
+    80.81,
+    -7.44,
+    25.29
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-03.stl",
+   "color": "#B08A5A",
+   "position": [
+    13.766,
+    4.141,
+    12.067
+   ],
+   "explode": [
+    -57.18,
+    -41.08,
+    -47.62
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-04.stl",
+   "color": "#B08A5A",
+   "position": [
+    42.446,
+    7.874,
+    118.819
+   ],
+   "explode": [
+    -6.42,
+    -28.23,
+    79.92
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-05.stl",
+   "color": "#B08A5A",
+   "position": [
+    154.435,
+    36.18,
+    93.554
+   ],
+   "explode": [
+    81.97,
+    6.21,
+    21.63
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-06.stl",
+   "color": "#B08A5A",
+   "position": [
+    154.439,
+    36.18,
+    96.554
+   ],
+   "explode": [
+    81.38,
+    6.17,
+    23.75
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-07.stl",
+   "color": "#B08A5A",
+   "position": [
+    130.556,
+    13.123,
+    119.245
+   ],
+   "explode": [
+    69.27,
+    -12.37,
+    47.68
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-08.stl",
+   "color": "#B08A5A",
+   "position": [
+    130.48,
+    16.122,
+    119.214
+   ],
+   "explode": [
+    69.52,
+    -9.93,
+    47.9
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-09.stl",
+   "color": "#B08A5A",
+   "position": [
+    12.554,
+    51.575,
+    12.066
+   ],
+   "explode": [
+    -55.62,
+    37.96,
+    -51.87
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-10.stl",
+   "color": "#B08A5A",
+   "position": [
+    63.66,
+    38.425,
+    102.592
+   ],
+   "explode": [
+    25.32,
+    15.81,
+    79.58
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-11.stl",
+   "color": "#B08A5A",
+   "position": [
+    80.457,
+    11.844,
+    102.909
+   ],
+   "explode": [
+    45.83,
+    -22.21,
+    68.06
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-12.stl",
+   "color": "#B08A5A",
+   "position": [
+    11.094,
+    43.085,
+    38.966
+   ],
+   "explode": [
+    -70.54,
+    29.53,
+    -37.11
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-13.stl",
+   "color": "#B08A5A",
+   "position": [
+    12.926,
+    31.128,
+    15.065
+   ],
+   "explode": [
+    -60.37,
+    5.46,
+    -59.59
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-14.stl",
+   "color": "#B08A5A",
+   "position": [
+    34.994,
+    24.218,
+    54.646
+   ],
+   "explode": [
+    -47.02,
+    -14.93,
+    69.22
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-15.stl",
+   "color": "#B08A5A",
+   "position": [
+    -12.338,
+    27.433,
+    15.065
+   ],
+   "explode": [
+    -69.3,
+    -0.71,
+    -49.21
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-16.stl",
+   "color": "#B08A5A",
+   "position": [
+    38.645,
+    28.734,
+    15.065
+   ],
+   "explode": [
+    -16.59,
+    1.37,
+    -83.35
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-17.stl",
+   "color": "#B08A5A",
+   "position": [
+    13.154,
+    28.083,
+    15.065
+   ],
+   "explode": [
+    -47.58,
+    0.06,
+    -70.44
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-18.stl",
+   "color": "#B08A5A",
+   "position": [
+    29.425,
+    4.54,
+    119.822
+   ],
+   "explode": [
+    -20.79,
+    -27.74,
+    77.61
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-19.stl",
+   "color": "#B08A5A",
+   "position": [
+    119.999,
+    33.861,
+    102.598
+   ],
+   "explode": [
+    74.32,
+    5.93,
+    40.83
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-20.stl",
+   "color": "#B08A5A",
+   "position": [
+    147.949,
+    30.682,
+    90.556
+   ],
+   "explode": [
+    82.41,
+    2.16,
+    20.7
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-21.stl",
+   "color": "#B08A5A",
+   "position": [
+    -12.446,
+    28.041,
+    -11.625
+   ],
+   "explode": [
+    -52.03,
+    0.0,
+    -67.22
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-22.stl",
+   "color": "#B08A5A",
+   "position": [
+    18.052,
+    28.091,
+    6.615
+   ],
+   "explode": [
+    -37.68,
+    0.07,
+    -76.19
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-23.stl",
+   "color": "#B08A5A",
+   "position": [
+    18.054,
+    28.091,
+    1.115
+   ],
+   "explode": [
+    -35.01,
+    0.06,
+    -77.45
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-24.stl",
+   "color": "#B08A5A",
+   "position": [
+    120.201,
+    26.49,
+    108.084
+   ],
+   "explode": [
+    73.32,
+    -1.55,
+    42.98
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-25.stl",
+   "color": "#B08A5A",
+   "position": [
+    126.442,
+    26.649,
+    102.57
+   ],
+   "explode": [
+    76.9,
+    -1.35,
+    36.2
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-26.stl",
+   "color": "#B08A5A",
+   "position": [
+    121.385,
+    18.891,
+    102.698
+   ],
+   "explode": [
+    70.72,
+    -8.7,
+    46.35
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-27.stl",
+   "color": "#B08A5A",
+   "position": [
+    35.262,
+    13.692,
+    39.075
+   ],
+   "explode": [
+    -38.99,
+    -47.53,
+    58.7
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-28.stl",
+   "color": "#B08A5A",
+   "position": [
+    34.726,
+    34.686,
+    39.075
+   ],
+   "explode": [
+    -46.34,
+    25.02,
+    66.72
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-29.stl",
+   "color": "#B08A5A",
+   "position": [
+    0.28,
+    39.809,
+    48.662
+   ],
+   "explode": [
+    -73.0,
+    18.37,
+    39.48
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-30.stl",
+   "color": "#B08A5A",
+   "position": [
+    -0.511,
+    0.776,
+    57.976
+   ],
+   "explode": [
+    -62.32,
+    -35.74,
+    45.42
+   ]
+  },
+  {
+   "name": "Placa de MDF",
+   "file": "placa-31.stl",
+   "color": "#B08A5A",
+   "position": [
+    91.55,
+    9.127,
+    120.215
+   ],
+   "explode": [
+    46.27,
+    -19.66,
+    68.54
+   ]
+  },
+  {
+   "name": "Servo SG90",
+   "file": "servo-1.stl",
+   "color": "#2563EB",
+   "position": [
+    18.304,
+    28.092,
+    -11.685
+   ],
+   "explode": [
+    -35.07,
+    0.06,
+    -77.43
+   ]
+  },
+  {
+   "name": "Servo SG90",
+   "file": "servo-2.stl",
+   "color": "#2563EB",
+   "position": [
+    21.731,
+    56.766,
+    38.765
+   ],
+   "explode": [
+    -48.85,
+    55.45,
+    -42.0
+   ]
+  },
+  {
+   "name": "Servo SG90",
+   "file": "servo-3.stl",
+   "color": "#2563EB",
+   "position": [
+    23.082,
+    -0.449,
+    38.766
+   ],
+   "explode": [
+    -47.22,
+    -56.17,
+    -42.89
+   ]
+  },
+  {
+   "name": "Servo SG90",
+   "file": "servo-4.stl",
+   "color": "#2563EB",
+   "position": [
+    124.417,
+    26.308,
+    93.576
+   ],
+   "explode": [
+    74.68,
+    -1.67,
+    40.56
+   ]
+  }
+ ]
 }

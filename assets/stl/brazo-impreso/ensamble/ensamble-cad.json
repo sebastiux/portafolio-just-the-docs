@@ -1,0 +1,110 @@
+{
+ "note": "Posiciones reales del ensamble CAD, extraídas de las transformaciones del STEP de Inventor. Faltan las dos mordazas: pinzas.stl trae las dos en un solo archivo y no está en el marco de cada pieza.",
+ "parts": [
+  {
+   "name": "Base (alojamiento servo)",
+   "file": "base.stl",
+   "color": "#4B5563",
+   "position": [
+    310.961,
+    329.129,
+    72.321
+   ],
+   "explode": [
+    36.43,
+    -0.81,
+    -41.2
+   ]
+  },
+  {
+   "name": "Tapa giratoria",
+   "file": "tapa.stl",
+   "color": "#E00034",
+   "position": [
+    311.209,
+    329.628,
+    96.821
+   ],
+   "explode": [
+    49.79,
+    -0.5,
+    -23.35
+   ]
+  },
+  {
+   "name": "Brazo 1",
+   "file": "brazo-1.stl",
+   "color": "#F59E0B",
+   "position": [
+    300.007,
+    350.105,
+    113.825
+   ],
+   "explode": [
+    39.89,
+    26.32,
+    27.23
+   ]
+  },
+  {
+   "name": "Brazo 2",
+   "file": "brazo-2.stl",
+   "color": "#2563EB",
+   "position": [
+    255.96,
+    331.149,
+    155.162
+   ],
+   "explode": [
+    -21.03,
+    1.69,
+    50.79
+   ]
+  },
+  {
+   "name": "Soporte de pinza",
+   "file": "soporte-pinza.stl",
+   "color": "#10B981",
+   "position": [
+    235.189,
+    330.322,
+    148.901
+   ],
+   "explode": [
+    -46.75,
+    0.37,
+    28.98
+   ]
+  },
+  {
+   "name": "Piñón del servo",
+   "file": "pinon-servo.stl",
+   "color": "#8B5CF6",
+   "position": [
+    233.153,
+    330.821,
+    139.656
+   ],
+   "explode": [
+    -52.35,
+    1.11,
+    16.81
+   ]
+  },
+  {
+   "name": "Piñón de pinza",
+   "file": "pinon-pinza.stl",
+   "color": "#EC4899",
+   "position": [
+    219.811,
+    321.045,
+    140.125
+   ],
+   "explode": [
+    -52.38,
+    -9.47,
+    13.86
+   ]
+  }
+ ]
+}
