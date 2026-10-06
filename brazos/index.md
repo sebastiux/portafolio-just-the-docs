@@ -34,7 +34,7 @@ El objetivo es documentar cada proceso de principio a fin (modelo, parámetros d
 
 | Brazo | Proceso | Diseño base | Control | Estado |
 |:------|:--------|:------------|:--------|:-------|
-| [Brazo impreso en 3D]({{ '/brazos/impresion-3d/' | relative_url }}) | Impresión 3D (FDM, PLA) | Printables #449747, de RACBOTS | Arduino Uno por USB | 8 piezas documentadas con visor 3D |
+| [Brazo impreso en 3D]({{ '/brazos/impresion-3d/' | relative_url }}) | Impresión 3D (FDM, PLA) | Printables #449747, de RACBOTS | Arduino Uno por USB | 9 piezas con visor 3D y ensamble en coordenadas CAD |
 | [Brazo cortado con láser]({{ '/brazos/corte-laser/' | relative_url }}) | Corte láser (MDF 3 mm) | MeArm v1.0, de Benjamin Gray | PCB propia con ESP32-C3 | 36 piezas con plano, DXF y render; visor 3D |
 
 > **Ninguno de los dos diseños es original del equipo.** Ambos parten de modelos publicados por terceros; el aporte propio es la fabricación, el ensamble, la electrónica y las pruebas. Cada página declara su autor, su fuente y su licencia.
@@ -45,9 +45,9 @@ El objetivo es documentar cada proceso de principio a fin (modelo, parámetros d
 |:--|:-----------|:-----------|:------------|
 | R1 | Planos de las piezas | ⏸ Falta el STEP del ensamble | ✅ 36 planos A4 + resumen de 38 páginas |
 | R2 | Render de cada pieza | ⏸ | ✅ 36 renders |
-| R3 | Ensamble en CAD | ⏸ El STEP exportado viene sin geometría | ✅ STEP y captura de Inventor |
+| R3 | Ensamble en CAD | ⚠️ Captura de Inventor sí; el STEP exportado viene sin geometría | ✅ STEP y captura de Inventor |
 | R4 | Render del ensamble | ⏸ | ✅ 3 vistas |
-| R5 | Visor 3D en la página | ✅ Ensamble y 8 piezas, posiciones aproximadas | ✅ Coordenadas reales del CAD |
+| R5 | Visor 3D en la página | ✅ Ensamble y 9 piezas, coordenadas reales del CAD | ✅ Coordenadas reales del CAD |
 | R6 | Proceso de fabricación | ✅ Parámetros de impresión | ❌ Faltan parámetros de corte, fotos y video |
 | R7 | Ensamble físico | ❌ Faltan fotos | ❌ Faltan fotos |
 | R8 | Prueba tomando un objeto | ❌ Falta video | ❌ Falta video |

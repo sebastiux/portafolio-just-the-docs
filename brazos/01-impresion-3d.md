@@ -9,7 +9,7 @@ stl_viewer: true
 
 # Brazo impreso en 3D
 
-Esta página documenta la fabricación del brazo robótico por **impresión 3D (FDM)** en PLA: los **parámetros de impresión** que se usaron, el **ensamble** y cada una de las **8 piezas** con su visor 3D.
+Esta página documenta la fabricación del brazo robótico por **impresión 3D (FDM)** en PLA: los **parámetros de impresión** que se usaron, el **ensamble** y cada una de las **9 piezas** con su visor 3D.
 
 > **Cómo usar los visores 3D:** arrastra para girar, rueda del ratón (o pellizco) para acercar y clic derecho (o dos dedos) para desplazar. **Reiniciar vista** regresa a la vista inicial.
 
@@ -31,7 +31,7 @@ El brazo impreso **no es un diseño original del equipo**. Parte de un modelo pu
 
 > **Atribución (CC BY 4.0).** Las piezas de esta página derivan de **"Brazo Robótico — Robotic Arm"** de **RACBOTS**, publicado en [Printables (#449747)](https://www.printables.com/model/449747) bajo [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). **El equipo modificó el diseño original** (cambios cosméticos). Los STL que se descargan desde esta página son obra derivada y se redistribuyen bajo la misma atribución.
 
-<!-- PENDIENTE: el documento de entrega menciona 9 piezas STL; en este repositorio hay 8 (base, tapa, brazo-1, brazo-2, soporte-pinza, pinon-servo, pinon-pinza, pinzas). Confirmar cuál es el conteo correcto y, si falta una, subirla. -->
+<!-- Resuelto: son 9 piezas. El repositorio tenía 8 archivos porque las dos mordazas venían fundidas en pinzas.stl; el CAD las tiene como Pinza derecha v1 y Pinza izquierda v1_MIR_MIR3. -->
 
 ---
 
@@ -118,9 +118,9 @@ Los parámetros salen del proyecto de **Creality Print 6.3** que usó el equipo 
 
 **Figura 1:** Ensamble en coordenadas reales del CAD. Usa **Separar piezas** para la vista explosionada.
 
-> **Faltan las dos mordazas.** El ensamble muestra **7 de las 9 piezas**, colocadas con las posiciones reales del CAD. Las mordazas no aparecen porque `pinzas.stl` trae **las dos en un solo archivo** y no está en el marco de coordenadas de cada pieza: al separarlas y aplicarles su transformación, ninguna de las dos asignaciones posibles las deja cerca del soporte (quedan a unos 90 mm). Se resuelve exportando `Pinza derecha v1` y `Pinza izquierda v1_MIR_MIR3` como STL independientes. Las dos mordazas sí se ven bien en su visor individual, más abajo.
+> **De dónde salen estas posiciones.** El STEP que exportó Inventor para este ensamble **viene sin geometría**: trae la estructura, las posiciones y los colores, pero cero sólidos. Aun así sirve, porque sus **transformaciones de ensamble sí están completas**, y son las que se aplican a los STL. Lo genera `tools/f2_ensamble_impreso.py`.
 >
-> **De dónde salen estas posiciones.** El STEP que exportó Inventor para este ensamble **viene sin geometría** (estructura y posiciones, cero sólidos), así que no sirve para el visor. Pero sus transformaciones de ensamble sí están completas, y son las que se aplicaron a los STL. Las genera `tools/f2_ensamble_impreso.py`.
+> **Corrección de escala en las mordazas.** Sus dos STL se exportaron **2.54 veces más grandes** que el resto (un dedo de 178 mm en un brazo con eslabones de 80 y 90 mm), así que se reescalan por 1/2.54. Dos comprobaciones de que la escala es la correcta: quedan en 70 × 25 × 6 mm, igual que las mordazas del archivo `pinzas.stl` original, y caen **simétricas** respecto al soporte, a 42.7 y 40.7 mm de su centro.
 
 ### Cadena cinemática
 
@@ -133,7 +133,8 @@ Los parámetros salen del proyecto de **Creality Print 6.3** que usó el equipo 
 | 5 | Soporte de pinza | Marco con ventana rectangular para el **servo de la pinza**. |
 | 6 | Piñón del servo | Engrane motriz montado en el eje del servo de la pinza. |
 | 7 | Piñón de pinza | Engrane conducido que transmite el giro a las mordazas. |
-| 8 | Pinzas | Par de mordazas con sector dentado que cierran sobre la muestra. |
+| 8 | Pinza derecha | Mordaza con sector dentado que engrana con el piñón de pinza; el filo serrado sujeta la muestra. |
+| 9 | Pinza izquierda | La misma pieza en espejo. Las dos cierran a la vez, movidas por el mismo piñón. |
 
 ---
 
@@ -150,8 +151,9 @@ Dimensiones medidas sobre cada STL (caja envolvente en la orientación de impres
 | Soporte de pinza | `Soporte_Pinza_v1.stl` | 29.0 × 44.0 × 4.0 | 2.43 | 3.0 | 1 170 |
 | Piñón del servo | `Piñon_Servo_v1.stl` | 20.0 × 20.0 × 5.0 | 0.64 | 0.8 | 1 548 |
 | Piñón de pinza | `Piñon_pinza_1_v1.stl` | 28.0 × 28.0 × 7.0 | 1.73 | 2.1 | 2 342 |
-| Pinzas | `Pinzas_Final.stl` | 95.3 × 43.3 × 6.2 | 3.70 | 4.6 | 3 276 |
-| **Total** | | | **54.36** | **67.4** | |
+| Pinza derecha | `Pinza derecha v1.stl` | 70.2 × 24.3 × 6.2 | 1.92 | 2.4 | 1 624 |
+| Pinza izquierda | `Pinza izquierda v1_MIR_MIR3.stl` | 70.2 × 24.8 × 6.2 | 1.85 | 2.3 | 1 856 |
+| **Total** | | | **54.43** | **67.5** | |
 
 <div class="stl-grid">
   <figure>
@@ -183,8 +185,12 @@ Dimensiones medidas sobre cada STL (caja envolvente en la orientación de impres
     <figcaption><strong>Piñón de pinza</strong> · <a href="{{ '/assets/stl/brazo-impreso/pinon-pinza.stl' | relative_url }}" download>Descargar STL</a></figcaption>
   </figure>
   <figure>
-    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/pinzas.stl' | relative_url }}" data-color="#0EA5E9"></div>
-    <figcaption><strong>Pinzas</strong> · <a href="{{ '/assets/stl/brazo-impreso/pinzas.stl' | relative_url }}" download>Descargar STL</a></figcaption>
+    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/pinza-derecha.stl' | relative_url }}" data-color="#0EA5E9"></div>
+    <figcaption><strong>Pinza derecha</strong> · <a href="{{ '/assets/stl/brazo-impreso/pinza-derecha.stl' | relative_url }}" download>Descargar STL</a></figcaption>
+  </figure>
+  <figure>
+    <div class="stl-viewer" data-stl="{{ '/assets/stl/brazo-impreso/pinza-izquierda.stl' | relative_url }}" data-color="#0284C7"></div>
+    <figcaption><strong>Pinza izquierda</strong> · <a href="{{ '/assets/stl/brazo-impreso/pinza-izquierda.stl' | relative_url }}" download>Descargar STL</a></figcaption>
   </figure>
 </div>
 
@@ -215,6 +221,7 @@ Dimensiones medidas sobre cada STL (caja envolvente en la orientación de impres
 - **Alcance:** los dos eslabones suman **170 mm** (80 + 90) más la pinza.
 - **Masa:** como máximo **67 g** de piezas impresas, sin servos ni tornillería.
 - **Transmisión de la pinza:** el servo mueve la pinza a través de un par de engranes (piñón del servo de 20 mm → piñón de pinza de 28 mm), que reduce la velocidad y aumenta el par de cierre.
+- **Apertura de la pinza:** en la pose del ensamble CAD las dos mordazas quedan separadas **19.3 mm** entre centros. Es el dato a contrastar con el diámetro de la pelota de la prueba.
 
 ---
 

@@ -1,5 +1,5 @@
 {
- "note": "Posiciones reales del ensamble CAD, extraídas de las transformaciones del STEP de Inventor. Faltan las dos mordazas: pinzas.stl trae las dos en un solo archivo y no está en el marco de cada pieza.",
+ "note": "Posiciones reales del ensamble CAD, extraídas de las transformaciones del STEP de Inventor. Las dos mordazas se reescalaron por 1/2.54: su exportación salía 2.54 veces más grande que el resto.",
  "parts": [
   {
    "name": "Base (alojamiento servo)",
@@ -11,9 +11,9 @@
     72.321
    ],
    "explode": [
-    36.43,
-    -0.81,
-    -41.2
+    44.52,
+    -1.08,
+    -32.28
    ]
   },
   {
@@ -26,9 +26,9 @@
     96.821
    ],
    "explode": [
-    49.79,
-    -0.5,
-    -23.35
+    52.65,
+    -0.87,
+    -15.87
    ]
   },
   {
@@ -41,9 +41,9 @@
     113.825
    ],
    "explode": [
-    39.89,
-    26.32,
-    27.23
+    48.58,
+    17.62,
+    18.83
    ]
   },
   {
@@ -56,9 +56,9 @@
     155.162
    ],
    "explode": [
-    -21.03,
-    1.69,
-    50.79
+    15.2,
+    0.73,
+    52.85
    ]
   },
   {
@@ -71,9 +71,9 @@
     148.901
    ],
    "explode": [
-    -46.75,
-    0.37,
-    28.98
+    -25.71,
+    -0.84,
+    48.61
    ]
   },
   {
@@ -86,9 +86,9 @@
     139.656
    ],
    "explode": [
-    -52.35,
-    1.11,
-    16.81
+    -41.31,
+    0.4,
+    36.31
    ]
   },
   {
@@ -101,9 +101,39 @@
     140.125
    ],
    "explode": [
-    -52.38,
-    -9.47,
-    13.86
+    -46.9,
+    -16.97,
+    23.17
+   ]
+  },
+  {
+   "name": "Pinza derecha",
+   "file": "pinza-derecha.stl",
+   "color": "#0EA5E9",
+   "position": [
+    194.65,
+    341.797,
+    141.882
+   ],
+   "explode": [
+    -51.82,
+    11.1,
+    14.73
+   ]
+  },
+  {
+   "name": "Pinza izquierda",
+   "file": "pinza-izquierda.stl",
+   "color": "#0284C7",
+   "position": [
+    195.784,
+    322.493,
+    141.955
+   ],
+   "explode": [
+    -52.18,
+    -8.44,
+    15.2
    ]
   }
  ]

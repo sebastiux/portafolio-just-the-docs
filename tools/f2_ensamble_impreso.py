@@ -6,11 +6,12 @@ estructura, las posiciones y los colores, pero cero sólidos. Aun así sirve,
 porque las transformaciones de ensamble sí están completas. Este script las
 extrae y se las aplica a los STL que ya había en el repositorio.
 
-Siete de las nueve piezas colocan bien. Las dos mordazas no: pinzas.stl trae
-las dos en un solo archivo y, al separarlas, ninguna de las dos asignaciones
-posibles las deja cerca del soporte (quedan a ~90 mm). Ese archivo está en un
-marco propio, no en el de cada pieza, así que las mordazas quedan fuera del
-ensamble hasta tener su exportación por separado.
+Las dos mordazas vienen de una exportación aparte, porque pinzas.stl trae las
+dos en un solo archivo y no está en el marco de cada pieza. Esos dos STL salen
+2.54 veces más grandes que el resto (un dedo de 178 mm en un brazo con
+eslabones de 80 y 90 mm), así que se reescalan por 1/2.54. Dos comprobaciones
+de que la escala es la correcta: quedan en 70 x 26 x 8 mm, igual que las
+mordazas de pinzas.stl, y caen simétricas respecto al soporte.
 
 Salida: assets/stl/brazo-impreso/ensamble/*.stl + ensamble-cad.json
 """
@@ -20,8 +21,13 @@ import numpy as np, trimesh
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STEP = os.path.join(RAIZ, "_entrada_brazos/impreso3d/ensamble-brazo-impreso-VACIO.stp")
 ORIG = os.path.join(RAIZ, "assets/stl/brazo-impreso")
+# Las mordazas se leen de la carpeta de entrada, no de assets: las de assets ya
+# están reescaladas y apoyadas en su origen para el visor individual, y eso
+# rompería la transformación de ensamble.
+MORD_ORIG = os.path.join(RAIZ, "_entrada_brazos/impreso3d")
 DEST = os.path.join(ORIG, "ensamble")
 SEPARACION = 55.0
+ESCALA_MORDAZAS = 1 / 2.54
 
 PIEZAS = [
     ("Base 2 v2:1",              "base.stl",          "Base (alojamiento servo)", "#4B5563"),
@@ -31,7 +37,10 @@ PIEZAS = [
     ("Soporte Pinza v1:1",       "soporte-pinza.stl", "Soporte de pinza",         "#10B981"),
     ("Pi\\X\\F1on Servo v1:1",   "pinon-servo.stl",   "Piñón del servo",          "#8B5CF6"),
     ("Pi\\X\\F1on pinza 1 v1:1", "pinon-pinza.stl",   "Piñón de pinza",           "#EC4899"),
+    ("Pinza derecha v1:1",       "pinza-derecha.stl",  "Pinza derecha",           "#0EA5E9"),
+    ("Pinza izquierda v1_MIR_MIR3:1", "pinza-izquierda.stl", "Pinza izquierda",   "#0284C7"),
 ]
+MORDAZAS = {"pinza-derecha.stl", "pinza-izquierda.stl"}
 
 
 def transformaciones():
@@ -68,7 +77,11 @@ def main():
         if clave not in tr:
             print(f"AVISO: sin transformación para {clave}")
             continue
-        m = trimesh.load(os.path.join(ORIG, archivo))
+        if archivo in MORDAZAS:
+            m = trimesh.load(os.path.join(MORD_ORIG, archivo))
+            m.apply_scale(ESCALA_MORDAZAS)
+        else:
+            m = trimesh.load(os.path.join(ORIG, archivo))
         m.apply_transform(tr[clave])
         m.export(os.path.join(DEST, archivo))
         colocadas.append((nombre, archivo, color, m))
@@ -90,9 +103,9 @@ def main():
 
     with open(os.path.join(DEST, "ensamble-cad.json"), "w", encoding="utf-8") as f:
         json.dump({"note": "Posiciones reales del ensamble CAD, extraídas de las "
-                           "transformaciones del STEP de Inventor. Faltan las dos "
-                           "mordazas: pinzas.stl trae las dos en un solo archivo y no "
-                           "está en el marco de cada pieza.",
+                           "transformaciones del STEP de Inventor. Las dos "
+                           "mordazas se reescalaron por 1/2.54: su exportación salía "
+                           "2.54 veces más grande que el resto.",
                    "parts": spec}, f, ensure_ascii=False, indent=1)
 
 
