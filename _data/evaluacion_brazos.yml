@@ -1,0 +1,248 @@
+# Autoevaluación de los brazos robóticos contra la rúbrica resumida del curso
+# (https://hubergiron.github.io/Integracion-mecatronica/evaluacion-resumida.html).
+#
+# Estados por brazo:
+#   cumple  · la evidencia existe, es verificable y corresponde con el brazo físico
+#   parcial · hay una parte de la evidencia; falta lo que dice "falta"
+#   falta   · no hay evidencia todavía
+#   na      · el criterio no aplica a ese brazo (solo B16 en el brazo impreso)
+#
+# El criterio cuenta para el proyecto solo cuando los dos brazos cumplen
+# (o uno cumple y el otro es "na"). Al subir evidencia, cambiar aquí el
+# estado y el texto de "falta"; la página recalcula los puntos.
+
+secciones:
+  - titulo: "1. Concepto y definición"
+    criterios:
+      - id: B01
+        titulo: Problema, objetivos y requisitos
+        peso: 3
+        impreso: parcial
+        laser: parcial
+        evidencia: /brazos/#1-problema-objetivos-y-requisitos-b01
+        falta: Contrastar los requisitos con el enunciado oficial del proyecto.
+      - id: B02
+        titulo: Bocetos de la solución
+        peso: 3
+        impreso: falta
+        laser: falta
+        evidencia: /brazos/#2-bocetos-de-la-solución-b02
+        falta: Fotos o escaneos de los bocetos a mano de los dos brazos.
+      - id: B03
+        titulo: Alternativas y selección
+        peso: 3
+        impreso: parcial
+        laser: parcial
+        evidencia: /brazos/#3-alternativas-y-selección-b03
+        falta: Las alternativas que el equipo consideró y por qué se descartaron. La justificación de los diseños elegidos ya está.
+      - id: B04
+        titulo: Arquitectura general
+        peso: 3
+        impreso: cumple
+        laser: cumple
+        evidencia: /brazos/#4-arquitectura-general-b04
+        falta: ""
+
+  - titulo: "2. Mecánica y fabricación"
+    criterios:
+      - id: B05
+        titulo: Arquitectura y dimensiones mecánicas
+        peso: 3
+        impreso: parcial
+        laser: parcial
+        evidencia: /brazos/impresion-3d/#2-arquitectura
+        falta: Uniones y tornillería, y las medidas del brazo armado.
+      - id: B06
+        titulo: Lista de materiales mecánicos
+        peso: 4
+        impreso: parcial
+        laser: parcial
+        evidencia: /brazos/impresion-3d/#12-lista-de-materiales-b06-b14
+        falta: Tornillería (medida y cantidad) y datos de adquisición (proveedor y precio).
+      - id: B07
+        titulo: Archivos editables y de fabricación
+        peso: 4
+        impreso: parcial
+        laser: cumple
+        evidencia: /brazos/impresion-3d/#archivos-editables-y-de-fabricación-b07
+        falta: "Impreso: los .ipt, el .iam y un STEP con sólidos. Láser: completo (STEP y DXF)."
+      - id: B08
+        titulo: Planos de fabricación
+        peso: 4
+        impreso: parcial
+        laser: cumple
+        evidencia: /brazos/impresion-3d/#4-piezas-planos-y-renders-r1-y-r2
+        falta: "Impreso: los planos dan medidas generales y material, pero no acotan barrenos ni detalles internos."
+      - id: B09
+        titulo: Registro de fabricación por versión
+        peso: 3
+        impreso: parcial
+        laser: falta
+        evidencia: /brazos/impresion-3d/#registro-de-impresión-por-pieza-b09
+        falta: "Impreso: tiempo, masa y ajustes por pieza, y fotos. Láser: máquina, potencia, velocidad, pasadas, kerf y fotos."
+      - id: B10
+        titulo: Secuencia de construcción y ensamblaje
+        peso: 3
+        impreso: parcial
+        laser: parcial
+        evidencia: /brazos/impresion-3d/#9-secuencia-de-ensamblaje-b10
+        falta: "Impreso: confirmar el orden y la tornillería de cada paso (los 7 renders ya están). Láser: fotos propias de cada etapa."
+      - id: B11
+        titulo: Evidencia de las versiones ensambladas
+        peso: 4
+        impreso: falta
+        laser: falta
+        evidencia: /brazos/impresion-3d/#10-ensamble-físico-b11-r7
+        falta: Fotos reales de los dos brazos terminados, con sus elementos señalados.
+      - id: B12
+        titulo: Pruebas mecánicas
+        peso: 3
+        impreso: falta
+        laser: falta
+        evidencia: /brazos/impresion-3d/#11-pruebas-mecánicas-b12
+        falta: Llenar las tablas de pruebas (rangos, apertura, holguras) y subir un video por articulación.
+
+  - titulo: "3. Electrónica"
+    criterios:
+      - id: B13
+        titulo: Diagrama de bloques electrónico
+        peso: 3
+        impreso: parcial
+        laser: parcial
+        evidencia: /brazos/impresion-3d/#diagrama-de-bloques-b13
+        falta: De dónde sale la corriente de los servos en cada brazo. Láser también el pinout.
+      - id: B14
+        titulo: Lista de materiales electrónicos
+        peso: 3
+        impreso: parcial
+        laser: parcial
+        evidencia: /brazos/corte-laser/#12-lista-de-materiales-b06-b14
+        falta: Valores (potenciómetros, interruptor, fuente) y datos de adquisición.
+      - id: B15
+        titulo: Esquemático completo y editable
+        peso: 4
+        impreso: falta
+        laser: falta
+        evidencia: /brazos/corte-laser/#esquemático-b15
+        falta: Esquemático editable y PDF de cada brazo.
+      - id: B16
+        titulo: Diseño de tarjeta y archivos de fabricación
+        peso: 4
+        impreso: na
+        laser: falta
+        evidencia: /brazos/corte-laser/#diseño-de-la-tarjeta-y-archivos-de-fabricación-b16
+        falta: "Láser: proyecto de KiCad de la PCB, render y Gerber. El impreso usa un Arduino Uno comercial."
+      - id: B17
+        titulo: Manufactura y montaje electrónico
+        peso: 3
+        impreso: falta
+        laser: falta
+        evidencia: /brazos/corte-laser/#manufactura-y-montaje-electrónico-b17
+        falta: Fotos de la fabricación y soldadura de la PCB, y del cableado del Arduino.
+      - id: B18
+        titulo: Pruebas electrónicas por bloques
+        peso: 3
+        impreso: falta
+        laser: falta
+        evidencia: /brazos/corte-laser/#pruebas-por-bloques-b18
+        falta: Llenar las tablas de pruebas por bloque con sus resultados.
+
+  - titulo: "4. Programación e interfaz"
+    criterios:
+      - id: B19
+        titulo: Arquitectura del software
+        peso: 3
+        impreso: parcial
+        laser: parcial
+        evidencia: /brazos/impresion-3d/#arquitectura-del-software-b19
+        falta: "Impreso: el formato de los comandos. Láser: cómo se elige entre control manual y app."
+      - id: B20
+        titulo: Diagrama de flujo
+        peso: 3
+        impreso: parcial
+        laser: parcial
+        evidencia: /brazos/corte-laser/#diagrama-de-flujo-b20
+        falta: Verificar los diagramas contra el código real y corregirlos.
+      - id: B21
+        titulo: Interfaz y procedimiento de operación
+        peso: 3
+        impreso: parcial
+        laser: parcial
+        evidencia: /brazos/corte-laser/#interfaz-y-procedimiento-de-operación-b21
+        falta: Capturas de brazo_gui.py y de la app; datos de acceso (puerto, red, IP).
+      - id: B22
+        titulo: Librerías y dependencias
+        peso: 3
+        impreso: falta
+        laser: falta
+        evidencia: /brazos/impresion-3d/#librerías-y-dependencias-b22
+        falta: Nombre, función y versión de cada librería.
+      - id: B23
+        titulo: Organización en funciones
+        peso: 4
+        impreso: falta
+        laser: falta
+        evidencia: /brazos/impresion-3d/#organización-en-funciones-b23
+        falta: Explicar las funciones principales de cada programa.
+      - id: B24
+        titulo: Código fuente final descargable
+        peso: 4
+        impreso: falta
+        laser: falta
+        evidencia: /brazos/impresion-3d/#código-fuente-b24
+        falta: Firmware del Arduino, brazo_gui.py y firmware del ESP32-C3, con instrucciones.
+
+  - titulo: "5. Integración y pruebas"
+    criterios:
+      - id: B25
+        titulo: Integración física de subsistemas
+        peso: 3
+        impreso: falta
+        laser: falta
+        evidencia: /brazos/impresion-3d/#integración-física-b25
+        falta: Fotos de la electrónica, la alimentación y el cableado montados en cada brazo.
+      - id: B26
+        titulo: Integración entre electrónica y software
+        peso: 3
+        impreso: falta
+        laser: falta
+        evidencia: /brazos/impresion-3d/#electrónica-y-software-en-el-sistema-real-b26
+        falta: Comprobar cada entrada contra su acción y llenar las tablas.
+      - id: B27
+        titulo: Pruebas de los modos de operación requeridos
+        peso: 4
+        impreso: falta
+        laser: falta
+        evidencia: /brazos/corte-laser/#modos-de-operación-b27
+        falta: "Video de cada modo: USB (impreso), manual y app (láser)."
+      - id: B28
+        titulo: Prueba funcional completa
+        peso: 3
+        impreso: falta
+        laser: falta
+        evidencia: /brazos/impresion-3d/#prueba-funcional-completa-b28
+        falta: Video continuo de cada brazo tomando y soltando la pelota, con la tabla de intentos.
+      - id: B29
+        titulo: Comparación de las versiones fabricadas
+        peso: 3
+        impreso: parcial
+        laser: parcial
+        evidencia: /brazos/comparacion/#1-comparación-de-las-versiones-fabricadas-b29
+        falta: Tiempos de fabricación y armado, y los resultados de desempeño de las pruebas.
+
+  - titulo: "6. Conclusiones y entrega"
+    criterios:
+      - id: B30
+        titulo: Conclusiones técnicas
+        peso: 2
+        impreso: parcial
+        laser: parcial
+        evidencia: /brazos/comparacion/#2-conclusiones-técnicas-b30
+        falta: Conclusiones de desempeño a partir de las pruebas.
+      - id: B31
+        titulo: Evidencias y archivos coherentes con la entrega
+        peso: 2
+        impreso: falta
+        laser: falta
+        evidencia: /brazos/comparacion/#3-coherencia-de-la-evidencia-con-la-entrega-b31
+        falta: Completar la lista de revisión cuando estén las fotos, los videos y el código.
