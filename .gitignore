@@ -8,3 +8,7 @@ vendor/
 # artefactos de Python
 __pycache__/
 *.pyc
+
+# binarios de las pruebas del firmware
+assets/brazos/codigo/pruebas/prueba_impreso
+assets/brazos/codigo/pruebas/prueba_laser
