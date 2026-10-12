@@ -1,0 +1,21 @@
+Ref,Val,Package,PosX,PosY,Rot,Side
+"C1","1000 µF 10 V","CP_Radial_D10.0mm_P5.00mm",110.500000,-139.000000,0.000000,top
+"C2","100 nF","C_Disc_D5.0mm_W2.5mm_P5.00mm",121.000000,-137.000000,0.000000,top
+"C3","100 nF","C_Disc_D5.0mm_W2.5mm_P5.00mm",126.000000,-142.000000,0.000000,top
+"C4","100 nF","C_Disc_D5.0mm_W2.5mm_P5.00mm",142.000000,-142.000000,0.000000,top
+"C5","100 nF","C_Disc_D5.0mm_W2.5mm_P5.00mm",158.000000,-142.000000,0.000000,top
+"D1","1N5819","D_DO-41_SOD81_P10.16mm_Horizontal",116.000000,-129.000000,0.000000,top
+"D2","LED verde 3 mm","LED_D3.0mm",105.500000,-155.000000,0.000000,top
+"F1","MF-RG300 (3 A)","Fuse_Bourns_MF-RG300",108.000000,-120.000000,0.000000,top
+"J1","Entrada 5 V 3 A","TerminalBlock_Phoenix_MKDS-1,5-2_1x02_P5.00mm_Horizontal",111.000000,-110.000000,0.000000,top
+"J2","Servo base","PinHeader_1x03_P2.54mm_Vertical",182.000000,-109.000000,0.000000,top
+"J3","Servo hombro","PinHeader_1x03_P2.54mm_Vertical",182.000000,-121.000000,0.000000,top
+"J4","Servo codo","PinHeader_1x03_P2.54mm_Vertical",182.000000,-133.000000,0.000000,top
+"J5","Servo pinza","PinHeader_1x03_P2.54mm_Vertical",182.000000,-145.000000,0.000000,top
+"R1","1 kΩ","R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal",104.500000,-146.500000,0.000000,top
+"R2","1 kΩ","R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal",111.000000,-160.000000,0.000000,top
+"RV1","10 kΩ lineal (base)","Potentiometer_Alps_RK09K_Single_Vertical",128.000000,-150.000000,0.000000,top
+"RV2","10 kΩ lineal (hombro)","Potentiometer_Alps_RK09K_Single_Vertical",144.000000,-150.000000,0.000000,top
+"RV3","10 kΩ lineal (codo)","Potentiometer_Alps_RK09K_Single_Vertical",160.000000,-150.000000,0.000000,top
+"SW1","Pinza abrir/cerrar","SW_Slide_SPDT_Straight_CK_OS102011MS2Q",177.000000,-155.500000,0.000000,top
+"U1","ESP32-C3 Super Mini","ESP32-C3_SuperMini",137.380000,-104.600000,0.000000,top

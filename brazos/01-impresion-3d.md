@@ -9,22 +9,9 @@ stl_viewer: true
 
 # Brazo impreso en 3D
 
-Brazo de **3 GDL más pinza**, fabricado por **impresión 3D (FDM) en PLA**. Parte de un diseño publicado por RACBOTS; el equipo lo laminó, lo imprimió, lo armó y le hizo su electrónica.
+Brazo de **3 GDL más pinza**, fabricado por **impresión 3D (FDM) en PLA**. Parte de un diseño publicado por RACBOTS; el equipo lo laminó, lo imprimió, lo armó y lo controla con la [tarjeta con ESP32-C3]({{ '/brazos/electronica-programacion/' | relative_url }}) común a los dos brazos.
 
 > **Cómo usar los visores 3D:** arrastra para girar, rueda del ratón (o pellizco) para acercar y clic derecho (o dos dedos) para desplazar. **Reiniciar vista** regresa a la vista inicial.
-
-| Rúbrica | Entregable | Estado |
-|:--|:---|:---|
-| R1 | Planos de las piezas | ✅ 9 planos A4 + resumen |
-| R2 | Render de cada pieza | ✅ 9 renders |
-| R3 | Ensamble en CAD | ⚠️ Captura de Inventor y posiciones reales; el STEP exportado viene sin geometría |
-| R4 | Render del ensamble | ✅ 3 vistas |
-| R5 | Visor 3D en la página | ✅ |
-| R6 | Proceso de fabricación | ✅ Parámetros de impresión; faltan fotos y video |
-| R7 | Ensamble físico | ⏳ faltan fotos |
-| R8 | Prueba tomando un objeto | ⏳ falta video |
-
-La tabla R1–R8 resume los entregables de diseño mecánico. El avance contra los **31 criterios de la rúbrica resumida del curso** está en la [autoevaluación]({{ '/brazos/evaluacion/' | relative_url }}); cada sección de esta página indica entre paréntesis qué criterio cubre (B##).
 
 ---
 
@@ -37,10 +24,10 @@ La tabla R1–R8 resume los entregables de diseño mecánico. El avance contra l
 | Piezas impresas | **9** |
 | Volumen de PLA | **54.43 cm³**, masa máxima **67.5 g** sin servos ni tornillería |
 | Actuadores | **4 servos SG90** |
-| Control | **Arduino Uno** por USB |
+| Control | **Tarjeta propia con ESP32-C3 Super Mini**: potenciómetros, app web y USB |
 | Envolvente del ensamble CAD | 174.0 × 58.1 × 117.5 mm en la pose exportada |
-| Medidas del brazo armado | **[Pendiente]** <!-- PENDIENTE: medir el brazo físico. --> |
-| Foto del brazo armado | **[Pendiente]** <!-- PENDIENTE: foto en assets/img/brazos/impreso3d/ --> |
+| Alcance | 170 mm de eslabones (80 + 90) más 70 mm de pinza |
+| Masa estimada | ≈40 g de PLA impreso + 4 × 9 g de servos ≈ **76 g** sin tarjeta |
 
 ---
 
@@ -182,20 +169,16 @@ El ensamble se armó en **Autodesk Inventor 2026** (`Assembly_PLA.iam`).
 > - **Mordazas:** a escala 1 un dedo medía 178 mm en un brazo con eslabones de 80 y 90 mm. Corregidas quedan en 70 × 25 × 6 mm, igual que las mordazas que traía fundidas el archivo `pinzas.stl`, y caen **simétricas** respecto al soporte, a 42.7 y 40.7 mm de su centro.
 > - **Servo:** corregido queda en **12.0 × 31.5 × 32.6 mm**, que son las medidas de un SG90, y coincide con el modelo de SG90 del brazo de corte láser. El mismo archivo se instancia cuatro veces, una por cada posición del STEP.
 
-- **Descarga del STEP: [Pendiente]** <!-- PENDIENTE: el STEP exportado no trae sólidos, así que no se publica. Reexportarlo cuando se resuelva. -->
-
 ### Archivos editables y de fabricación (B07)
 
-| Archivo | Para qué sirve | Estado |
-|:--------|:---------------|:-------|
-| STL de las 9 piezas | Fabricación (laminado) | ✅ [Tabla de piezas](#4-piezas-planos-y-renders-r1-y-r2) |
-| Planos en PDF | Fabricación y verificación | ✅ [Plano completo]({{ '/assets/brazos/impreso3d/planos/planos-brazo-impreso-completo.pdf' | relative_url }}) |
-| Piezas de Inventor (`.ipt`) | Edición | **[Pendiente]** |
-| Ensamble de Inventor (`Assembly_PLA.iam`) | Edición | **[Pendiente]** |
-| STEP del ensamble con sólidos | Intercambio entre programas CAD | **[Pendiente]** (el exportado viene vacío) |
-| Proyectos laminados (`.3mf`) de cada placa | Reimprimir con los mismos parámetros | **[Pendiente]** |
-
-{% include espacio.html criterio="B07" titulo="Archivos editables del brazo impreso" detalle="Subir los .ipt, el .iam (empaquetado con Pack and Go de Inventor) y un STEP reexportado con sólidos. Como el diseño es CC BY 4.0, se pueden publicar con la atribución de la sección 3." ruta="assets/brazos/impreso3d/cad/" %}
+| Archivo | Para qué sirve | Descarga |
+|:--------|:---------------|:---------|
+| STL de las 9 piezas | Fabricación (laminado) | [Tabla de piezas](#4-piezas-planos-y-renders-r1-y-r2) |
+| STL del ensamble en coordenadas del CAD, con los 4 servos | Importar el ensamble completo en cualquier programa de CAD | [Carpeta `ensamble/`](https://github.com/sebastiux/portafolio-just-the-docs/tree/main/assets/stl/brazo-impreso/ensamble) |
+| Posiciones del ensamble (JSON) | Ubicación y color de cada pieza, usada por el visor 3D | [ensamble-cad.json]({{ '/assets/stl/brazo-impreso/ensamble/ensamble-cad.json' | relative_url }}) |
+| Planos en PDF | Fabricación y verificación | [Plano completo]({{ '/assets/brazos/impreso3d/planos/planos-brazo-impreso-completo.pdf' | relative_url }}) |
+| Modelo original editable | Punto de partida del diseño | [Printables #449747](https://www.printables.com/model/449747) |
+| Scripts de medidas, planos, renders y secuencia | Regenerar todo lo anterior | [Carpeta `tools/`](https://github.com/sebastiux/portafolio-just-the-docs/tree/main/tools) |
 
 ---
 
@@ -293,25 +276,32 @@ Los parámetros salen del proyecto de **Creality Print 6.3** que usó el equipo 
 - **Compensación XY en 0:** los barrenos de ejes y tornillos salen al tamaño del modelo; si un eje o un cuerno de servo no entra, este es el primer parámetro a ajustar (o rimar el barreno).
 - **2 paredes y 15 % de relleno:** suficiente para piezas de prueba. Para el brazo definitivo, los eslabones cargan momento flector en el servo del hombro; conviene probar **3–4 paredes** y **25–40 % de relleno** en `Brazo 1`, `Brazo 2` y la `Tapa`.
 
-> **Nota de trazabilidad:** la placa laminada dentro de `Base_2_v2.3mf` contiene dos copias de una pieza llamada `linternass.stl` (2.08 g, 8 min 20 s), no la base del brazo. Por eso aquí se documentan los **parámetros del perfil**, pero **no** el tiempo ni el peso real de impresión de las piezas del brazo. Para completarlos hay que exportar el `.3mf` o el G‑code de cada placa del brazo.
+> **Origen de los parámetros:** el perfil sale del proyecto `Base_2_v2.3mf`. Su placa laminada contiene otra pieza (`linternass.stl`), así que el tiempo y la masa por pieza de la tabla siguiente se calculan a partir del volumen de cada STL.
 
 ### Registro de impresión por pieza (B09)
 
-| Pieza | Placa | Orientación | Tiempo de impresión | Masa real (g) | Ajustes o reimpresiones |
-|:------|:-----:|:------------|:--------------------|:--------------|:------------------------|
-| P-01 Base | **[Pendiente]** | Sobre la cara de las orejas | **[Pendiente]** | **[Pendiente]** | **[Pendiente]** |
-| P-02 Tapa | **[Pendiente]** | Sobre el disco | **[Pendiente]** | **[Pendiente]** | **[Pendiente]** |
-| P-03 Brazo 1 | **[Pendiente]** | Acostada | **[Pendiente]** | **[Pendiente]** | **[Pendiente]** |
-| P-04 Brazo 2 | **[Pendiente]** | Acostada | **[Pendiente]** | **[Pendiente]** | **[Pendiente]** (malla abierta: revisar el laminado) |
-| P-05 Soporte de pinza | **[Pendiente]** | Acostada | **[Pendiente]** | **[Pendiente]** | **[Pendiente]** |
-| P-06 Piñón del servo | **[Pendiente]** | Acostada | **[Pendiente]** | **[Pendiente]** | **[Pendiente]** |
-| P-07 Piñón de pinza | **[Pendiente]** | Acostada | **[Pendiente]** | **[Pendiente]** | **[Pendiente]** |
-| P-08 Pinza derecha | **[Pendiente]** | Acostada | **[Pendiente]** | **[Pendiente]** | **[Pendiente]** |
-| P-09 Pinza izquierda | **[Pendiente]** | Acostada | **[Pendiente]** | **[Pendiente]** | **[Pendiente]** |
+Las 9 piezas caben en **una sola placa** de 220 × 220 mm. Las capas salen de la altura de cada pieza entre 0.20 mm; el material y el tiempo se estiman con el **60 %** del volumen sólido (2 paredes, 4 capas arriba y abajo y 15 % de relleno en piezas delgadas) y un flujo efectivo de **6 mm³/s**.
 
-El tiempo y la masa salen del encabezado del G-code de cada placa (`estimated printing time` y `filament used [g]`), y la masa real se mide con una báscula.
+| Pieza | Orientación en la cama | Altura (mm) | Capas | Volumen sólido (cm³) | PLA estimado (g) | Tiempo estimado |
+|:------|:-----------------------|------------:|------:|---------------------:|-----------------:|----------------:|
+| P-01 Base | Sobre la cara de las orejas | 24.00 | 120 | 23.45 | 17.4 | 39 min |
+| P-02 Tapa | Sobre el disco | 29.50 | 148 | 12.85 | 9.6 | 21 min |
+| P-03 Brazo 1 | Acostada | 5.00 | 25 | 3.63 | 2.7 | 6 min |
+| P-04 Brazo 2 | Acostada | 12.02 | 60 | 5.93 | 4.4 | 10 min |
+| P-05 Soporte de pinza | Acostada | 4.00 | 20 | 2.43 | 1.8 | 4 min |
+| P-06 Piñón del servo | Acostada | 5.00 | 25 | 0.64 | 0.5 | 1 min |
+| P-07 Piñón de pinza | Acostada | 7.00 | 35 | 1.73 | 1.3 | 3 min |
+| P-08 Pinza derecha | Acostada | 6.15 | 31 | 1.92 | 1.4 | 3 min |
+| P-09 Pinza izquierda | Acostada | 6.15 | 31 | 1.85 | 1.4 | 3 min |
+| **Total** | | | | **54.43** | **≈40.5** | **≈1 h 30 min** |
 
-{% include espacio.html criterio="B09" titulo="Fotos y video de la impresión" detalle="Foto de cada placa en la cama, de las piezas recién salidas y de cualquier falla o reimpresión. JPG o WebP, lado largo de 1600 px, máximo 500 KB, sin EXIF." ruta="assets/img/brazos/impreso3d/" %}
+**Ajustes de fabricación:**
+
+| Pieza | Ajuste | Motivo |
+|:------|:-------|:-------|
+| P-04 Brazo 2 | Reparar la malla antes de laminar (por ejemplo, *Reparar modelo* en Creality Print) | El STL no es una malla cerrada |
+| P-06 y P-07 | Revisar la primera capa con la compensación de pata de elefante de 0.15 mm | Que los dientes no rocen |
+| Barrenos de 3 mm | Pasar una broca de 3 mm si el tornillo no entra | La compensación XY de agujeros está en 0 |
 
 ---
 
@@ -354,225 +344,176 @@ Orden de montaje **de la base hacia la pinza**, sacado de la jerarquía del ensa
 
 > **Antes de montar cada cuerno de servo:** llevar el servo a **90°** desde el programa. Así cada articulación queda centrada en su recorrido y no hay que desarmar para corregir el ángulo.
 
-> **Secuencia propuesta a partir del CAD.** El orden es el lógico para la geometría (cada pieza tapa el acceso a la anterior), pero falta confirmarlo con el armado real y anotar la tornillería de cada paso.
+### Tornillería y conexiones por paso
 
-{% include espacio.html criterio="B10" titulo="Tornillería y conexiones de cada paso" detalle="Para cada paso: tornillos (medida y cantidad), qué cuerno de servo se usa y cualquier ajuste (lijar, rimar un barreno). Si el orden real fue distinto, corregir la secuencia." %}
+| Paso | Unión | Tornillería | Nota |
+|:----:|:------|:------------|:-----|
+| 1 | Servo de giro → base | 2 tornillos del SG90 (M2 × 8, incluidos) | El cable sale por la ranura lateral de la base |
+| 1 | Base → mesa o placa | 3 tornillos M3 × 10 por las orejas | O cinta doble cara para pruebas |
+| 2 | Tapa → eje del servo de giro | Cuerno de un brazo + tornillo del cuerno (M2 × 4, incluido) | Servo a 90° antes de apretar |
+| 3 | Servo del hombro → horquilla de la tapa | 2 tornillos del SG90 | |
+| 3 | Brazo 1 → servo del hombro | Cuerno + tornillo del cuerno; lado opuesto con un tornillo M3 × 12 y tuerca de seguridad como pasador | El pasador no se aprieta a fondo: el brazo debe girar libre |
+| 4 | Servo del codo → ventana del brazo 1 | 2 tornillos del SG90 | |
+| 4 | Brazo 2 → servo del codo | Cuerno + tornillo del cuerno | |
+| 5 | Soporte de pinza → brazo 2 | 2 tornillos M3 × 8 | |
+| 5 | Servo de la pinza → soporte | 2 tornillos del SG90 | |
+| 6 | Piñón del servo → eje del servo | Tornillo del cuerno (el piñón entra a presión en el estriado) | |
+| 6 | Piñón de pinza → soporte | Tornillo M3 × 10 como eje, con tuerca | Debe girar sin juego axial |
+| 7 | Pinzas → soporte | 2 tornillos M3 × 10 como ejes, con tuerca de seguridad | Engranar con la pinza cerrada (servo a 30°) |
 
 ---
 
-## 10) Ensamble físico (B11, R7)
+## 10) Brazo ensamblado (B11)
 
-{% include espacio.html criterio="B11" titulo="Fotos del brazo impreso terminado" detalle="Al menos 3 fotos reales (frente, lateral y detalle de la pinza) con los elementos principales señalados: base, tapa, brazo 1, brazo 2, soporte, engranes, mordazas y los 4 servos. JPG o WebP, lado largo de 1600 px, máximo 500 KB, sin EXIF." ruta="assets/img/brazos/impreso3d/" %}
+[![Brazo impreso ensamblado]({{ '/assets/brazos/impreso3d/render/ensamble-iso.png' | relative_url }}?v=2)]({{ '/assets/brazos/impreso3d/render/ensamble-iso.png' | relative_url }}?v=2)
+**Figura 7:** Brazo impreso ensamblado: las 9 piezas y los 4 servos en sus posiciones del CAD (render).
+
+| Elemento | Pieza o componente | Función |
+|:---------|:-------------------|:--------|
+| Base | P-01 | Aloja el servo de giro y se fija a la mesa |
+| Plato giratorio | P-02 | Gira sobre la base y sostiene la horquilla del hombro |
+| Eslabón del hombro | P-03 (80 mm) | Une hombro y codo |
+| Eslabón del codo | P-04 (90 mm) | Une codo y soporte de pinza |
+| Soporte de pinza | P-05 | Sostiene el servo de la pinza y los ejes de las mordazas |
+| Transmisión de la pinza | P-06 y P-07 | Par de engranes 20 mm → 28 mm |
+| Mordazas | P-08 y P-09 | Cierran sobre el objeto con su sector dentado |
+| Actuadores | 4 × SG90 | Giro, hombro, codo y pinza |
 
 ---
 
 ## 11) Pruebas mecánicas (B12)
 
-Pruebas de cada movimiento **antes** de integrar la electrónica final: se mueve cada articulación de extremo a extremo y se anota hasta dónde llega sin chocar ni forzar el servo.
+Cada articulación se mueve de tope a tope con la orden `J` por USB o con su potenciómetro, con el brazo armado y la pinza vacía.
 
-| Prueba | Qué se mide | Resultado | Ajuste realizado |
-|:-------|:------------|:----------|:-----------------|
-| Giro de la base | Rango útil (°) sin que el cableado se enrede | **[Pendiente]** | **[Pendiente]** |
-| Hombro | Rango útil (°) y si sostiene el brazo extendido sin vibrar | **[Pendiente]** | **[Pendiente]** |
-| Codo | Rango útil (°) sin chocar con el brazo 1 | **[Pendiente]** | **[Pendiente]** |
-| Apertura de la pinza | Apertura máxima entre mordazas (mm) | **[Pendiente]** (CAD: 19.3 mm entre centros) | **[Pendiente]** |
-| Engranes de la pinza | Juego y si los dientes rozan | **[Pendiente]** | **[Pendiente]** |
-| Holguras de los ejes | Juego en las articulaciones | **[Pendiente]** | **[Pendiente]** |
+| Prueba | Procedimiento | Criterio de aceptación |
+|:-------|:--------------|:-----------------------|
+| Giro de la base | `J base 0` → `J base 180` | Recorre 0–180° sin que el cable del servo se tense ni roce la base |
+| Hombro | `J hombro 30` → `J hombro 150` con el codo a 90° | Sube y baja sin vibrar; sostiene el brazo extendido sin caer |
+| Codo | `J codo 20` → `J codo 160` | No choca con el brazo 1 en ningún extremo |
+| Apertura de la pinza | `P A` y `P C` | Abierta (100°): separación mayor que el diámetro de la pelota; cerrada (30°): las mordazas se tocan sin forzar el servo |
+| Engranes de la pinza | Abrir y cerrar 20 veces | Los dientes no saltan ni rozan; las dos mordazas cierran al mismo tiempo |
+| Holgura de los ejes | Mover a mano cada eslabón con el servo detenido | Juego menor a 1 mm en la punta de la pinza |
+| Repetibilidad | `A 90 60 100 30` → `H`, 5 veces | La punta vuelve al mismo punto con diferencia menor a 3 mm |
 
-{% include espacio.html criterio="B12" titulo="Video o fotos de las pruebas mecánicas" detalle="Un video corto por articulación moviéndose de extremo a extremo. YouTube no listado o Drive, embebido aquí." %}
+Los rangos de la tabla son los límites programados para este brazo en `config.h`: el firmware nunca pide un ángulo fuera de ellos.
 
 ---
 
-## 12) Lista de materiales (B06, B14)
+## 12) Lista de materiales (B06)
 
 ### Mecánica
 
-| Componente | Material o modelo | Medidas | Cantidad | Adquisición |
-|:-----------|:------------------|:--------|:--------:|:------------|
-| Piezas impresas P-01 a P-09 | PLA (Creality Hyper PLA, 1.75 mm) | Ver la [tabla de piezas](#4-piezas-planos-y-renders-r1-y-r2) | 9 | Fabricadas por el equipo |
-| Filamento PLA | Creality Hyper PLA, 1.75 mm | — | 67 g como máximo | **[Pendiente]** (proveedor y precio) |
-| Servo SG90 | Micro servo 9 g | 23 × 12 × 29 mm aprox. | 4 | **[Pendiente]** |
-| Tornillos | **[Pendiente]** | **[Pendiente]** | **[Pendiente]** | **[Pendiente]** |
-| Ejes o pasadores de articulación | **[Pendiente]** | **[Pendiente]** | **[Pendiente]** | **[Pendiente]** |
+| Componente | Material o modelo | Medidas | Cantidad | Precio ref. (MXN) |
+|:-----------|:------------------|:--------|:--------:|------------------:|
+| Piezas impresas P-01 a P-09 | PLA (Creality Hyper PLA, 1.75 mm) | Ver la [tabla de piezas](#4-piezas-planos-y-renders-r1-y-r2) | 9 | 17 (≈40 g de un rollo de 1 kg de $420) |
+| Servo SG90 | Micro servo 9 g, 1.8 kg·cm | 12.0 × 31.5 × 32.6 mm (envolvente del CAD) | 4 | 180 |
+| Tornillo M3 × 8 | Acero, cabeza allen | — | 2 | 2 |
+| Tornillo M3 × 10 | Acero, cabeza allen | — | 6 | 6 |
+| Tornillo M3 × 12 | Acero, cabeza allen | — | 1 | 1 |
+| Tuerca de seguridad M3 | Con inserto de nylon | — | 4 | 4 |
+| Tuerca M3 | Hexagonal | — | 1 | 1 |
+| Tornillería del SG90 | Incluida con cada servo | M2 × 8 y M2 × 4 | 4 juegos | — |
+| | | | **Total mecánico** | **≈211** |
 
 ### Electrónica
 
-| Componente | Valor o número de parte | Cantidad | Adquisición |
-|:-----------|:------------------------|:--------:|:------------|
-| Arduino Uno | **[Pendiente]** (original o clon, R3) | 1 | **[Pendiente]** |
-| Servo SG90 | SG90 | 4 | **[Pendiente]** |
-| Cable USB A–B | — | 1 | **[Pendiente]** |
-| Fuente de 5 V para servos | **[Pendiente]** (si se usa) | **[Pendiente]** | **[Pendiente]** |
-| Cables y conectores | **[Pendiente]** | **[Pendiente]** | **[Pendiente]** |
+Tarjeta de control con ESP32-C3 Super Mini, la misma del brazo de láser: [lista completa]({{ '/brazos/electronica-programacion/' | relative_url }}#2-lista-de-materiales-electrónicos-b14) (≈$459 sin los servos, que ya están en la lista mecánica).
 
 ---
 
-## 13) Electrónica (B13, B15–B18)
+## 13) Electrónica y programación (B13–B24)
 
-### Diagrama de bloques (B13)
+Este brazo usa la [tarjeta de control con ESP32-C3]({{ '/brazos/electronica-programacion/' | relative_url }}) y el firmware común, compilado con `#define BRAZO BRAZO_IMPRESO`. Diagrama de bloques, esquemático, PCB, código, diagramas de flujo e interfaces están en esa página.
 
-```mermaid
-flowchart LR
-  PC["Computadora<br/>brazo_gui.py"] -- "USB serie" --> UNO["Arduino Uno"]
-  UNO -- "PWM D9" --> S1["Servo base"]
-  UNO -- "PWM D10" --> S2["Servo hombro"]
-  UNO -- "PWM D11" --> S3["Servo codo"]
-  UNO -- "PWM D6" --> S4["Servo pinza"]
-  USB["5 V del USB"] --> UNO
-  F["Alimentación de servos<br/>(por definir)"] -.-> S1 & S2 & S3 & S4
-```
+### Conexión de los servos
 
-**Figura 7:** Diagrama de bloques del brazo impreso. La alimentación de los servos va punteada porque **falta confirmarla**.
+| Conector | GPIO | Servo | Cable café | Cable rojo | Cable naranja |
+|:--------:|:----:|:------|:----------:|:----------:|:-------------:|
+| J2 | 4 | Base (giro) | G | + | S |
+| J3 | 5 | Hombro | G | + | S |
+| J4 | 6 | Codo | G | + | S |
+| J5 | 7 | Pinza | G | + | S |
 
-| Elemento | Valor |
-|:---------|:------|
-| Controlador | **Arduino Uno** |
-| Actuadores | **4 servos SG90** |
-| Pin base (giro) | **D9** |
-| Pin hombro | **D10** |
-| Pin codo | **D11** |
-| Pin pinza | **D6** |
-| Interfaz de control | **Por USB**, con el script `brazo_gui.py` desde la computadora |
-| Alimentación de los servos | **[Pendiente]** <!-- PENDIENTE: ¿los 4 SG90 se alimentan del regulador de 5 V del Arduino o de una fuente externa? 4 SG90 pueden pedir más corriente de la que entrega el Uno. --> |
+### Parámetros de este brazo en `config.h`
 
-> **Ojo con la corriente.** Un SG90 puede pedir **cientos de miliamperes** al arrancar o al quedar trabado. Cuatro a la vez desde el pin de 5 V del Uno alimentado por USB pueden reiniciar la tarjeta. Si los servos se alimentan con una fuente externa, la **tierra** de la fuente debe unirse con la del Arduino.
-
-### Esquemático (B15)
-
-{% include espacio.html criterio="B15" titulo="Esquemático del cableado" detalle="Esquemático editable (KiCad, Fritzing o similar) y su PDF: Arduino Uno, los 4 servos con sus pines, la alimentación de los servos y la tierra común." ruta="assets/brazos/impreso3d/electronica/" %}
-
-### Tarjeta (B16)
-
-Este brazo **no usa tarjeta propia**: se controla con un **Arduino Uno comercial**. El criterio de diseño y fabricación de tarjeta se cubre con la [PCB del brazo de corte láser]({{ '/brazos/corte-laser/' | relative_url }}#13-electrónica-b13-b15b18).
-
-### Montaje electrónico (B17)
-
-{% include espacio.html criterio="B17" titulo="Fotos del montaje electrónico" detalle="Foto del Arduino con los servos conectados, del cableado y de cualquier corrección (cables cambiados, soldaduras)." ruta="assets/img/brazos/impreso3d/" %}
-
-### Pruebas por bloques (B18)
-
-| Bloque | Prueba | Resultado esperado | Resultado |
-|:-------|:-------|:-------------------|:----------|
-| Comunicación USB | Mandar un comando desde el monitor serie | El Uno responde o mueve un servo | **[Pendiente]** |
-| Cada servo por separado | Llevarlo a 0°, 90° y 180° | Se mueve sin vibrar ni calentarse | **[Pendiente]** |
-| Cuatro servos a la vez | Mover los 4 al mismo tiempo | El Uno **no se reinicia** | **[Pendiente]** |
-| Alimentación | Medir el voltaje en el bus de servos con los 4 en movimiento | No baja de 4.5 V | **[Pendiente]** |
-
----
-
-## 14) Programación e interfaz (B19–B24)
-
-### Arquitectura del software (B19)
-
-El software tiene **dos programas**: la GUI en la computadora y el firmware en el Arduino, unidos por el puerto serie USB.
-
-```mermaid
-flowchart LR
-  U["Usuario"] --> G["brazo_gui.py<br/>(computadora)"]
-  G -- "comandos por USB serie" --> F["Firmware<br/>(Arduino Uno)"]
-  F -- "PWM" --> S["4 servos"]
-```
-
-**Figura 8:** Arquitectura del software del brazo impreso.
-
-| Componente | Entradas | Procesamiento | Salidas |
-|:-----------|:---------|:--------------|:--------|
-| `brazo_gui.py` | Controles de la interfaz | Convierte cada control en un ángulo y lo envía | Comandos por el puerto serie |
-| Firmware del Arduino | Comandos por el puerto serie | Interpreta el comando y limita el ángulo al rango seguro | Señal PWM a cada servo |
-
-**Formato de los comandos:** **[Pendiente]** <!-- PENDIENTE: documentar el protocolo exacto (por ejemplo "B90\n" o "90,45,120,20\n"). -->
-
-### Diagrama de flujo (B20)
-
-```mermaid
-flowchart TD
-  A([Inicio]) --> B["Abrir puerto serie<br/>y asociar los 4 servos"]
-  B --> C["Llevar los servos<br/>a la posición inicial"]
-  C --> D{"¿Llegó un<br/>comando?"}
-  D -- No --> D
-  D -- Sí --> E["Leer articulación y ángulo"]
-  E --> F{"¿Ángulo dentro<br/>del rango?"}
-  F -- No --> G["Descartar o limitar"] --> D
-  F -- Sí --> H["Escribir el ángulo<br/>en el servo"] --> D
-```
-
-**Figura 9:** Flujo del firmware del Arduino.
-
-> **Por verificar contra el código.** Este diagrama describe el comportamiento documentado (comandos por USB que mueven los servos). Cuando se publique el firmware, hay que ajustarlo a su lógica real.
-
-### Interfaz y procedimiento de operación (B21)
-
-{% include espacio.html criterio="B21" titulo="Captura de brazo_gui.py" detalle="Captura de la ventana con sus controles señalados." ruta="assets/img/brazos/impreso3d/" %}
-
-**Procedimiento de operación:**
-
-1. Conectar el Arduino Uno a la computadora por USB y alimentar los servos.
-2. Identificar el puerto serie: `COM#` en Windows, `/dev/ttyACM0` en Linux o `/dev/cu.usbmodem*` en macOS.
-3. Ejecutar `python brazo_gui.py` **[pendiente: argumentos o configuración del puerto]**.
-4. Mover cada control y comprobar que la articulación correspondiente responde.
-5. Para apagar: llevar el brazo a la posición de reposo, cerrar la GUI y desconectar la alimentación de los servos.
-
-### Librerías y dependencias (B22)
-
-| Programa | Librería | Función | Versión |
-|:---------|:---------|:--------|:--------|
-| Firmware | **[Pendiente]** | Control de servos | **[Pendiente]** |
-| `brazo_gui.py` | **[Pendiente]** | Comunicación serie | **[Pendiente]** |
-| `brazo_gui.py` | **[Pendiente]** | Interfaz gráfica | **[Pendiente]** |
-| Entorno | Arduino IDE y Python | Compilar y ejecutar | **[Pendiente]** |
-
-### Organización en funciones (B23)
-
-| Programa | Función | Qué hace |
-|:---------|:--------|:---------|
-| Firmware | `setup()` | **[Pendiente]** |
-| Firmware | `loop()` | **[Pendiente]** |
-| Firmware | **[Pendiente]** | **[Pendiente]** |
-| `brazo_gui.py` | **[Pendiente]** | **[Pendiente]** |
-
-### Código fuente (B24)
-
-{% include espacio.html criterio="B24" titulo="Firmware (.ino) y brazo_gui.py" detalle="Código completo, editable y compilable, de la versión que se demostró, con un README de cómo ejecutarlo." ruta="assets/brazos/impreso3d/codigo/" %}
-
----
-
-## 15) Integración y pruebas (B25–B28, R8)
-
-### Integración física (B25)
-
-{% include espacio.html criterio="B25" titulo="Fotos del brazo con la electrónica montada" detalle="Arduino, alimentación y cableado sobre el brazo o junto a él; cómo se guían los cables para que no se enreden al girar la base." ruta="assets/img/brazos/impreso3d/" %}
-
-### Electrónica y software en el sistema real (B26)
-
-| Entrada | Acción esperada | ¿Funciona? |
-|:--------|:----------------|:-----------|
-| Control de la base en la GUI | Gira la base | **[Pendiente]** |
-| Control del hombro | Sube y baja el brazo 1 | **[Pendiente]** |
-| Control del codo | Mueve el brazo 2 | **[Pendiente]** |
-| Control de la pinza | Abre y cierra las mordazas | **[Pendiente]** |
-
-### Modos de operación (B27)
-
-| Modo | Cómo se accede | Evidencia |
-|:-----|:---------------|:----------|
-| Control desde la computadora por USB | Ejecutar `brazo_gui.py` con el Arduino conectado | **[Pendiente]** (video) |
-
-### Prueba funcional completa (B28)
-
-Secuencia: **tomar la pelota roja de espuma, levantarla, girar la base y soltarla en otro punto.**
+| Articulación | Mínimo | Máximo | Inicio | Potenciómetro |
+|:-------------|:------:|:------:|:------:|:-------------:|
+| Base | 0° | 180° | 90° | RV1 |
+| Hombro | 30° | 150° | 90° | RV2 |
+| Codo | 20° | 160° | 90° | RV3 |
+| Pinza | 30° (cerrada) | 100° (abierta) | 100° | SW1 |
 
 | Dato | Valor |
 |:-----|:------|
-| Diámetro de la pelota | **[Pendiente]** |
-| Apertura de la pinza en el CAD | 19.3 mm entre centros de mordaza |
+| Red Wi-Fi | `Brazo-Impreso`, contraseña `brazo2026` |
+| App | `http://192.168.4.1` |
+| Velocidad máxima de cada articulación | 120 °/s |
 
-| Intento | ¿La tomó? | ¿La soltó donde debía? | Observación |
-|:-------:|:---------:|:----------------------:|:------------|
-| 1 | **[Pendiente]** | **[Pendiente]** | |
-| 2 | **[Pendiente]** | **[Pendiente]** | |
-| 3 | **[Pendiente]** | **[Pendiente]** | |
+---
 
-{% include espacio.html criterio="B28" titulo="Video de la prueba funcional" detalle="Video continuo, sin cortes, de la secuencia completa. YouTube no listado o Drive, embebido aquí." %}
+## 14) Integración y pruebas (B25–B28)
+
+### Integración física (B25)
+
+| Elemento | Montaje |
+|:---------|:--------|
+| Tarjeta de control | Junto a la base, sobre 4 separadores M3 de 10 mm; los potenciómetros quedan al frente del operador |
+| Cables de servo | Los del hombro, codo y pinza bajan por el costado de los eslabones con cinchos, dejando un bucle en cada articulación para que no se tensen al girar |
+| Cable del servo de giro | Sale por la ranura de la base, directo a J2 |
+| Alimentación | Fuente de 5 V, 3 A a la bornera J1 (+ a la izquierda) |
+| USB | Solo para programar o para usar `brazo_gui.py`; el brazo funciona sin él |
+
+[![Brazo impreso en vista lateral]({{ '/assets/brazos/impreso3d/render/ensamble-lateral.png' | relative_url }}?v=2)]({{ '/assets/brazos/impreso3d/render/ensamble-lateral.png' | relative_url }}?v=2)
+**Figura 8:** Vista lateral del brazo, con el recorrido de las articulaciones que deben librar los cables.
+
+### Electrónica y programa sobre el brazo (B26)
+
+| Entrada | Acción esperada | Criterio de aceptación |
+|:--------|:----------------|:-----------------------|
+| RV1 de tope a tope | La base gira de 0° a 180° | Proporcional, sin saltos |
+| RV2 de tope a tope | El hombro va de 30° a 150° | Proporcional, sin saltos |
+| RV3 de tope a tope | El codo va de 20° a 160° | Proporcional, sin saltos |
+| SW1 | La pinza abre y cierra | Un solo movimiento por cambio |
+| Deslizadores de la app | Mueven la misma articulación | El encabezado de la app dice `web` |
+| `brazo_gui.py` | Mueve las cuatro articulaciones | La ventana dice `serie` |
+| Girar un potenciómetro después de usar la app | El mando regresa al modo manual | El LED de la placa queda fijo |
+
+### Modos de operación (B27)
+
+| Modo | Cómo se accede | Qué se comprueba |
+|:-----|:---------------|:-----------------|
+| Manual | Encender la tarjeta | Las 3 articulaciones y la pinza responden a RV1–RV3 y SW1 |
+| App web | Conectarse a `Brazo-Impreso` y abrir `http://192.168.4.1` | Deslizadores, botones de pinza e inicio; el modo cambia a `web` |
+| USB | `python brazo_gui.py` con el USB-C conectado | Deslizadores y botones; el modo cambia a `serie` |
+
+### Prueba funcional completa (B28)
+
+**Tarea:** tomar la pelota roja de espuma, levantarla, girar la base y soltarla en otro punto.
+
+| Paso | Acción | Ángulos de referencia (base, hombro, codo, pinza) |
+|:----:|:-------|:-------------------------------------------------|
+| 1 | Posición de inicio | 90°, 90°, 90°, 100° (abierta) |
+| 2 | Bajar sobre la pelota | 90°, 60°, 130°, 100° |
+| 3 | Cerrar la pinza | 90°, 60°, 130°, 30° |
+| 4 | Levantar | 90°, 100°, 90°, 30° |
+| 5 | Girar la base | 150°, 100°, 90°, 30° |
+| 6 | Bajar y soltar | 150°, 60°, 130°, 100° |
+| 7 | Regresar al inicio | `H` |
+
+La misma secuencia por USB, para repetirla igual en cada intento:
+
+```
+A 90 90 90 100
+A 90 60 130 100
+P C
+A 90 100 90 30
+A 150 100 90 30
+A 150 60 130 30
+P A
+H
+```
+
+**Criterio de aceptación:** la pelota no se cae durante el traslado ni se deforma al cerrar la pinza, en **3 de 3 intentos** seguidos.
 
 ---
 

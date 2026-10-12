@@ -1,9 +1,0 @@
-{%- comment -%}
-Espacio reservado para evidencia que el equipo todavía tiene que subir.
-Uso: {% include espacio.html criterio="B11" titulo="Fotos del brazo armado" detalle="Qué debe ir aquí" ruta="assets/img/..." %}
-{%- endcomment -%}
-<div class="espacio" role="note">
-  <p class="espacio__titulo"><span class="espacio__etiqueta">{{ include.criterio }}</span> Espacio reservado · {{ include.titulo }}</p>
-  {%- if include.detalle %}<p class="espacio__detalle">{{ include.detalle }}</p>{% endif -%}
-  {%- if include.ruta %}<p class="espacio__ruta">Subir a <code>{{ include.ruta }}</code></p>{% endif -%}
-</div>
