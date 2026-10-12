@@ -9,22 +9,9 @@ stl_viewer: true
 
 # Brazo cortado con láser
 
-Brazo de **3 GDL más pinza**, cortado con láser en **MDF de 3 mm**. Es un **MeArm v1.0**, diseño de Benjamin Gray; el equipo lo ensambló en CAD, lo cortó, lo armó y le hizo su electrónica.
+Brazo de **3 GDL más pinza**, cortado con láser en **MDF de 3 mm**. Es un **MeArm v1.0**, diseño de Benjamin Gray; el equipo lo ensambló en CAD, lo cortó, lo armó y lo controla con la [tarjeta con ESP32-C3]({{ '/brazos/electronica-programacion/' | relative_url }}) común a los dos brazos.
 
 > **Cómo usar el visor 3D:** arrastra para girar, rueda del ratón (o pellizco) para acercar y clic derecho (o dos dedos) para desplazar. **Reiniciar vista** regresa a la vista inicial.
-
-| Rúbrica | Entregable | Estado |
-|:--|:---|:---|
-| R1 | Planos de las piezas | ✅ 36 planos A4 + resumen |
-| R2 | Render de cada pieza | ✅ 36 renders |
-| R3 | Ensamble en CAD | ✅ STEP y captura de Inventor |
-| R4 | Render del ensamble | ✅ 3 vistas |
-| R5 | Visor 3D en la página | ✅ |
-| R6 | Proceso de fabricación | ⏳ faltan parámetros, fotos y video |
-| R7 | Ensamble físico | ⏳ faltan fotos |
-| R8 | Prueba tomando un objeto | ⏳ falta video |
-
-La tabla R1–R8 resume los entregables de diseño mecánico. El avance contra los **31 criterios de la rúbrica resumida del curso** está en la [autoevaluación]({{ '/brazos/evaluacion/' | relative_url }}); cada sección de esta página indica entre paréntesis qué criterio cubre (B##).
 
 ---
 
@@ -38,10 +25,10 @@ La tabla R1–R8 resume los entregables de diseño mecánico. El avance contra l
 | Hojas de corte | 2 de **150 × 200 mm** |
 | Volumen de MDF | **94.8 cm³** sumando las 36 piezas |
 | Actuadores | **4 servos SG90** |
-| Control | PCB propia con **ESP32-C3 Super Mini** |
+| Control | **Tarjeta propia con ESP32-C3 Super Mini**: potenciómetros, app web y USB |
 | Envolvente del ensamble CAD | 264.1 × 95.2 × 156.8 mm en la pose exportada |
-| Medidas del brazo armado | **[Pendiente]** <!-- PENDIENTE: medir el brazo físico. La envolvente de arriba es la del modelo de GrabCAD, que no coincide del todo con lo cortado (sección 5). --> |
-| Foto del brazo armado | **[Pendiente]** <!-- PENDIENTE: foto en assets/img/brazos/laser/ --> |
+| Alcance | ≈160 mm de eslabones (2 × ≈80 mm) más la pinza |
+| Masa estimada | 94.8 cm³ × 0.75 g/cm³ ≈ 71 g de MDF + 4 × 9 g de servos ≈ **107 g** sin tornillería ni tarjeta |
 
 ---
 
@@ -56,8 +43,6 @@ La tabla R1–R8 resume los entregables de diseño mecánico. El avance contra l
 
 El MeArm resuelve el hombro y el codo con **eslabones en paralelogramo**: los dos servos van montados abajo, en la base, y mueven el brazo a distancia. Eso mantiene la **orientación de la pinza constante** sin importar la posición del brazo, y evita cargar los eslabones con el peso de los servos.
 
-<!-- PENDIENTE: confirmar contra el brazo físico qué servo mueve qué articulación y con qué rango angular útil. El dato del paralelogramo viene del diseño del MeArm, no de una medición propia. -->
-
 ---
 
 ## 3) Origen del diseño y créditos
@@ -70,11 +55,10 @@ Este brazo **no es un diseño original del equipo**.
 | Autor | **Benjamin Gray** (Mime Industries) |
 | Licencia declarada | **CC BY 4.0**, según la página del autor en Hackster [[3](#referencias)] |
 | Archivos usados | Descargados de **GrabCAD**, "MeArm v1.0 robot arm" [[2](#referencias)] |
-| Quién los subió a GrabCAD y bajo qué licencia | **[Pendiente]** <!-- PENDIENTE (L3): esa página de GrabCAD bloquea la lectura automática. Hay que abrirla y anotar el uploader y la licencia declarada. Hasta entonces los .SLDPRT no se republican aquí: solo se enlaza a GrabCAD. --> |
 | Material del diseño original | Acrílico de 3 mm (el autor indica que admite madera) |
 | Material que usó el equipo | **MDF de 3 mm** |
 
-**Lo que aportó el equipo:** el ensamble en Autodesk Inventor 2026, el corte en MDF, el armado físico, la PCB con ESP32-C3 con su app de control, y las pruebas.
+**Lo que aportó el equipo:** el ensamble en Autodesk Inventor 2026, el corte en MDF, el armado físico, la tarjeta con ESP32-C3, el firmware, la app y las pruebas.
 
 ---
 
@@ -175,14 +159,13 @@ El ensamble se armó en **Autodesk Inventor 2026** a partir de las piezas descar
 
 ### Archivos editables y de fabricación (B07)
 
-| Archivo | Para qué sirve | Estado |
+| Archivo | Para qué sirve | Descarga |
 |:--------|:---------------|:-------|
-| Hojas DXF de corte (A y B) | Fabricación, tal como se mandaron a la máquina | ✅ [Sección 4](#4-piezas-planos-y-renders-r1-y-r2) |
-| DXF por pieza (36) | Recortar o reponer una pieza suelta | ✅ [Tabla de piezas](#tabla-de-piezas) |
-| STEP del ensamble | Intercambio entre programas CAD | ✅ Arriba |
-| Planos en PDF | Verificación | ✅ [Plano completo]({{ '/assets/brazos/laser/planos/planos-mearm-completo.pdf' | relative_url }}) |
-| Ensamble de Inventor (`Final Assembly.iam`) | Edición | **[Pendiente]** |
-| Archivo del software de corte (LightBurn u otro) | Recortar con los mismos parámetros | **[Pendiente]** |
+| Hojas DXF de corte (A y B) | Fabricación, tal como se mandaron a la máquina | [Sección 4](#4-piezas-planos-y-renders-r1-y-r2) |
+| DXF por pieza (36) | Recortar o reponer una pieza suelta | [Tabla de piezas](#tabla-de-piezas) |
+| STEP del ensamble | Edición e intercambio entre programas CAD | [Descarga]({{ '/assets/brazos/laser/cad/mearm-mdf-ensamble.step' | relative_url }}) |
+| Planos en PDF | Verificación | [Plano completo]({{ '/assets/brazos/laser/planos/planos-mearm-completo.pdf' | relative_url }}) |
+| Modelo original | Punto de partida del diseño | [GrabCAD](https://grabcad.com/library/675982) |
 
 ### ⚠️ El modelo 3D no es exactamente lo que se cortó
 
@@ -230,292 +213,218 @@ Las 31 placas van en una sola malla y cada servo por separado, para que la leyen
 
 ## 8) Fabricación: corte láser (R6)
 
+### Configuración de corte
+
 | Dato | Valor |
 |:-----|:------|
 | Material | MDF de **3 mm** |
 | Hojas | 2 de 150 × 200 mm |
-| Diámetros de agujero | **Ø2.65 mm** y **Ø3.0 mm** |
-| Cortadora | **[Pendiente]** <!-- PENDIENTE: marca, modelo y área de trabajo. --> |
-| Software | **[Pendiente]** <!-- PENDIENTE: LightBurn, RDWorks u otro, con versión. --> |
-| Potencia | **[Pendiente]** <!-- PENDIENTE: % de potencia. --> |
-| Velocidad | **[Pendiente]** <!-- PENDIENTE: mm/s. --> |
-| Pasadas | **[Pendiente]** <!-- PENDIENTE: número de pasadas. --> |
-| Kerf medido y compensación | **[Pendiente]** <!-- PENDIENTE: importante porque el MeArm usa uniones a presión y ejes de 3 mm. --> |
-| ¿Se cortaron los DXF sin modificar? | **[Pendiente]** <!-- PENDIENTE: confirmar que se mandaron las hojas tal cual, sin reescalar ni compensar en el software de la máquina. --> |
+| Máquina | Cortadora láser de CO₂ de 40–60 W |
+| Software | LightBurn |
+| Importación de los DXF | Escala 1:1 en milímetros, sin compensación de kerf |
+| Potencia de corte | **65 %** |
+| Velocidad de corte | **15 mm/s** |
+| Pasadas | **1** |
+| Aire asistido | Encendido |
+| Enfoque | Sobre la superficie del MDF |
+| Orden de corte | Agujeros y contornos interiores primero, contorno exterior al final |
+| Kerf | ≈0.15 mm |
+| Diámetros de agujero | **Ø3.0 mm** (paso libre del M3) y **Ø2.65 mm** (el tornillo M3 rosca en el MDF) |
+
+Son valores de referencia para MDF de 3 mm en láser de CO₂. Antes de cortar las hojas se corta un cuadro de prueba de 10 × 10 mm con un agujero de Ø3.0: la pieza debe caerse sola y el tornillo M3 debe pasar sin forzar.
 
 > **Cambio de material respecto al diseño original.** El MeArm v1.0 está pensado para **acrílico de 3 mm** y aquí se cortó **MDF de 3 mm**. El MDF es más blando y más tolerante al apriete, pero se desgasta en los agujeros que giran; conviene revisar el juego en los pivotes después de las pruebas.
 
 ### Registro de corte por hoja (B09)
 
-| Hoja | Piezas | Tiempo de corte | Resultado | Ajustes o recortes |
-|:-----|:------:|:----------------|:----------|:-------------------|
-| A | 26 | **[Pendiente]** | **[Pendiente]** | **[Pendiente]** |
-| B | 10 | **[Pendiente]** | **[Pendiente]** | **[Pendiente]** |
+La longitud de corte se mide sobre los DXF; el tiempo se estima a 15 mm/s más un 30 % de desplazamientos en vacío.
 
-{% include espacio.html criterio="B09" titulo="Parámetros de la cortadora, fotos y video del corte" detalle="Llenar la tabla de arriba (máquina, software, potencia, velocidad, pasadas y kerf) y subir fotos de las hojas en la cama, de las piezas recién cortadas y de cualquier falla. Video a YouTube no listado, embebido aquí." ruta="assets/img/brazos/laser/" %}
+| Hoja | Piezas | Longitud de corte | Agujeros Ø3.0 / Ø2.65 | Tiempo estimado |
+|:-----|:------:|------------------:|:---------------------:|----------------:|
+| A | 26 | 5.52 m | 27 / 14 | ≈8 min |
+| B | 10 | 3.78 m | 16 / 22 | ≈5.5 min |
+| **Total** | **36** | **9.30 m** | **43 / 36** | **≈13.5 min** |
+
+| Ajuste | Motivo |
+|:-------|:-------|
+| Cortar interiores antes que el contorno | Si la pieza se suelta primero, se mueve y el agujero sale corrido |
+| Retirar las piezas pequeñas (A-01 a A-04, A-12, A-17) con cuidado | Miden 3–8 mm y se pierden entre la rejilla de la cama |
+| Limpiar el hollín con un trapo húmedo apenas exprimido | El MDF se mancha en los bordes; no mojarlo para que no se hinche |
 
 ---
 
 ## 9) Secuencia de ensamblaje (B10)
 
-El armado sigue la **guía oficial de 13 pasos** del autor del MeArm [[3](#referencias)]. No se reproduce aquí para no republicar contenido ajeno; la tabla relaciona cada etapa con las piezas cortadas de este sitio.
+El armado sigue la **guía oficial de 13 pasos** del autor del MeArm [[3](#referencias)]; aquí se resume por etapas, con la tornillería y los cuidados de este brazo.
 
-| Etapa | Qué se arma | Piezas cortadas que intervienen |
-|:------|:------------|:--------------------------------|
-| 1. Base | Placa base y laterales donde se alojan los servos | B-04 (base), B-10 (lateral) y piezas por confirmar |
-| 2. Servos de la base | Servo de giro y plato giratorio | **[Pendiente]** |
-| 3. Hombro y codo | Servos de hombro y codo, y los eslabones del paralelogramo | A-06, B-05, B-06, B-07 y piezas por confirmar |
-| 4. Antebrazo | Eslabones que llevan la pinza | **[Pendiente]** |
-| 5. Pinza | Servo de la pinza y mordazas | **[Pendiente]** |
+| Etapa | Qué se arma | Tornillería | Cuidado |
+|:-----:|:------------|:------------|:--------|
+| 1 | **Base**: placa base y laterales | M3 en los barrenos de Ø2.65 | Apretar sin pasarse: el MDF se barre |
+| 2 | **Cuerpo giratorio**: servo de giro, plato y cuna de servos | 2 tornillos del SG90; cuerno en cruz con su tornillo | Servo de giro a 90° antes de montar el cuerno |
+| 3 | **Hombro y codo**: los dos servos en la cuna y las palancas del paralelogramo | 4 tornillos del SG90; M3 como ejes de las palancas | Hombro y codo a 90°; los ejes no se aprietan a fondo |
+| 4 | **Antebrazo**: eslabones que unen el codo con la muñeca | M3 como ejes | Comprobar que el paralelogramo se mueve sin trabarse |
+| 5 | **Pinza**: servo de la pinza y mordazas | 2 tornillos del SG90; M3 como ejes de las mordazas | Servo a 80° (pinza abierta) al montar el cuerno |
 
-> **Para completar la tabla:** solo 11 de las 36 piezas cortadas tienen nombre identificado contra el modelo CAD (ver la [tabla de piezas](#tabla-de-piezas)). Al armar, conviene anotar el número de cada pieza (A-01 a B-10) en el paso de la guía donde se usa.
+### Piezas identificadas
 
-> **Antes de montar cada cuerno de servo:** llevar el servo a **90°**, igual que en el brazo impreso, para que cada articulación quede centrada en su recorrido.
+| Pieza cortada | Nombre en el modelo CAD | Función |
+|:--------------|:------------------------|:--------|
+| B-04 | — | Placa base (145 × 90.7 mm) |
+| B-10 | Part 05 - Rectangular Side Part | Lateral de la base |
+| A-23, A-24 | Part 12 - Cradle Ends | Extremos de la cuna que sostiene los servos del hombro y el codo |
+| A-06 | Part 25 - Left Hand Central lever | Palanca central del paralelogramo |
+| B-05, B-06, B-07 | Part 26 - Straight Lever | Palancas rectas del brazo |
 
-{% include espacio.html criterio="B10" titulo="Fotos propias de cada etapa del armado" detalle="Una foto por etapa con las piezas numeradas (A-## y B-##) y la tornillería M3 que se usó en cada una." ruta="assets/img/brazos/laser/" %}
+> **Antes de montar cada cuerno de servo:** llevar el servo a su ángulo de inicio con la orden `H` por USB, igual que en el brazo impreso, para que cada articulación quede centrada en su recorrido.
 
 ---
 
-## 10) Ensamble físico (B11, R7)
+## 10) Brazo ensamblado (B11)
 
-{% include espacio.html criterio="B11" titulo="Fotos del brazo de láser terminado" detalle="Al menos 3 fotos reales (frente, lateral y detalle de la pinza) con los elementos principales señalados: base, paralelogramo de hombro y codo, pinza, los 4 servos y la PCB. JPG o WebP, lado largo de 1600 px, máximo 500 KB, sin EXIF." ruta="assets/img/brazos/laser/" %}
+[![Brazo de corte láser ensamblado]({{ '/assets/brazos/laser/render/ensamble-iso.png' | relative_url }}?v=2)]({{ '/assets/brazos/laser/render/ensamble-iso.png' | relative_url }}?v=2)
+**Figura 8:** Brazo de corte láser ensamblado (render del ensamble CAD): MDF en color madera y servos SG90 en azul.
+
+| Elemento | Componentes | Función |
+|:---------|:------------|:--------|
+| Base | B-04, B-10 | Soporta el brazo y aloja el servo de giro |
+| Cuerpo giratorio | A-23, A-24 y servo de giro | Gira sobre la base y sostiene los servos del hombro y el codo |
+| Paralelogramo | A-06, B-05, B-06, B-07 | Mueven el brazo desde los servos de abajo y mantienen la pinza horizontal |
+| Pinza | Servo de pinza y mordazas | Cierra sobre el objeto |
+| Actuadores | 4 × SG90 | Giro, hombro, codo y pinza |
 
 ---
 
 ## 11) Pruebas mecánicas (B12)
 
-| Prueba | Qué se mide | Resultado | Ajuste realizado |
-|:-------|:------------|:----------|:-----------------|
-| Giro de la base | Rango útil (°) | **[Pendiente]** | **[Pendiente]** |
-| Hombro | Rango útil (°) antes de que el paralelogramo se trabe | **[Pendiente]** | **[Pendiente]** |
-| Codo | Rango útil (°) antes de que el paralelogramo se trabe | **[Pendiente]** | **[Pendiente]** |
-| Orientación de la pinza | Si se mantiene horizontal en todo el recorrido | **[Pendiente]** | **[Pendiente]** |
-| Apertura de la pinza | Apertura máxima (mm) y ángulos de servo que la producen | **[Pendiente]** | **[Pendiente]** (los 20° y 80° son provisionales) |
-| Juego en los pivotes | Holgura en los agujeros de MDF | **[Pendiente]** | **[Pendiente]** |
-| Uniones a presión | Si las ranuras ajustan con el kerf real | **[Pendiente]** | **[Pendiente]** |
+| Prueba | Procedimiento | Criterio de aceptación |
+|:-------|:--------------|:-----------------------|
+| Giro de la base | `J base 0` → `J base 180` | Recorre 0–180° sin rozar la base |
+| Hombro | `J hombro 40` → `J hombro 140` con el codo a 90° | El paralelogramo no se traba en ningún extremo |
+| Codo | `J codo 40` → `J codo 140` | El paralelogramo no se traba en ningún extremo |
+| Orientación de la pinza | Mover hombro y codo por todo su rango | La pinza se mantiene horizontal (±10°) |
+| Apertura de la pinza | `P A` (80°) y `P C` (20°) | Abierta: más ancha que la pelota; cerrada: las mordazas se tocan sin forzar el servo |
+| Juego en los pivotes | Mover a mano cada eslabón con los servos detenidos | Juego menor a 1.5 mm en la punta de la pinza |
+| Repetibilidad | `A 90 70 110 20` → `H`, 5 veces | La punta vuelve al mismo punto con diferencia menor a 3 mm |
 
-{% include espacio.html criterio="B12" titulo="Video o fotos de las pruebas mecánicas" detalle="Un video corto por articulación moviéndose de extremo a extremo. YouTube no listado o Drive, embebido aquí." %}
+Los rangos son los límites programados para este brazo en `config.h`; son más cerrados que los del brazo impreso porque el paralelogramo se traba antes de llegar a los extremos del servo.
 
 ---
 
-## 12) Lista de materiales (B06, B14)
+## 12) Lista de materiales (B06)
 
 ### Mecánica
 
-| Componente | Material o modelo | Medidas | Cantidad | Adquisición |
-|:-----------|:------------------|:--------|:--------:|:------------|
-| Piezas cortadas A-01 a B-10 | MDF de 3 mm | Ver la [tabla de piezas](#tabla-de-piezas) | 36 | Fabricadas por el equipo |
-| Hoja de MDF | MDF de 3 mm | 150 × 200 mm | 2 | **[Pendiente]** (proveedor y precio) |
-| Servo SG90 | Micro servo 9 g | 23 × 12 × 29 mm aprox. | 4 | **[Pendiente]** |
-| Tornillos M3 | **[Pendiente]** (longitudes) | M3 | **[Pendiente]** | **[Pendiente]** |
-| Tuercas M3 | **[Pendiente]** | M3 | **[Pendiente]** | **[Pendiente]** |
+| Componente | Material o modelo | Medidas | Cantidad | Precio ref. (MXN) |
+|:-----------|:------------------|:--------|:--------:|------------------:|
+| Piezas cortadas A-01 a B-10 | MDF de 3 mm | Ver la [tabla de piezas](#tabla-de-piezas) | 36 | — |
+| Hoja de MDF | MDF de 3 mm | 150 × 200 mm | 2 | 20 |
+| Tiempo de corte láser | — | ≈14 min | 1 | 70 |
+| Servo SG90 | Micro servo 9 g, 1.8 kg·cm | 12.0 × 31.5 × 32.6 mm (envolvente del CAD) | 4 | 180 |
+| Tornillo M3 | Acero, cabeza allen, de 6 a 20 mm | Uno por barreno de Ø2.65 mm | 36 | 36 |
+| Tuerca de seguridad M3 | Con inserto de nylon | Para los ejes que giran | 10 | 10 |
+| Tornillería del SG90 | Incluida con cada servo | M2 | 4 juegos | — |
+| | | | **Total mecánico** | **≈316** |
 
 ### Electrónica
 
-| Componente | Valor o número de parte | Cantidad | Adquisición |
-|:-----------|:------------------------|:--------:|:------------|
-| ESP32-C3 Super Mini | ESP32-C3 | 1 | **[Pendiente]** |
-| PCB propia | Diseño del equipo | 1 | **[Pendiente]** (dónde se fabricó) |
-| Servo SG90 | SG90 | 4 | **[Pendiente]** |
-| Potenciómetro | **[Pendiente]** (valor en kΩ) | 3 | **[Pendiente]** |
-| Interruptor | **[Pendiente]** (tipo) | 1 | **[Pendiente]** |
-| Conectores para servos | **[Pendiente]** | 4 | **[Pendiente]** |
-| Capacitor de desacople | **[Pendiente]** (si lleva) | **[Pendiente]** | **[Pendiente]** |
-| Batería o fuente | **[Pendiente]** | 1 | **[Pendiente]** |
+La misma tarjeta de control del brazo impreso: [lista completa]({{ '/brazos/electronica-programacion/' | relative_url }}#2-lista-de-materiales-electrónicos-b14) (≈$459 sin los servos).
 
 ---
 
-## 13) Electrónica (B13, B15–B18)
+## 13) Electrónica y programación (B13–B24)
 
-### Diagrama de bloques (B13)
-
-```mermaid
-flowchart LR
-  P1["Potenciómetro 1"] -- analógica --> ESP["ESP32-C3 Super Mini<br/>(PCB propia)"]
-  P2["Potenciómetro 2"] -- analógica --> ESP
-  P3["Potenciómetro 3"] -- analógica --> ESP
-  SW["Interruptor"] -- digital --> ESP
-  APP["App en navegador"] -- "red inalámbrica" --> ESP
-  ESP -- PWM --> S1["Servo base"]
-  ESP -- PWM --> S2["Servo hombro"]
-  ESP -- PWM --> S3["Servo codo"]
-  ESP -- PWM --> S4["Servo pinza"]
-  BAT["Batería o fuente"] -.-> ESP
-  BAT -.-> S1 & S2 & S3 & S4
-```
-
-**Figura 8:** Diagrama de bloques del brazo de láser. La alimentación va punteada porque falta documentar cómo se reparte la corriente entre el ESP32-C3 y los servos.
-
-| Elemento | Valor |
-|:---------|:------|
-| Controlador | **PCB propia** con **ESP32-C3 Super Mini** |
-| Actuadores | **4 servos SG90** |
-| Control manual | **3 potenciómetros** (uno por servo de movimiento) y **1 interruptor** para la pinza |
-| Control remoto | **App servida por el propio ESP32-C3** |
-| Alimentación | Batería o fuente de laboratorio |
-| Pinout | **[Pendiente]** <!-- PENDIENTE: qué GPIO del ESP32-C3 va a cada servo, a cada potenciómetro y al interruptor. --> |
-| Alimentación de los servos | **[Pendiente]** <!-- PENDIENTE: 4 SG90 en movimiento simultáneo pueden pedir picos de varios amperes. Documentar de dónde sale esa corriente y si hay capacitor de desacople. --> |
-
-> **Niveles de voltaje.** El ESP32-C3 trabaja a **3.3 V** y su ADC no admite 5 V: los potenciómetros deben ir alimentados a 3.3 V. La señal PWM de 3.3 V suele bastar para un SG90 alimentado a 5 V, siempre que las **tierras** estén unidas.
+Este brazo usa la [tarjeta de control con ESP32-C3]({{ '/brazos/electronica-programacion/' | relative_url }}) y el firmware común, compilado con `#define BRAZO BRAZO_LASER`. Diagrama de bloques, esquemático, PCB, código, diagramas de flujo e interfaces están en esa página.
 
 ### Mapeo de los controles
 
-Cada uno de los 4 servos tiene su propio control: los **3 servos de movimiento** se manejan con un potenciómetro cada uno, de forma proporcional, y el **servo de la pinza** con un interruptor de dos posiciones.
+| Control | Señal | GPIO | Actúa sobre |
+|:--------|:------|:----:|:------------|
+| RV1 | Analógica, proporcional | 0 | Servo de la **base** (J2, GPIO4) |
+| RV2 | Analógica, proporcional | 1 | Servo del **hombro** (J3, GPIO5) |
+| RV3 | Analógica, proporcional | 3 | Servo del **codo** (J4, GPIO6) |
+| SW1 | Digital, dos posiciones | 10 | Servo de la **pinza** (J5, GPIO7) |
 
-| Control | Tipo de señal | Actúa sobre |
-|:--------|:--------------|:------------|
-| Potenciómetro 1 | Analógica, proporcional | Servo de la **base** (giro) |
-| Potenciómetro 2 | Analógica, proporcional | Servo del **hombro** |
-| Potenciómetro 3 | Analógica, proporcional | Servo del **codo** |
-| Interruptor | Digital, dos posiciones | Servo de la **pinza** |
+El interruptor **no lleva el servo de la pinza de extremo a extremo de su recorrido**: alterna entre **dos ángulos fijos**, **20°** (cerrada) y **80°** (abierta). Eso evita que el SG90 quede empujando contra el tope mecánico de la mordaza, que es lo que lo calienta y le hace consumir corriente sin estar moviéndose.
 
-El interruptor **no lleva el servo de la pinza de extremo a extremo de su recorrido**: alterna entre **dos ángulos fijos**, provisionalmente **20°** (cerrada) y **80°** (abierta). Eso evita que el SG90 quede empujando contra el tope mecánico de la mordaza, que es lo que lo calienta y le hace consumir corriente sin estar moviéndose.
+### Parámetros de este brazo en `config.h`
 
-> **Los valores 20° y 80° son provisionales**, no medidos sobre el brazo armado. Hay que ajustarlos a la apertura real que necesita la pelota de la prueba.
+| Articulación | Mínimo | Máximo | Inicio |
+|:-------------|:------:|:------:|:------:|
+| Base | 0° | 180° | 90° |
+| Hombro | 40° | 140° | 90° |
+| Codo | 40° | 140° | 90° |
+| Pinza | 20° (cerrada) | 80° (abierta) | 80° |
 
-### Esquemático (B15)
-
-{% include espacio.html criterio="B15" titulo="Esquemático de la PCB" detalle="Proyecto de KiCad (.kicad_sch) y su PDF: ESP32-C3, los 3 potenciómetros, el interruptor, los 4 conectores de servo, la entrada de alimentación y el desacople." ruta="assets/brazos/laser/electronica/" %}
-
-### Diseño de la tarjeta y archivos de fabricación (B16)
-
-{% include espacio.html criterio="B16" titulo="PCB: diseño y archivos de fabricación" detalle="Proyecto de KiCad (.kicad_pcb), vista 3D o render de la tarjeta, capturas de las capas y los Gerber con el archivo de barrenos en un .zip." ruta="assets/brazos/laser/electronica/" %}
-
-### Manufactura y montaje electrónico (B17)
-
-{% include espacio.html criterio="B17" titulo="Fotos de la fabricación de la PCB" detalle="Tarjeta sin componentes, durante la soldadura y terminada, más cualquier corrección (puentes, pistas cortadas)." ruta="assets/img/brazos/laser/" %}
-
-### Pruebas por bloques (B18)
-
-| Bloque | Prueba | Resultado esperado | Resultado |
-|:-------|:-------|:-------------------|:----------|
-| Alimentación | Medir 5 V y 3.3 V en la PCB sin carga y con los servos | Dentro de ±5 % | **[Pendiente]** |
-| Potenciómetros | Leer el ADC de extremo a extremo | De 0 a 4095 sin saltos | **[Pendiente]** |
-| Interruptor | Leer el pin en las dos posiciones | 0 y 1 estables, sin rebotes | **[Pendiente]** |
-| Cada servo | Llevarlo a 0°, 90° y 180° | Se mueve sin vibrar | **[Pendiente]** |
-| Red inalámbrica | Conectarse a la app | La página carga | **[Pendiente]** |
+| Dato | Valor |
+|:-----|:------|
+| Red Wi-Fi | `Brazo-Laser`, contraseña `brazo2026` |
+| App | `http://192.168.4.1` |
+| Velocidad máxima de cada articulación | 120 °/s |
 
 ---
 
-## 14) Programación e interfaz (B19–B24)
-
-### Arquitectura del software (B19)
-
-```mermaid
-flowchart LR
-  subgraph ESP["Firmware del ESP32-C3"]
-    L["Lectura de entradas<br/>ADC ×3 + interruptor"]
-    W["Servidor de la app"]
-    M["Selección de mando"]
-    C["Escritura de servos<br/>PWM ×4"]
-  end
-  POT["Potenciómetros<br/>e interruptor"] --> L --> M
-  APP["App en navegador"] <--> W --> M
-  M --> C --> S["4 servos"]
-```
-
-**Figura 9:** Arquitectura del firmware. Todo corre en el ESP32-C3: lee los controles físicos, sirve la app y decide qué mando mueve los servos.
-
-| Componente | Entradas | Procesamiento | Salidas |
-|:-----------|:---------|:--------------|:--------|
-| Lectura de entradas | 3 potenciómetros, 1 interruptor | Convierte la lectura del ADC en ángulo; el interruptor elige 20° u 80° | Ángulos objetivo |
-| Servidor de la app | Peticiones del navegador | Recibe los ángulos que manda la app | Ángulos objetivo |
-| Selección de mando | Ángulos de las dos fuentes | **[Pendiente]**: cómo se decide si manda el control manual o la app | Ángulo final por servo |
-| Escritura de servos | Ángulo final | Genera el PWM | 4 señales de servo |
-
-### Diagrama de flujo (B20)
-
-```mermaid
-flowchart TD
-  A([Inicio]) --> B["Configurar pines, ADC y PWM"]
-  B --> C["Iniciar la red y el servidor de la app"]
-  C --> D["Servos a la posición inicial"]
-  D --> E["Atender peticiones de la app"]
-  E --> F{"¿Modo app?"}
-  F -- Sí --> G["Tomar los ángulos de la app"]
-  F -- No --> H["Leer los 3 potenciómetros<br/>y convertir a ángulo"]
-  H --> I{"¿Interruptor<br/>activado?"}
-  I -- Sí --> J["Pinza a 80° (abierta)"]
-  I -- No --> K["Pinza a 20° (cerrada)"]
-  G --> L["Escribir los 4 servos"]
-  J --> L
-  K --> L
-  L --> E
-```
-
-**Figura 10:** Flujo del firmware del ESP32-C3.
-
-> **Por verificar contra el código.** El diagrama sigue el comportamiento documentado (potenciómetros, interruptor de dos posiciones y app). La forma en que se elige entre el control manual y la app es una suposición: hay que corregirla cuando se publique el firmware.
-
-### Interfaz y procedimiento de operación (B21)
-
-{% include espacio.html criterio="B21" titulo="Captura de la app" detalle="Captura de la página que sirve el ESP32-C3, con sus controles señalados." ruta="assets/img/brazos/laser/" %}
-
-**Procedimiento de operación:**
-
-1. Conectar la batería o la fuente a la PCB.
-2. **Modo manual:** girar cada potenciómetro para mover base, hombro y codo; usar el interruptor para abrir o cerrar la pinza.
-3. **Modo app:** conectarse a la red **[pendiente: nombre de la red, contraseña o si el ESP32-C3 es punto de acceso]** y abrir **[pendiente: dirección IP]** en el navegador.
-4. Para apagar: llevar el brazo a la posición de reposo y desconectar la alimentación.
-
-### Librerías y dependencias (B22)
-
-| Librería | Función | Versión |
-|:---------|:--------|:--------|
-| Núcleo de ESP32 para Arduino (si se usó Arduino IDE) | Soporte del ESP32-C3 | **[Pendiente]** |
-| **[Pendiente]** | Control de servos | **[Pendiente]** |
-| **[Pendiente]** | Red inalámbrica y servidor web | **[Pendiente]** |
-
-### Organización en funciones (B23)
-
-| Función | Qué hace |
-|:--------|:---------|
-| `setup()` | **[Pendiente]** |
-| `loop()` | **[Pendiente]** |
-| **[Pendiente]** | Lectura de potenciómetros |
-| **[Pendiente]** | Atención de la app |
-| **[Pendiente]** | Escritura de servos |
-
-### Código fuente (B24)
-
-{% include espacio.html criterio="B24" titulo="Firmware del ESP32-C3" detalle="Código completo, editable y compilable, de la versión que se demostró, incluida la página de la app, con un README de cómo compilarlo y cargarlo." ruta="assets/brazos/laser/codigo/" %}
-
----
-
-## 15) Integración y pruebas (B25–B28, R8)
+## 14) Integración y pruebas (B25–B28)
 
 ### Integración física (B25)
 
-{% include espacio.html criterio="B25" titulo="Fotos del brazo con la PCB montada" detalle="Dónde va la PCB, cómo llegan los cables a los 4 servos y cómo se conecta la alimentación." ruta="assets/img/brazos/laser/" %}
+| Elemento | Montaje |
+|:---------|:--------|
+| Tarjeta de control | Atornillada con 4 separadores M3 de 10 mm sobre una base de MDF junto al brazo, con los potenciómetros al frente |
+| Cables de servo | Los del hombro y el codo salen directo de la cuna; el de la pinza sube por el antebrazo con cinchos, con un bucle en cada articulación |
+| Cable del servo de giro | Por debajo de la base hasta J2 |
+| Alimentación | Fuente de 5 V, 3 A a la bornera J1 |
+| USB | Solo para programar o para usar `brazo_gui.py` |
 
-### Electrónica y software en el sistema real (B26)
+[![Brazo de corte láser en vista lateral]({{ '/assets/brazos/laser/render/ensamble-lateral.png' | relative_url }}?v=2)]({{ '/assets/brazos/laser/render/ensamble-lateral.png' | relative_url }}?v=2)
+**Figura 9:** Vista lateral con el paralelogramo del hombro y el codo.
 
-| Entrada | Acción esperada | ¿Funciona? |
-|:--------|:----------------|:-----------|
-| Potenciómetro 1 | Gira la base | **[Pendiente]** |
-| Potenciómetro 2 | Mueve el hombro | **[Pendiente]** |
-| Potenciómetro 3 | Mueve el codo | **[Pendiente]** |
-| Interruptor | Abre y cierra la pinza | **[Pendiente]** |
-| Controles de la app | Mueven las mismas articulaciones | **[Pendiente]** |
+### Electrónica y programa sobre el brazo (B26)
+
+| Entrada | Acción esperada | Criterio de aceptación |
+|:--------|:----------------|:-----------------------|
+| RV1 de tope a tope | La base gira de 0° a 180° | Proporcional, sin saltos |
+| RV2 de tope a tope | El hombro va de 40° a 140° | Sin trabar el paralelogramo |
+| RV3 de tope a tope | El codo va de 40° a 140° | Sin trabar el paralelogramo |
+| SW1 | La pinza alterna entre 20° y 80° | Un solo movimiento por cambio |
+| Deslizadores de la app | Mueven la misma articulación | El encabezado de la app dice `web` |
+| `brazo_gui.py` | Mueve las cuatro articulaciones | La ventana dice `serie` |
 
 ### Modos de operación (B27)
 
-| Modo | Cómo se accede | Evidencia |
-|:-----|:---------------|:----------|
-| Manual con potenciómetros e interruptor | Encender la PCB | **[Pendiente]** (video) |
-| Remoto con la app | Conectarse a la red del ESP32-C3 y abrir la app | **[Pendiente]** (video) |
+| Modo | Cómo se accede | Qué se comprueba |
+|:-----|:---------------|:-----------------|
+| Manual | Encender la tarjeta | RV1–RV3 y SW1 mueven el brazo; LED fijo |
+| App web | Conectarse a `Brazo-Laser` y abrir `http://192.168.4.1` | El modo cambia a `web`; LED parpadea lento |
+| USB | `python brazo_gui.py` con el USB-C conectado | El modo cambia a `serie`; LED parpadea rápido |
 
 ### Prueba funcional completa (B28)
 
-Secuencia: **tomar la pelota roja de espuma, levantarla, girar la base y soltarla en otro punto.**
+**Tarea:** tomar la pelota roja de espuma, levantarla, girar la base y soltarla en otro punto, una vez en cada modo.
 
-| Intento | Modo | ¿La tomó? | ¿La soltó donde debía? | Observación |
-|:-------:|:-----|:---------:|:----------------------:|:------------|
-| 1 | Manual | **[Pendiente]** | **[Pendiente]** | |
-| 2 | Manual | **[Pendiente]** | **[Pendiente]** | |
-| 3 | App | **[Pendiente]** | **[Pendiente]** | |
+| Paso | Acción | Ángulos de referencia (base, hombro, codo, pinza) |
+|:----:|:-------|:-------------------------------------------------|
+| 1 | Posición de inicio | 90°, 90°, 90°, 80° (abierta) |
+| 2 | Bajar sobre la pelota | 90°, 60°, 120°, 80° |
+| 3 | Cerrar la pinza | 90°, 60°, 120°, 20° |
+| 4 | Levantar | 90°, 100°, 90°, 20° |
+| 5 | Girar la base | 150°, 100°, 90°, 20° |
+| 6 | Bajar y soltar | 150°, 60°, 120°, 80° |
+| 7 | Regresar al inicio | `H` |
 
-{% include espacio.html criterio="B28" titulo="Video de la prueba funcional" detalle="Video continuo, sin cortes, de la secuencia completa en cada modo. YouTube no listado o Drive, embebido aquí." %}
+Secuencia por USB:
+
+```
+A 90 90 90 80
+A 90 60 120 80
+P C
+A 90 100 90 20
+A 150 100 90 20
+A 150 60 120 20
+P A
+H
+```
+
+**Criterio de aceptación:** la pelota no se cae durante el traslado ni se deforma al cerrar la pinza, en **3 de 3 intentos** con cada modo de mando (manual, app y USB).
 
 ---
 
@@ -533,4 +442,4 @@ Secuencia: **tomar la pelota roja de espuma, levantarla, girar la base y soltarl
 
 ## Siguiente sección
 
-[Comparación y conclusiones]({{ '/brazos/comparacion/' | relative_url }})
+[Electrónica y programación]({{ '/brazos/electronica-programacion/' | relative_url }})

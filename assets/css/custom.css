@@ -421,28 +421,6 @@ video {
   .stl-viewer__legend { font-size: 0.7rem; }
 }
 
-/* ===== Espacio reservado para evidencia pendiente (_includes/espacio.html) ===== */
-.espacio {
-  margin: 1rem 0;
-  padding: 0.9rem 1.1rem;
-  border: 2px dashed #E00034;
-  border-radius: 12px;
-  background: #fff5f7;
-}
-.espacio p { margin: 0.2rem 0; }
-.espacio__titulo { font-weight: 600; color: #333333; }
-.espacio__etiqueta {
-  display: inline-block;
-  margin-right: 0.4rem;
-  padding: 0 0.45rem;
-  border-radius: 4px;
-  background: #E00034;
-  color: #ffffff;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-.espacio__detalle, .espacio__ruta { font-size: 0.9rem; color: #4B5563; }
-
 /* Galería de pasos de ensamblaje */
 .pasos {
   display: grid;
@@ -453,13 +431,3 @@ video {
 .pasos figure { margin: 0; }
 .pasos img { width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 8px; background: #f5f6f8; }
 .pasos figcaption { font-size: 0.85rem; color: #4B5563; margin-top: 0.3rem; }
-
-/* Tabla de autoevaluación: columnas de estado angostas y espacio para "Qué falta"
-   (el tema le da 7.5rem de ancho mínimo a todas las celdas) */
-.tabla-eval th, .tabla-eval td { min-width: 0; }
-.tabla-eval th:nth-child(1), .tabla-eval td:nth-child(1),
-.tabla-eval th:nth-child(3), .tabla-eval td:nth-child(3),
-.tabla-eval th:nth-child(4), .tabla-eval td:nth-child(4),
-.tabla-eval th:nth-child(5), .tabla-eval td:nth-child(5) { width: 1%; white-space: nowrap; text-align: center; }
-.tabla-eval td:nth-child(2) { min-width: 9rem; }
-.tabla-eval td:last-child { min-width: 14rem; }
