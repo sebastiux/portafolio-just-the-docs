@@ -21,6 +21,10 @@ just_the_docs:
     - "assets/css/custom.css"
   footer_content: ""
 
+# Diagramas Mermaid (bloques ```mermaid en Markdown)
+mermaid:
+  version: "10.9.1"
+
 search_enabled: true
 search:
   # Cambia el numero dependiendo el numero de subniveles de páginas, poner 1 por default
