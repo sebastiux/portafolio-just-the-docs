@@ -24,6 +24,7 @@ El brazo se maneja de **dos maneras**, y cuál manda lo decide un switch de la t
 | [Archivos de fresado (.zip)]({{ '/assets/brazos/electronica/v3/cnc-tarjeta-v3.zip' | relative_url }}) | Cobre, contorno y taladros, ya espejados para la fresadora |
 | [Gerber estándar (.zip)]({{ '/assets/brazos/electronica/v3/gerber-tarjeta-v3.zip' | relative_url }}) | Por si se manda a fabricar en vez de fresarla |
 | [Lista de materiales (CSV)]({{ '/assets/brazos/electronica/v3/bom.csv' | relative_url }}) | Generada del esquemático |
+| [Generador de la tarjeta](https://github.com/sebastiux/portafolio-just-the-docs/tree/main/assets/brazos/electronica/generador-v3) | Los scripts de Python que colocaron, rutearon y verificaron la placa |
 | [Firmware (.zip)]({{ '/assets/brazos/codigo/firmware_brazo.zip' | relative_url }}) | Sketch de Arduino para el ESP32-C3 |
 
 ---
@@ -213,6 +214,8 @@ Porque **se fresó en una Genmitsu Cubiko**, y eso manda sobre el diseño entero
 - **Se quitó un header extra** que estaba previsto: no cabía sin bajar de 0.8 mm o sin cruzar pistas.
 
 La colocación y el ruteo en una cara se hicieron con un **generador propio en Python**, con las troncales de alimentación fijadas a mano y verificación geométrica después. Un autoruteador normal da por hecho que puede usar la segunda capa.
+
+Los 13 scripts están publicados en [`assets/brazos/electronica/generador-v3/`](https://github.com/sebastiux/portafolio-just-the-docs/tree/main/assets/brazos/electronica/generador-v3) para que la afirmación se pueda comprobar: `design.py` es la fuente única de verdad (partes, huellas y redes), `placement.py` coloca y fija las troncales, `router.py` rutea, `gen_sch.py` genera el esquemático a partir del mismo `design.py` —por eso esquemático y PCB no se pueden contradecir— y `verify_geom.py` y `check_netlist.py` verifican el resultado.
 
 {: .note }
 > **Las pistas pasan por debajo del módulo.** Por eso U1 va siempre en zócalo: si se soldara directo a la placa, sus patas quedarían sobre el cobre.
