@@ -12,85 +12,25 @@ Comprueba:
   - que las referencias del esquemático y de la PCB coincidan;
   - qué pads quedan sin red y de qué componente son.
 
-La posición de cada pad depende del giro de su footprint. El signo de ese giro
-se autocomprueba contra el archivo de taladros: con rotación ×(-1) y Y
-invertida el residuo baja a 0.138 mm, que es la media longitud de las ranuras
-de 2.1 × 1.8 mm. Con cualquier otra combinación pasa de 6 mm.
+El parser de s-expresiones y la geometría de los pads viven en kicad_sexp.py,
+que también usa el script de figuras (F4). Ahí está explicado por qué el giro
+de los footprints lleva signo negativo.
 
-    python3 -I tools/f1_verificar_tarjeta_v3.py <carpeta del proyecto>
+    python3 tools/f1_verificar_tarjeta_v3.py <carpeta del proyecto>
 """
-import collections, math, os, re, sys
-from shapely.geometry import LineString, Point, box
-from shapely.affinity import rotate, translate
+import collections, os, sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))   # para kicad_sexp
+
+from shapely.geometry import LineString
 from shapely.ops import unary_union
 
-SIGNO_GIRO = -1          # verificado contra el .drl
-f = float
-
-
-def parse(txt):
-    """Parser mínimo de s-expresiones de KiCad."""
-    i, n = 0, len(txt)
-
-    def nodo():
-        nonlocal i
-        while i < n and txt[i] in " \t\r\n":
-            i += 1
-        if txt[i] == "(":
-            i += 1
-            out = []
-            while True:
-                while i < n and txt[i] in " \t\r\n":
-                    i += 1
-                if txt[i] == ")":
-                    i += 1
-                    return out
-                out.append(nodo())
-        if txt[i] == '"':
-            i += 1
-            buf = []
-            while txt[i] != '"':
-                if txt[i] == "\\":
-                    i += 1
-                buf.append(txt[i])
-                i += 1
-            i += 1
-            return "".join(buf)
-        j = i
-        while i < n and txt[i] not in " \t\r\n()":
-            i += 1
-        return txt[j:i]
-
-    return nodo()
-
-
-hijos = lambda nodo, nom: [c for c in nodo if isinstance(c, list) and c and c[0] == nom]
-def hijo(nodo, nom):
-    h = hijos(nodo, nom)
-    return h[0] if h else None
-
-
-def girar(p, deg):
-    a = math.radians(deg * SIGNO_GIRO)
-    return (p[0]*math.cos(a) - p[1]*math.sin(a), p[0]*math.sin(a) + p[1]*math.cos(a))
-
-
-def geometria_pad(forma, w, h, cx, cy, ang):
-    if forma == "circle":
-        return Point(cx, cy).buffer(w/2, 32)
-    if forma == "oval":
-        largo = abs(w - h) / 2
-        g = LineString([(-largo, 0), (largo, 0)]).buffer(min(w, h)/2, 32)
-    else:                                   # rect, roundrect
-        g = box(-w/2, -h/2, w/2, h/2)
-    return translate(rotate(g, ang * SIGNO_GIRO, origin=(0, 0)), cx, cy)
+from kicad_sexp import angulo_pad, f, geometria_pad, girar, hijo, hijos, leer
 
 
 def main(carpeta):
-    pcb = parse(open(os.path.join(carpeta, "brazo_control.kicad_pcb"),
-                     encoding="utf-8", errors="replace").read())
-    sch = parse(open(os.path.join(carpeta, "brazo_control.kicad_sch"),
-                     encoding="utf-8", errors="replace").read())
+    pcb = leer(os.path.join(carpeta, "brazo_control.kicad_pcb"))
+    sch = leer(os.path.join(carpeta, "brazo_control.kicad_sch"))
 
     # contorno
     xs, ys = [], []
@@ -133,8 +73,7 @@ def main(carpeta):
             if hijo(p, "drill"):
                 n_taladros += 1
             dx, dy = girar((f(pat[1]), f(pat[2])), fr)
-            ang = fr + (f(pat[3]) if len(pat) > 3 else 0.0)
-            g = geometria_pad(p[3], f(psz[1]), f(psz[2]), fx+dx, fy+dy, ang)
+            g = geometria_pad(p[3], f(psz[1]), f(psz[2]), fx+dx, fy+dy, angulo_pad(pat, fr))
             nt = hijo(p, "net")
             if nt and nt[2]:
                 porred[int(nt[1])].append(g)
