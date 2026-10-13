@@ -43,3 +43,9 @@ exclude:
   - "Gemfile.lock"
   - "node_modules"
   - "vendor"
+  # Scripts y notas internas: se consultan en GitHub, no son páginas del sitio.
+  # GitHub Pages convierte cualquier .md en página y lo mete al menú lateral.
+  - "tools"
+  - "assets/brazos/archivo/LEEME.md"
+  - "assets/brazos/electronica/kicad-v3/LEEME.md"
+  - "assets/brazos/electronica/generador-v3/LEEME.md"
