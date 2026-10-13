@@ -25,7 +25,7 @@ Brazo de **3 GDL más pinza**, cortado con láser en **MDF de 3 mm**. Es un **Me
 | Hojas de corte | 2 de **150 × 200 mm** |
 | Volumen de MDF | **94.8 cm³** sumando las 36 piezas |
 | Actuadores | **4 servos SG90** |
-| Control | **Tarjeta propia con ESP32-C3 Super Mini**: potenciómetros, app web y USB |
+| Control | **Tarjeta propia con ESP32-C3 Super Mini**: potenciómetros y switches, o app web; un switch elige cuál manda |
 | Envolvente del ensamble CAD | 264.1 × 95.2 × 156.8 mm en la pose exportada |
 | Alcance | ≈160 mm de eslabones (2 × ≈80 mm) más la pinza |
 | Masa estimada | 94.8 cm³ × 0.75 g/cm³ ≈ 71 g de MDF + 4 × 9 g de servos ≈ **107 g** sin tornillería ni tarjeta |
@@ -275,7 +275,7 @@ El armado sigue la **guía oficial de 13 pasos** del autor del MeArm [[3](#refer
 | A-06 | Part 25 - Left Hand Central lever | Palanca central del paralelogramo |
 | B-05, B-06, B-07 | Part 26 - Straight Lever | Palancas rectas del brazo |
 
-> **Antes de montar cada cuerno de servo:** llevar el servo a su ángulo de inicio con la orden `H` por USB, igual que en el brazo impreso, para que cada articulación quede centrada en su recorrido.
+> **Antes de montar cada cuerno de servo:** llevar el servo a su ángulo de inicio con el botón **Inicio** de la app, igual que en el brazo impreso, para que cada articulación quede centrada en su recorrido. Basta con energizar la tarjeta: al arrancar, el firmware deja las cuatro articulaciones en su ángulo de inicio.
 
 ---
 
@@ -296,15 +296,17 @@ El armado sigue la **guía oficial de 13 pasos** del autor del MeArm [[3](#refer
 
 ## 11) Pruebas mecánicas (B12)
 
+Cada articulación se mueve de tope a tope desde la app, con SW2 en APP, o con su potenciómetro, con el brazo armado y la pinza vacía.
+
 | Prueba | Procedimiento | Criterio de aceptación |
 |:-------|:--------------|:-----------------------|
-| Giro de la base | `J base 0` → `J base 180` | Recorre 0–180° sin rozar la base |
-| Hombro | `J hombro 40` → `J hombro 140` con el codo a 90° | El paralelogramo no se traba en ningún extremo |
-| Codo | `J codo 40` → `J codo 140` | El paralelogramo no se traba en ningún extremo |
+| Giro de la base | Base de 0° a 180° | Recorre 0–180° sin rozar la base |
+| Hombro | Hombro de 40° a 140°, con el codo a 90° | El paralelogramo no se traba en ningún extremo |
+| Codo | Codo de 40° a 140° | El paralelogramo no se traba en ningún extremo |
 | Orientación de la pinza | Mover hombro y codo por todo su rango | La pinza se mantiene horizontal (±10°) |
-| Apertura de la pinza | `P A` (80°) y `P C` (20°) | Abierta: más ancha que la pelota; cerrada: las mordazas se tocan sin forzar el servo |
+| Apertura de la pinza | Botones **Abrir** (80°) y **Cerrar** (20°) de la app, o SW1 | Abierta: más ancha que la pelota; cerrada: las mordazas se tocan sin forzar el servo |
 | Juego en los pivotes | Mover a mano cada eslabón con los servos detenidos | Juego menor a 1.5 mm en la punta de la pinza |
-| Repetibilidad | `A 90 70 110 20` → `H`, 5 veces | La punta vuelve al mismo punto con diferencia menor a 3 mm |
+| Repetibilidad | Ir a 90°, 70°, 110°, 20° y volver con el botón **Inicio**, 5 veces | La punta vuelve al mismo punto con diferencia menor a 3 mm |
 
 Los rangos son los límites programados para este brazo en `config.h`; son más cerrados que los del brazo impreso porque el paralelogramo se traba antes de llegar a los extremos del servo.
 

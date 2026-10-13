@@ -24,7 +24,7 @@ Brazo de **3 GDL más pinza**, fabricado por **impresión 3D (FDM) en PLA**. Par
 | Piezas impresas | **9** |
 | Volumen de PLA | **54.43 cm³**, masa máxima **67.5 g** sin servos ni tornillería |
 | Actuadores | **4 servos SG90** |
-| Control | **Tarjeta propia con ESP32-C3 Super Mini**: potenciómetros, app web y USB |
+| Control | **Tarjeta propia con ESP32-C3 Super Mini**: potenciómetros y switches, o app web; un switch elige cuál manda |
 | Envolvente del ensamble CAD | 174.0 × 58.1 × 117.5 mm en la pose exportada |
 | Alcance | 170 mm de eslabones (80 + 90) más 70 mm de pinza |
 | Masa estimada | ≈40 g de PLA impreso + 4 × 9 g de servos ≈ **76 g** sin tarjeta |
@@ -383,17 +383,17 @@ Orden de montaje **de la base hacia la pinza**, sacado de la jerarquía del ensa
 
 ## 11) Pruebas mecánicas (B12)
 
-Cada articulación se mueve de tope a tope con la orden `J` por USB o con su potenciómetro, con el brazo armado y la pinza vacía.
+Cada articulación se mueve de tope a tope desde la app, con SW2 en APP, o con su potenciómetro, con el brazo armado y la pinza vacía. Los ángulos de la tabla son los que se piden en los deslizables.
 
 | Prueba | Procedimiento | Criterio de aceptación |
 |:-------|:--------------|:-----------------------|
-| Giro de la base | `J base 0` → `J base 180` | Recorre 0–180° sin que el cable del servo se tense ni roce la base |
-| Hombro | `J hombro 30` → `J hombro 150` con el codo a 90° | Sube y baja sin vibrar; sostiene el brazo extendido sin caer |
-| Codo | `J codo 20` → `J codo 160` | No choca con el brazo 1 en ningún extremo |
-| Apertura de la pinza | `P A` y `P C` | Abierta (100°): separación mayor que el diámetro de la pelota; cerrada (30°): las mordazas se tocan sin forzar el servo |
+| Giro de la base | Base de 0° a 180° | Recorre 0–180° sin que el cable del servo se tense ni roce la base |
+| Hombro | Hombro de 30° a 150°, con el codo a 90° | Sube y baja sin vibrar; sostiene el brazo extendido sin caer |
+| Codo | Codo de 20° a 160° | No choca con el brazo 1 en ningún extremo |
+| Apertura de la pinza | Botones **Abrir** y **Cerrar** de la app, o SW1 | Abierta (100°): separación mayor que el diámetro de la pelota; cerrada (30°): las mordazas se tocan sin forzar el servo |
 | Engranes de la pinza | Abrir y cerrar 20 veces | Los dientes no saltan ni rozan; las dos mordazas cierran al mismo tiempo |
 | Holgura de los ejes | Mover a mano cada eslabón con el servo detenido | Juego menor a 1 mm en la punta de la pinza |
-| Repetibilidad | `A 90 60 100 30` → `H`, 5 veces | La punta vuelve al mismo punto con diferencia menor a 3 mm |
+| Repetibilidad | Ir a 90°, 60°, 100°, 30° y volver con el botón **Inicio**, 5 veces | La punta vuelve al mismo punto con diferencia menor a 3 mm |
 
 Los rangos de la tabla son los límites programados para este brazo en `config.h`: el firmware nunca pide un ángulo fuera de ellos.
 

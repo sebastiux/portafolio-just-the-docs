@@ -109,7 +109,7 @@ Los bocetos se generan con `tools/f8_bocetos.py`.
 | Controlador | **ESP32-C3 Super Mini** | Wi-Fi integrado para la app, USB nativo, 13 GPIO, pequeño y económico | 3.3 V en el ADC | **Elegido** |
 | | Arduino Uno | Muy conocido | Sin Wi-Fi, más grande, sin modo inalámbrico | Descartado |
 | | ESP32 DevKit (WROOM) | Más pines y núcleos | Más grande de lo necesario | Descartado |
-| Interfaz | **Potenciómetros + app web + GUI USB** | Cubre manual, celular y computadora con un solo firmware | Hay que arbitrar entre fuentes de mando | **Elegida** |
+| Interfaz | **Potenciómetros + app web, con un switch que elige** | Cubre manual y celular con un solo firmware, y el operador conserva el mando: la app no se lo puede quitar | Hay que acordarse de mover el switch | **Elegida** |
 | | Control con joystick o mando | Intuitivo | Hardware extra, sin modo remoto | Descartado |
 
 ### Matriz de decisión del controlador
