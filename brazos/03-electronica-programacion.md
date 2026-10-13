@@ -308,7 +308,6 @@ Las 52 comprobaciones cubren el mapa de pines contra el esquemático, la convers
 
 {: .warning }
 > Estas pruebas no tocan hardware. Detectan errores de lógica antes de cargar el programa; **no sustituyen la prueba con el brazo armado**. Tres archivos del firmware —el servidor web, la página de la app y el `.ino`— no los compila `make`, porque necesitan las bibliotecas del ESP32.
-<!-- PENDIENTE: compilar con arduino-cli y reportar tamanos de flash y RAM -->
 
 ---
 
@@ -534,12 +533,10 @@ arduino-cli upload -p COM5 --fqbn esp32:esp32:esp32c3:CDCOnBoot=cdc firmware_bra
 
 | Compilación | Flash | RAM |
 |:------------|:------|:----|
-| Brazo impreso | **[Pendiente]** | **[Pendiente]** |
-| Brazo de láser | **[Pendiente]** | **[Pendiente]** |
+| Brazo impreso | 1 036 553 bytes (79 % de 1 310 720) | 38 368 bytes (11 % de 327 680) |
+| Brazo de láser | 1 036 545 bytes (79 % de 1 310 720) | 38 368 bytes (11 % de 327 680) |
 
-{: .warning }
-> Estos tamaños están pendientes a propósito. Los de la versión anterior del firmware ya no valen, y no se reutilizan: hay que volver a compilar los dos brazos con arduino-cli y copiar lo que reporte.
-<!-- PENDIENTE: compilar los dos brazos con arduino-cli y poner flash y RAM reales -->
+Tamaños reportados por arduino-cli 1.3.1 con el núcleo esp32 3.3.12, placa `esp32c3` con `CDCOnBoot=cdc`, compilando este firmware para cada brazo. Las dos versiones compilan sin advertencias con `--warnings all`.
 
 ### Probar la lógica sin el brazo
 
