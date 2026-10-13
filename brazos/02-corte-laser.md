@@ -393,6 +393,7 @@ Los cuatro conectores llevan el mismo orden. Vistos desde la cara de componentes
 | Cable del servo de giro | Por debajo de la base hasta J3 |
 | Alimentación | **Dos canales separados de la fuente**: el canal de lógica (5 a 5.5 V) a J1 y el de servos (5 a 6 V) a J2. Las tierras se unen en la tarjeta |
 | USB | Solo para programar y para leer el diagnóstico |
+
 <!-- PENDIENTE: como se fijo la tarjeta al brazo (pregunta 6) -->
 
 [![Brazo de corte láser en vista lateral]({{ '/assets/brazos/laser/render/ensamble-lateral.png' | relative_url }}?v=2)]({{ '/assets/brazos/laser/render/ensamble-lateral.png' | relative_url }}?v=2)

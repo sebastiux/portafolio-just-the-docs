@@ -240,6 +240,7 @@ El orden es el de siempre en fresado de PCB: **aislar → taladrar → recortar 
 | Número de pasadas | **[Pendiente]** |
 | Tiempo de fresado | **[Pendiente]** |
 | Problemas que hubo | **[Pendiente]** |
+
 <!-- PENDIENTE: parametros reales del fresado (pregunta 4) -->
 
 **[Pendiente: fotos del fresado y video]**
@@ -286,6 +287,7 @@ Los criterios están definidos; **las mediciones reales faltan**. Nada de esta c
 | Los cuatro servos a la vez | El módulo no se reinicia y D3 queda apagado | **[Pendiente]** |
 | Wi-Fi | La app carga en `http://192.168.4.1` | **[Pendiente]** |
 | LEDs | D2 en sus tres estados; D3 encendido tras un brown-out | **[Pendiente]** |
+
 <!-- PENDIENTE: mediciones con multimetro y pruebas en hardware (preguntas 3, 5 y 7) -->
 
 ### Pruebas automáticas del firmware
@@ -469,6 +471,7 @@ Presionar el botón DIAG imprime por el USB el reporte completo —causa del rei
 | Pruebas | g++ y make | Correr la lógica en la computadora | C++17 |
 | Tarjeta | KiCad | Esquemático y PCB | 7.0 (el formato abre en KiCad 10) |
 | Fresado | FlatCAM y gSender | Gerber → trayectorias → máquina | **[Pendiente: confirmar]** |
+
 <!-- PENDIENTE: confirmar que se uso FlatCAM y gSender, y sus versiones (pregunta 4) -->
 
 El firmware **no necesita ninguna librería externa**: los servos se manejan directo con el periférico LEDC del ESP32-C3, sin librería de servos.

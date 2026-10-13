@@ -34,6 +34,7 @@ Brazo de **3 GDL más pinza**, fabricado por **impresión 3D (FDM) en PLA**. Par
 ## 2) Arquitectura
 
 ### Cadena cinemática
+
 | Orden | Pieza | Función en el brazo |
 |:-----:|:------|:--------------------|
 | 1 | Base | Aloja el **servo de giro** de la base; se fija a la superficie de montaje con 3 orejas atornilladas. |
@@ -479,6 +480,7 @@ Los cuatro conectores llevan el mismo orden. Vistos desde la cara de componentes
 | Cable del servo de giro | Sale por la ranura de la base, directo a J3 |
 | Alimentación | **Dos canales separados de la fuente**: el canal de lógica (5 a 5.5 V) a J1 y el de servos (5 a 6 V) a J2. Las tierras se unen en la tarjeta |
 | USB | Solo para programar y para leer el diagnóstico; el brazo funciona sin él |
+
 <!-- PENDIENTE: como se fijo la tarjeta al brazo (pregunta 6) -->
 
 [![Brazo impreso en vista lateral]({{ '/assets/brazos/impreso3d/render/ensamble-lateral.png' | relative_url }}?v=2)]({{ '/assets/brazos/impreso3d/render/ensamble-lateral.png' | relative_url }}?v=2)
