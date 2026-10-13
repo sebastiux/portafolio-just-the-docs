@@ -1,6 +1,6 @@
 # Pruebas del firmware en la computadora (g++). Corre las de los dos brazos.
 FW   = ../firmware_brazo
-SRC  = prueba_firmware.cpp stub/sim.cpp $(FW)/articulaciones.cpp $(FW)/control.cpp $(FW)/entradas.cpp $(FW)/puerto_serie.cpp
+SRC  = prueba_firmware.cpp stub/sim.cpp $(FW)/articulaciones.cpp $(FW)/control.cpp $(FW)/diagnostico.cpp $(FW)/entradas.cpp $(FW)/puerto_serie.cpp
 OPTS = -std=c++17 -Wall -Wextra -Istub -I$(FW)
 
 pruebas: prueba_impreso prueba_laser

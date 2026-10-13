@@ -3,6 +3,7 @@
 #include <WiFi.h>
 #include <WebServer.h>
 #include "control.h"
+#include "diagnostico.h"
 #include "pagina_web.h"
 
 namespace servidor_web {
@@ -12,8 +13,17 @@ WebServer servidor(80);
 
 void responderEstado() {
   char json[400];
-  control::estadoJson(json, sizeof(json));
+  control::estadoJson(json, sizeof(json), clientes(), diagnostico::alerta());
   servidor.send(200, "application/json", json);
+}
+
+// Toda orden pasa por aquí: control::codigoHttp decide si fue 200, 409 o 400.
+void responder(Resultado r) {
+  if (r == Resultado::OK) {
+    responderEstado();
+    return;
+  }
+  servidor.send(control::codigoHttp(r), "application/json", control::cuerpoJson(r));
 }
 
 void paginaPrincipal() {
@@ -22,30 +32,25 @@ void paginaPrincipal() {
 
 void mover() {
   if (!servidor.hasArg("art") || !servidor.hasArg("grados")) {
-    servidor.send(400, "text/plain", "faltan art y grados");
+    servidor.send(400, "application/json", "{\"error\":\"faltan art y grados\"}");
     return;
   }
   const long art = servidor.arg("art").toInt();
-  if (art < 0 || !control::mover(static_cast<uint8_t>(art), servidor.arg("grados").toFloat(), Fuente::WEB)) {
-    servidor.send(400, "text/plain", "articulacion invalida");
-    return;
-  }
-  responderEstado();
+  responder(control::mover(art < 0 ? 255 : static_cast<uint8_t>(art),
+                           servidor.arg("grados").toFloat()));
 }
 
 void pinza() {
   const String accion = servidor.arg("accion");
   if (accion != "abrir" && accion != "cerrar") {
-    servidor.send(400, "text/plain", "accion debe ser abrir o cerrar");
+    servidor.send(400, "application/json", "{\"error\":\"accion debe ser abrir o cerrar\"}");
     return;
   }
-  control::pinza(accion == "abrir", Fuente::WEB);
-  responderEstado();
+  responder(control::pinza(accion == "abrir"));
 }
 
 void inicio() {
-  control::inicio(Fuente::WEB);
-  responderEstado();
+  responder(control::inicio());
 }
 }  // namespace
 
@@ -63,6 +68,10 @@ void iniciar() {
 
 void atender() {
   servidor.handleClient();
+}
+
+uint8_t clientes() {
+  return WiFi.softAPgetStationNum();
 }
 
 }  // namespace servidor_web

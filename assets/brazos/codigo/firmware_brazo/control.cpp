@@ -6,79 +6,74 @@
 namespace control {
 
 namespace {
-Fuente fuente_ = Fuente::MANUAL;
-float referencia_pot_[NUM_POTS];   // posición de los pots cuando un mando remoto tomó el control
+Modo modo_ = Modo::MANUAL;
 
-void tomarControlRemoto(Fuente f) {
-  if (f == Fuente::MANUAL) return;
-  if (fuente_ == Fuente::MANUAL) {
-    for (uint8_t i = 0; i < NUM_POTS; i++) referencia_pot_[i] = entradas::anguloPot(i);
-  }
-  fuente_ = f;
-}
-
-bool potenciometroMovido() {
+// En MANUAL los cuatro objetivos se copian de las entradas en cada ciclo. Eso
+// hace que el regreso de APP a MANUAL no necesite ningún caso especial.
+void objetivosDesdeEntradas() {
   for (uint8_t i = 0; i < NUM_POTS; i++) {
-    if (fabsf(entradas::anguloPot(i) - referencia_pot_[i]) > UMBRAL_TOMA_MANUAL_GRADOS) return true;
+    articulaciones::fijarObjetivo(i, entradas::anguloPot(i));
   }
-  return false;
+  articulaciones::fijarObjetivo(ART_PINZA, entradas::pinzaAbierta() ? PINZA_ABIERTA : PINZA_CERRADA);
 }
 }  // namespace
 
 void iniciar() {
   entradas::iniciar();
   articulaciones::iniciar();
-  for (uint8_t i = 0; i < NUM_POTS; i++) referencia_pot_[i] = entradas::anguloPot(i);
-  articulaciones::fijarObjetivo(ART_PINZA, entradas::interruptorActivo() ? PINZA_ABIERTA : PINZA_CERRADA);
+  modo_ = entradas::modoApp() ? Modo::APP : Modo::MANUAL;
+  if (modo_ == Modo::MANUAL) objetivosDesdeEntradas();
 }
 
 void ciclo(float dt_s) {
   entradas::leer();
-
-  if (fuente_ != Fuente::MANUAL && potenciometroMovido()) fuente_ = Fuente::MANUAL;
-
-  if (fuente_ == Fuente::MANUAL) {
-    for (uint8_t i = 0; i < NUM_POTS; i++) articulaciones::fijarObjetivo(i, entradas::anguloPot(i));
-  }
-
-  // El interruptor manda sobre la pinza en cuanto cambia, sin importar la fuente.
-  if (entradas::interruptorCambio()) {
-    articulaciones::fijarObjetivo(ART_PINZA, entradas::interruptorActivo() ? PINZA_ABIERTA : PINZA_CERRADA);
-  }
-
+  modo_ = entradas::modoApp() ? Modo::APP : Modo::MANUAL;
+  if (modo_ == Modo::MANUAL) objetivosDesdeEntradas();
   articulaciones::actualizar(dt_s);
 }
 
-bool mover(uint8_t art, float grados, Fuente fuente) {
-  if (art >= NUM_ARTICULACIONES) return false;
-  tomarControlRemoto(fuente);
+Resultado mover(uint8_t art, float grados) {
+  if (modo_ == Modo::MANUAL) return Resultado::MODO_MANUAL;
+  if (art >= NUM_ARTICULACIONES) return Resultado::ARTICULACION_INVALIDA;
   articulaciones::fijarObjetivo(art, grados);
-  return true;
+  return Resultado::OK;
 }
 
-void pinza(bool abrir, Fuente fuente) {
-  tomarControlRemoto(fuente);
+Resultado pinza(bool abrir) {
+  if (modo_ == Modo::MANUAL) return Resultado::MODO_MANUAL;
   articulaciones::fijarObjetivo(ART_PINZA, abrir ? PINZA_ABIERTA : PINZA_CERRADA);
+  return Resultado::OK;
 }
 
-void inicio(Fuente fuente) {
-  tomarControlRemoto(fuente);
+Resultado inicio() {
+  if (modo_ == Modo::MANUAL) return Resultado::MODO_MANUAL;
   articulaciones::irAInicio();
+  return Resultado::OK;
 }
 
-Fuente fuenteActual() { return fuente_; }
+Modo modo() { return modo_; }
 
-const char* nombreFuente(Fuente f) {
-  switch (f) {
-    case Fuente::WEB:   return "web";
-    case Fuente::SERIE: return "serie";
-    default:            return "manual";
+const char* nombreModo(Modo m) { return m == Modo::APP ? "app" : "manual"; }
+
+uint16_t codigoHttp(Resultado r) {
+  switch (r) {
+    case Resultado::OK:          return 200;
+    case Resultado::MODO_MANUAL: return 409;   // conflicto: el hardware tiene el mando
+    default:                     return 400;
   }
 }
 
-size_t estadoJson(char* destino, size_t tam) {
-  size_t n = snprintf(destino, tam, "{\"brazo\":\"%s\",\"fuente\":\"%s\",\"articulaciones\":[",
-                      NOMBRE_BRAZO, nombreFuente(fuente_));
+const char* cuerpoJson(Resultado r) {
+  switch (r) {
+    case Resultado::MODO_MANUAL: return "{\"error\":\"modo manual\"}";
+    default:                     return "{\"error\":\"articulacion invalida\"}";
+  }
+}
+
+size_t estadoJson(char* destino, size_t tam, uint8_t clientes, bool diag) {
+  size_t n = snprintf(destino, tam,
+                      "{\"brazo\":\"%s\",\"modo\":\"%s\",\"clientes\":%u,\"diag\":%s,\"articulaciones\":[",
+                      NOMBRE_BRAZO, nombreModo(modo_), clientes, diag ? "true" : "false");
   for (uint8_t i = 0; i < NUM_ARTICULACIONES && n < tam; i++) {
     n += snprintf(destino + n, tam - n,
                   "%s{\"nombre\":\"%s\",\"angulo\":%.1f,\"objetivo\":%.1f,\"min\":%u,\"max\":%u}",
@@ -86,8 +81,8 @@ size_t estadoJson(char* destino, size_t tam) {
                   articulaciones::objetivo(i), LIMITES[i].minimo, LIMITES[i].maximo);
   }
   if (n < tam) {
-    n += snprintf(destino + n, tam - n, "],\"pinza_abierta\":%u,\"pinza_cerrada\":%u,\"interruptor\":%s}",
-                  PINZA_ABIERTA, PINZA_CERRADA, entradas::interruptorActivo() ? "true" : "false");
+    n += snprintf(destino + n, tam - n, "],\"pinza_abierta\":%u,\"pinza_cerrada\":%u}",
+                  PINZA_ABIERTA, PINZA_CERRADA);
   }
   return n;
 }

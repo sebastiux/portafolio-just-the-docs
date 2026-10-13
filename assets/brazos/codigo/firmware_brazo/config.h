@@ -16,17 +16,27 @@
 #endif
 
 // ---------------------------------------------------------------------------
-// 2) Pines de la tarjeta (ESP32-C3 Super Mini). Iguales en los dos brazos.
-//    Se evitan GPIO2, GPIO8 y GPIO9 (pines de arranque) para entradas y servos.
+// 2) Pines de la tarjeta v3 (ESP32-C3 Super Mini). Iguales en los dos brazos.
+//    Fuente de verdad: el esquemático de assets/brazos/electronica/kicad-v3/.
 // ---------------------------------------------------------------------------
-constexpr uint8_t NUM_ARTICULACIONES = 4;          // base, hombro, codo, pinza
-constexpr uint8_t PIN_SERVO[NUM_ARTICULACIONES] = {4, 5, 6, 7};
+constexpr uint8_t NUM_ARTICULACIONES = 4;                         // base, hombro, codo, pinza
+constexpr uint8_t PIN_SERVO[NUM_ARTICULACIONES] = {5, 6, 7, 10};  // J3, J4, J5, J6
 
 constexpr uint8_t NUM_POTS = 3;                    // base, hombro, codo
-constexpr uint8_t PIN_POT[NUM_POTS] = {0, 1, 3};   // ADC1_CH0, ADC1_CH1, ADC1_CH3
+constexpr uint8_t PIN_POT[NUM_POTS] = {1, 0, 3};   // RV1 base, RV2 hombro, RV3 codo
 
-constexpr uint8_t PIN_INTERRUPTOR = 10;            // a GND, con pull-up interno
-constexpr uint8_t PIN_LED = 8;                     // LED azul de la placa, activo en bajo
+constexpr uint8_t PIN_SW_PINZA = 21;   // SW1, INPUT_PULLUP
+constexpr uint8_t PIN_SW_MODO  = 20;   // SW2, INPUT_PULLUP: elige manual o app
+
+// D2 verde y D3 rojo: ánodo a 3V3 por 330 Ω, cátodo al GPIO. LOW = encendido.
+constexpr uint8_t PIN_LED_ESTADO = 4;  // D2
+constexpr uint8_t PIN_LED_DIAG   = 2;  // D3. Pin de arranque: R6 de 10 kΩ lo sube a 1 al encender
+constexpr uint8_t PIN_BOTON_DIAG = 9;  // botón BOOT del módulo, INPUT_PULLUP, LOW = presionado
+
+// Polaridad de los switches deslizables.
+// PENDIENTE: confirmar con la tarjeta real qué posición del switch es cuál.
+constexpr bool MODO_APP_EN_BAJO       = true;
+constexpr bool PINZA_ABIERTA_EN_BAJO  = true;
 
 // ---------------------------------------------------------------------------
 // 3) Servos SG90
@@ -78,23 +88,35 @@ constexpr uint8_t ART_PINZA = 3;
 
 // ---------------------------------------------------------------------------
 // 5) Red inalámbrica: el ESP32-C3 crea su propia red (punto de acceso).
-//    La app queda en http://192.168.4.1
+//    La app queda en http://192.168.4.1 y el punto de acceso no se apaga al
+//    cambiar de modo, para que el celular no pierda la conexión.
 // ---------------------------------------------------------------------------
 constexpr const char* WIFI_CLAVE = "brazo2026";   // mínimo 8 caracteres
 
 // ---------------------------------------------------------------------------
 // 6) Entradas manuales
 // ---------------------------------------------------------------------------
-constexpr float    POT_FILTRO_ALFA = 0.2f;         // filtro exponencial del ADC
-// En la tarjeta, R2 (1 kΩ) alimenta los 3 potenciómetros desde 3.3 V, así que
-// su tope queda en ≈2.54 V: dentro del rango útil del ADC del ESP32-C3 con la
-// atenuación por defecto (0–2500 mV). Se usa un poco menos para llegar al 100 %.
-constexpr uint16_t POT_MV_MAX = 2450;
-constexpr uint8_t  UMBRAL_TOMA_MANUAL_GRADOS = 4;  // giro de pot que devuelve el mando al manual
-constexpr uint16_t ANTIRREBOTE_MS = 30;
+constexpr float POT_FILTRO_ALFA = 0.2f;            // filtro exponencial del ADC
+// Cada potenciómetro tiene su propia resistencia en serie de 3.3 kΩ desde 3V3
+// (R1–R3), así que su tope teórico es 3.3 V × 10 / 13.3 = 2.48 V, dentro del
+// rango útil del ADC del ESP32-C3. Se usa un poco menos para llegar al 100 %.
+// PENDIENTE: ajustar con la medición en la pata de R1–R3 del lado del pot.
+constexpr uint16_t POT_MV_MAX = 2400;
+constexpr uint16_t ANTIRREBOTE_MS = 30;            // igual para SW1, SW2 y el botón DIAG
 
 // ---------------------------------------------------------------------------
-// 7) Puerto serie (USB nativo del ESP32-C3)
+// 7) LEDs de estado
+// ---------------------------------------------------------------------------
+// D2 ESTADO: fijo en manual, parpadeo lento en app sin celulares, rápido con uno.
+constexpr uint32_t LED_APP_SIN_CLIENTES_MS = 500;  // medio periodo: 1 Hz
+constexpr uint32_t LED_APP_CON_CLIENTES_MS = 125;  // medio periodo: 4 Hz
+// D3 DIAG: fijo si el último reinicio fue por brown-out; parpadea mientras se
+// presiona el botón DIAG.
+constexpr uint32_t LED_DIAG_PARPADEO_MS = 125;     // medio periodo: 4 Hz
+
+// ---------------------------------------------------------------------------
+// 8) Puerto serie (USB nativo del ESP32-C3). Solo diagnóstico: el control por
+//    USB se retiró, el modo lo decide SW2.
 // ---------------------------------------------------------------------------
 constexpr uint32_t SERIE_BAUDIOS = 115200;
 constexpr uint32_t PERIODO_CONTROL_MS = 20;        // 50 Hz, igual que el PWM de los servos

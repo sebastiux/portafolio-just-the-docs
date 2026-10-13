@@ -4,42 +4,35 @@
 // Juan Pablo Martha · Carlos Sebastián Ortega · Santiago Alejandro Velázquez
 //
 // Un solo firmware para los dos brazos (impreso en 3D y cortado con láser):
-// se elige el brazo en config.h. Tres modos de mando, con cambio automático:
-//   - manual: 3 potenciómetros (base, hombro, codo) e interruptor (pinza)
-//   - app web: red "Brazo-Impreso" o "Brazo-Laser", página en http://192.168.4.1
-//   - USB: brazo_gui.py desde la computadora
+// se elige el brazo en config.h. El mando lo decide el switch SW2 de la tarjeta:
+//   - MANUAL: 3 potenciómetros (base, hombro, codo) y SW1 (pinza)
+//   - APP:    red "Brazo-Impreso" o "Brazo-Laser", página en http://192.168.4.1
+// El USB queda solo para diagnóstico (órdenes E, D y ?).
 //
 // Placa en Arduino IDE: "ESP32C3 Dev Module", con "USB CDC On Boot: Enabled".
 
 #include "config.h"
 #include "control.h"
+#include "diagnostico.h"
 #include "puerto_serie.h"
 #include "servidor_web.h"
 
 static uint32_t ultimo_ciclo_ms = 0;
 
-// LED de la placa según la fuente: fijo = manual, lento = web, rápido = USB.
-static void actualizarLed() {
-  const uint32_t t = millis();
-  bool encendido;
-  switch (control::fuenteActual()) {
-    case Fuente::WEB:   encendido = (t / 500) % 2; break;
-    case Fuente::SERIE: encendido = (t / 125) % 2; break;
-    default:            encendido = true;          break;
-  }
-  digitalWrite(PIN_LED, encendido ? LOW : HIGH);   // activo en bajo
-}
-
 void setup() {
-  pinMode(PIN_LED, OUTPUT);
   puerto_serie::iniciar();
+  diagnostico::iniciar();
   control::iniciar();
   servidor_web::iniciar();
   ultimo_ciclo_ms = millis();
 }
 
 void loop() {
-  puerto_serie::atender();
+  // El número de celulares conectados lo sabe el servidor; control y
+  // diagnóstico lo reciben para el JSON de estado, el reporte y el LED D2.
+  const uint8_t clientes = servidor_web::clientes();
+
+  puerto_serie::atender(clientes);
   servidor_web::atender();
 
   const uint32_t ahora = millis();
@@ -47,6 +40,6 @@ void loop() {
     const float dt = (ahora - ultimo_ciclo_ms) / 1000.0f;
     ultimo_ciclo_ms = ahora;
     control::ciclo(dt);
-    actualizarLed();
+    diagnostico::ciclo(clientes);
   }
 }

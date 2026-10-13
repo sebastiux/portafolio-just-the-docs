@@ -1,4 +1,7 @@
 // pagina_web.h — App de control que sirve el ESP32-C3. Se guarda en flash (PROGMEM).
+//
+// Un solo archivo HTML sin dependencias externas: el celular se conecta al punto
+// de acceso del brazo, que no tiene salida a internet.
 #pragma once
 #include <Arduino.h>
 
@@ -9,7 +12,7 @@ const char PAGINA_WEB[] PROGMEM = R"HTML(<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Brazo robótico</title>
 <style>
-  :root { --rojo: #E00034; --gris: #4B5563; }
+  :root { --rojo: #E00034; --gris: #4B5563; --ambar: #B45309; }
   * { box-sizing: border-box; }
   body { margin: 0; font-family: system-ui, sans-serif; background: #f5f6f8; color: #222; }
   header { background: var(--rojo); color: #fff; padding: 14px 16px; }
@@ -26,35 +29,52 @@ const char PAGINA_WEB[] PROGMEM = R"HTML(<!doctype html>
   button { font: inherit; padding: 12px 8px; border-radius: 10px; border: 1px solid #d1d5db;
            background: #fff; cursor: pointer; }
   button.primario { background: var(--rojo); color: #fff; border-color: var(--rojo); }
-  .fuente { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #fff;
-            color: var(--rojo); font-weight: 600; font-size: .8rem; }
+  .modo { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #fff;
+          color: var(--rojo); font-weight: 600; font-size: .8rem; }
+  #aviso { background: #FEF3C7; border: 1px solid #FCD34D; color: var(--ambar);
+           border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; font-size: .9rem; }
+  #aviso b { display: block; margin-bottom: 2px; color: #92400E; }
+  .oculto { display: none; }
+  /* En modo manual manda el hardware: los controles se ven apagados y no responden. */
+  .inerte { opacity: .45; pointer-events: none; }
   .error { color: var(--rojo); font-size: .85rem; min-height: 1.2em; }
+  .pie { color: var(--gris); font-size: .8rem; }
 </style>
 </head>
 <body>
 <header>
   <h1>Brazo <span id="brazo">…</span></h1>
-  <p>Mando actual: <span class="fuente" id="fuente">…</span></p>
+  <p>Mando: <span class="modo" id="modo">…</span></p>
 </header>
 <main>
-  <div id="articulaciones"></div>
-  <div class="tarjeta">
-    <div class="botones">
-      <button class="primario" id="abrir">Abrir pinza</button>
-      <button class="primario" id="cerrar">Cerrar pinza</button>
-      <button id="inicio">Inicio</button>
+  <div id="aviso" class="oculto">
+    <b>El switch MODO está en MANUAL</b>
+    Cambia el switch MODO a APP en la tarjeta para mandar desde aquí. Mientras
+    siga en MANUAL mueven el brazo los potenciómetros y el switch de la pinza.
+  </div>
+  <div id="controles">
+    <div id="articulaciones"></div>
+    <div class="tarjeta">
+      <div class="botones">
+        <button class="primario" id="abrir">Abrir pinza</button>
+        <button class="primario" id="cerrar">Cerrar pinza</button>
+        <button id="inicio">Inicio</button>
+      </div>
     </div>
   </div>
   <p class="error" id="error"></p>
+  <p class="pie" id="pie"></p>
 </main>
 <script>
-const NOMBRES_DESLIZABLES = 3;          // base, hombro y codo; la pinza va con botones
+const NUM_DESLIZABLES = 3;          // base, hombro y codo; la pinza va con botones
 const contenedor = document.getElementById('articulaciones');
-let arrastrando = -1, ultimoEnvio = 0, pendiente = null;
+const controles = document.getElementById('controles');
+const aviso = document.getElementById('aviso');
+let arrastrando = -1, ultimoEnvio = 0, pendiente = null, modoApp = false;
 
 function crearDeslizables(arts) {
   contenedor.innerHTML = '';
-  arts.slice(0, NOMBRES_DESLIZABLES).forEach((a, i) => {
+  arts.slice(0, NUM_DESLIZABLES).forEach((a, i) => {
     const t = document.createElement('div');
     t.className = 'tarjeta';
     t.innerHTML = `<div class="fila"><b>${a.nombre}</b><span class="valor" id="v${i}"></span></div>
@@ -80,21 +100,40 @@ function enviar(art, grados, forzar) {
 }
 
 async function pedir(url) {
+  const err = document.getElementById('error');
   try {
     const r = await fetch(url);
-    if (!r.ok) throw new Error(await r.text());
-    mostrar(await r.json());
-    document.getElementById('error').textContent = '';
+    const cuerpo = await r.json();
+    if (r.status === 409) {           // el brazo está en manual
+      modoApp = false;
+      aplicarModo();
+      err.textContent = '';
+      pedir('/api/estado');
+      return;
+    }
+    if (!r.ok) throw new Error(cuerpo.error || r.status);
+    mostrar(cuerpo);
+    err.textContent = '';
   } catch (e) {
-    document.getElementById('error').textContent = 'Sin conexión con el brazo: ' + e.message;
+    err.textContent = 'Sin conexión con el brazo: ' + e.message;
   }
+}
+
+function aplicarModo() {
+  document.getElementById('modo').textContent = modoApp ? 'app' : 'manual';
+  aviso.classList.toggle('oculto', modoApp);
+  controles.classList.toggle('inerte', !modoApp);
 }
 
 function mostrar(e) {
   document.getElementById('brazo').textContent = e.brazo;
-  document.getElementById('fuente').textContent = e.fuente;
+  modoApp = e.modo === 'app';
+  aplicarModo();
+  document.getElementById('pie').textContent =
+    `Celulares conectados: ${e.clientes}` +
+    (e.diag ? ' · El LED rojo avisa de un reinicio por caída de alimentación' : '');
   if (!contenedor.children.length) crearDeslizables(e.articulaciones);
-  e.articulaciones.slice(0, NOMBRES_DESLIZABLES).forEach((a, i) => {
+  e.articulaciones.slice(0, NUM_DESLIZABLES).forEach((a, i) => {
     if (i === arrastrando) return;
     document.getElementById('r' + i).value = Math.round(a.objetivo);
     document.getElementById('v' + i).textContent = Math.round(a.angulo) + '°';
