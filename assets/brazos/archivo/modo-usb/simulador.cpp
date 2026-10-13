@@ -24,7 +24,10 @@ int main() {
   fcntl(maestro, F_SETFL, O_NONBLOCK);
   std::cout << "Brazo " << NOMBRE_BRAZO << " simulado en " << ptsname(maestro) << std::endl;
 
-  sim::pin_digital[PIN_INTERRUPTOR] = HIGH;
+  // Interruptor MODO en App para que la GUI y la app puedan mover el brazo.
+  sim::pin_digital[PIN_SW_MODO] = NIVEL_MODO_APP;
+  sim::pin_digital[PIN_SW_PINZA] = (NIVEL_PINZA_ABIERTA == LOW) ? HIGH : LOW;
+  sim::pin_digital[PIN_BOTON_DIAG] = HIGH;
   for (uint8_t i = 0; i < NUM_POTS; i++) sim::mv_adc[PIN_POT[i]] = POT_MV_MAX / 2;
   puerto_serie::iniciar();
   control::iniciar();

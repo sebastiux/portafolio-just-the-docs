@@ -33,6 +33,7 @@ programar el módulo y para leer el diagnóstico.
 | `gui/` y `brazo_gui.zip` | Interfaz de escritorio en Python que mandaba órdenes por el puerto serie |
 | `simulador.cpp` | Simulaba el firmware en la computadora para probar esa interfaz sin hardware |
 | `gui-usb.png` | Captura de la ventana de esa interfaz |
+| `app-web.png` | Captura de la app web anterior, de cuando el encabezado decía la fuente de mando |
 
 El `Makefile` de las pruebas ya no tiene el target `simulador`.
 
@@ -40,4 +41,4 @@ El `Makefile` de las pruebas ya no tiene el target `simulador`.
 
 El script que generaba la tarjeta de 2 capas (esquemático, PCB, ruteo con
 Freerouting y exportación). La v3 se generó con otro juego de scripts, que
-vienen en el paquete de entrada.
+están publicados en `assets/brazos/electronica/generador-v3/`.

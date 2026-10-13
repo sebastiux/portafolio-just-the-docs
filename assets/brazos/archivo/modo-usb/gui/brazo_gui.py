@@ -2,7 +2,10 @@
 """brazo_gui.py — Control de los brazos robóticos desde la computadora por USB.
 
 Habla con firmware_brazo (ESP32-C3) usando el protocolo de texto de
-puerto_serie.h:  J <art> <grados> | P A|C | H | E
+puerto_serie.h:  J <art> <grados> | P A|C | H | D | E
+
+El brazo acepta órdenes solo con el interruptor MODO (SW2) de la tarjeta en
+App; en Manual la ventana muestra el aviso que manda el firmware.
 
 Uso:
     pip install -r requirements.txt
@@ -125,12 +128,13 @@ class Aplicacion(tk.Tk):
 
         botones = ttk.Frame(marco)
         botones.grid(row=2, column=0, sticky="ew")
-        for col, (texto, orden) in enumerate([("Abrir pinza", "P A"), ("Cerrar pinza", "P C"), ("Inicio", "H")]):
+        for col, (texto, orden) in enumerate([("Abrir pinza", "P A"), ("Cerrar pinza", "P C"),
+                                              ("Inicio", "H"), ("Diagnóstico", "D")]):
             ttk.Button(botones, text=texto, command=lambda o=orden: self.enlace.enviar(o)).grid(
                 row=0, column=col, padx=3, sticky="ew")
             botones.columnconfigure(col, weight=1)
 
-        self.fuente = ttk.Label(marco, text="Mando actual: —")
+        self.fuente = ttk.Label(marco, text="Modo: —")
         self.fuente.grid(row=3, column=0, sticky="w", pady=(10, 0))
 
     def _listar_puertos(self, preferido=None):
@@ -188,12 +192,15 @@ class Aplicacion(tk.Tk):
             elif linea.startswith("OK {"):
                 self._mostrar_estado(json.loads(linea[3:]))
             elif linea.startswith("ERR"):
-                self.estado.config(text=linea, foreground="#E00034")
+                self.estado.config(text=linea[4:], foreground="#E00034")
+            elif linea == "OK" and self.enlace.conectado:
+                self.estado.config(text=f"Conectado a {self.puertos.get()}", foreground="#047857")
         self.after(50, self._procesar_respuestas)
 
     def _mostrar_estado(self, e):
         self.title(f"Brazo {e['brazo']} · ESP32-C3")
-        self.fuente.config(text=f"Mando actual: {e['fuente']}")
+        modo = "diagnóstico" if e.get("diagnostico") else e.get("modo", "")
+        self.fuente.config(text=f"Modo: {modo} · mando: {e['fuente']}")
         for i, a in enumerate(e["articulaciones"][:ARTICULACIONES_DESLIZABLES]):
             d = self.deslizadores[i]
             d.config(from_=a["min"], to=a["max"])
