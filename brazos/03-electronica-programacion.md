@@ -8,17 +8,19 @@ permalink: /brazos/electronica-programacion/
 
 # Electrónica y programación
 
-Los dos brazos usan **la misma tarjeta de control** y **el mismo firmware**. La tarjeta lleva un **ESP32-C3 Super Mini**, los conectores de los 4 servos, 3 potenciómetros, un interruptor y la entrada de alimentación. El firmware ofrece tres modos de mando (manual, app web y USB) y solo cambia una línea para pasar de un brazo al otro.
+Los dos brazos usan **la misma tarjeta de control**, `brazo_control` **v3**, y **el mismo firmware**. La tarjeta lleva un **ESP32-C3 Super Mini** en zócalo, los conectores de los 4 servos, 3 potenciómetros, los interruptores **PINZA** y **MODO**, dos LEDs (estado y diagnóstico) y dos entradas de alimentación separadas: una para la lógica y otra para los servos. Es una placa de **una sola cara, de 58 × 48 mm**, fresada en CNC sobre fenólica.
 
 **Descargas:**
 
 | Archivo | Contenido |
 |:--------|:----------|
-| [Proyecto de KiCad (.zip)]({{ '/assets/brazos/electronica/proyecto-kicad-tarjeta-brazo.zip' | relative_url }}) | Esquemático, PCB, símbolo y huella del ESP32-C3 Super Mini (KiCad 7) |
-| [Esquemático (PDF)]({{ '/assets/brazos/electronica/fabricacion/esquematico.pdf' | relative_url }}) | Hoja A4 con bloques y notas de diseño |
-| [Gerber y barrenos (.zip)]({{ '/assets/brazos/electronica/fabricacion/gerber-tarjeta-brazo.zip' | relative_url }}) | Listo para mandar a fabricar |
-| [Capas de la PCB (PDF)]({{ '/assets/brazos/electronica/fabricacion/pcb-capas.pdf' | relative_url }}) | Cobre, serigrafía y contorno |
-| [Posiciones de componentes (CSV)]({{ '/assets/brazos/electronica/fabricacion/posiciones.csv' | relative_url }}) | Referencia, valor, huella y coordenadas |
+| [Proyecto completo (.zip)]({{ '/assets/brazos/electronica/brazo_control_pcb_v3_58x48.zip' | relative_url }}) | Proyecto de KiCad, Gerber, archivos para CNC, BOM y documentación |
+| [Esquemático (PDF)]({{ '/assets/brazos/electronica/brazo_control_pcb/docs/esquematico.pdf' | relative_url }}) | Hoja A3 con notas de diseño |
+| [Esquemático (.kicad_sch)]({{ '/assets/brazos/electronica/brazo_control_pcb/brazo_control.kicad_sch' | relative_url }}) · [PCB (.kicad_pcb)]({{ '/assets/brazos/electronica/brazo_control_pcb/brazo_control.kicad_pcb' | relative_url }}) | KiCad 7, con su biblioteca `brazos` |
+| [Lista de materiales (CSV)]({{ '/assets/brazos/electronica/brazo_control_pcb/docs/bom.csv' | relative_url }}) | Cantidad, referencias, valor, huella y función |
+| [Archivos para CNC](https://github.com/sebastiux/portafolio-just-the-docs/tree/main/assets/brazos/electronica/brazo_control_pcb/cnc) | Cobre, taladros y contorno ya espejados |
+| [Gerber](https://github.com/sebastiux/portafolio-just-the-docs/tree/main/assets/brazos/electronica/brazo_control_pcb/fabricacion) | B.Cu, máscara, serigrafía, contorno y taladros |
+| [LEEME de la tarjeta]({{ '/assets/brazos/electronica/brazo_control_pcb/LEEME.md' | relative_url }}) | Notas de diseño y de fabricación |
 | [Firmware (.zip)]({{ '/assets/brazos/codigo/firmware_brazo.zip' | relative_url }}) | Sketch de Arduino para el ESP32-C3 |
 | [brazo_gui.py (.zip)]({{ '/assets/brazos/codigo/brazo_gui.zip' | relative_url }}) | Interfaz de escritorio por USB |
 
@@ -29,72 +31,84 @@ Los dos brazos usan **la misma tarjeta de control** y **el mismo firmware**. La 
 ```mermaid
 flowchart LR
   subgraph ALI["Alimentación"]
-    J1["J1 bornera<br/>5 V · 3 A"] --> F1["F1 polifusible<br/>3 A"]
-    F1 --> V5["+5V servos"]
-    V5 --> D1["D1 1N5819"]
-    D1 --> V5M["+5V_MOD"]
-    V5 --> C1["C1 1000 µF + C2 100 nF"]
-    V5 --> LED["R1 + D2 LED encendido"]
+    J1["J1 · LÓGICA 5 V<br/>canal 1 de la fuente"] -- VLOG_IN --> D1["D1 1N5819"]
+    D1 -- "+5V" --> C2["C2 100 µF"]
+    J2["J2 · VSERVO 5–6 V<br/>canal 2 de la fuente"] -- VSERVO --> C1["C1 1000 µF"]
   end
-  subgraph MCU["ESP32-C3 Super Mini"]
+  subgraph MCU["ESP32-C3 Super Mini (U1, en zócalo)"]
     U1["U1"]
-    REG["Regulador 3.3 V<br/>del módulo"]
+    REG["Regulador 3.3 V del módulo"]
+    BOOT["Botón BOOT = DIAG (IO9)"]
   end
   subgraph ENT["Entradas"]
-    RV1["RV1 pot. base"] -- "GPIO0 (ADC1_CH0)" --> U1
-    RV2["RV2 pot. hombro"] -- "GPIO1 (ADC1_CH1)" --> U1
-    RV3["RV3 pot. codo"] -- "GPIO3 (ADC1_CH3)" --> U1
-    SW1["SW1 interruptor pinza"] -- "GPIO10" --> U1
+    RV1["R1 3.3 kΩ + RV1 base"] -- "IO1 (ADC1_CH1)" --> U1
+    RV2["R2 3.3 kΩ + RV2 hombro"] -- "IO0 (ADC1_CH0)" --> U1
+    RV3["R3 3.3 kΩ + RV3 codo"] -- "IO3 (ADC1_CH3)" --> U1
+    SW1["SW1 PINZA"] -- "IO21" --> U1
+    SW2["SW2 MODO"] -- "IO20" --> U1
   end
-  subgraph SAL["Servos SG90"]
-    J2["J2 base"]
-    J3["J3 hombro"]
-    J4["J4 codo"]
-    J5["J5 pinza"]
+  subgraph IND["Indicadores"]
+    D2["D2 verde · estado"]
+    D3["D3 rojo · DIAG"]
   end
-  V5M --> U1
+  subgraph SRV["Servos SG90"]
+    J3["J3 base"]
+    J4["J4 hombro"]
+    J5["J5 codo"]
+    J6["J6 pinza"]
+  end
+  C2 --> U1
   U1 --> REG
-  REG -- "+3V3" --> R2["R2 1 kΩ"]
-  R2 -- "V_POT ≈2.54 V" --> ENT
-  U1 -- "GPIO4 PWM" --> J2
-  U1 -- "GPIO5 PWM" --> J3
-  U1 -- "GPIO6 PWM" --> J4
-  U1 -- "GPIO7 PWM" --> J5
-  V5 -- "+5V" --> SAL
-  USB["USB-C<br/>(computadora)"] -- "datos y 5 V del módulo" --> U1
-  WIFI["Wi-Fi 2.4 GHz<br/>app web"] <--> U1
+  REG -- "+3V3" --> ENT
+  BOOT --> U1
+  U1 -- "IO4 (activo en bajo)" --> D2
+  U1 -- "IO2 (activo en bajo)" --> D3
+  U1 -- "IO5 PWM" --> J3
+  U1 -- "IO6 PWM" --> J4
+  U1 -- "IO7 PWM" --> J5
+  U1 -- "IO10 PWM" --> J6
+  C1 -- VSERVO --> SRV
+  USB["USB-C del módulo"] -- "programación y GUI" --> U1
+  WIFI["Wi-Fi 2.4 GHz · app web"] <--> U1
 ```
 
-**Figura 1:** Diagrama de bloques de la tarjeta. Los servos toman la corriente directo de la fuente; el ESP32-C3 se alimenta por el diodo D1 o por su propio USB.
+**Figura 1:** Diagrama de bloques de la tarjeta. La lógica y los servos se alimentan por canales separados de la fuente, con tierra común en la placa.
 
 ### Asignación de pines
 
-| GPIO | Función | Tipo | Conector | Nota |
-|:----:|:--------|:-----|:---------|:-----|
-| 4 | Servo de la base | PWM 50 Hz | J2 | LEDC, 14 bits |
-| 5 | Servo del hombro | PWM 50 Hz | J3 | |
-| 6 | Servo del codo | PWM 50 Hz | J4 | |
-| 7 | Servo de la pinza | PWM 50 Hz | J5 | |
-| 0 | Potenciómetro de la base | Analógica | RV1 | ADC1: funciona con el Wi-Fi encendido |
-| 1 | Potenciómetro del hombro | Analógica | RV2 | |
-| 3 | Potenciómetro del codo | Analógica | RV3 | |
-| 10 | Interruptor de la pinza | Digital, pull-up | SW1 | Cerrado a GND = pinza abierta |
-| 8 | LED de la placa | Digital | — | Indica el modo de mando |
-| 2, 9 | Sin usar | — | — | Pines de arranque del ESP32-C3 |
-| 20, 21 | Sin usar | — | — | UART0; quedan libres para depurar |
+| GPIO | Función | Tipo | Componente | Nota |
+|:----:|:--------|:-----|:-----------|:-----|
+| IO5 | Servo de la base | PWM 50 Hz | J3 | LEDC, 14 bits |
+| IO6 | Servo del hombro | PWM 50 Hz | J4 | |
+| IO7 | Servo del codo | PWM 50 Hz | J5 | |
+| IO10 | Servo de la pinza | PWM 50 Hz | J6 | |
+| IO1 | Potenciómetro de la base | Analógica | RV1 (con R1) | ADC1: funciona con el Wi-Fi encendido |
+| IO0 | Potenciómetro del hombro | Analógica | RV2 (con R2) | |
+| IO3 | Potenciómetro del codo | Analógica | RV3 (con R3) | |
+| IO21 | Interruptor PINZA | Digital, pull-up interno | SW1 | Común al GPIO, otra posición a GND |
+| IO20 | Interruptor MODO | Digital, pull-up interno | SW2 | Manual / App |
+| IO4 | LED de estado | Salida, activa en bajo | D2 (verde) con R4 | |
+| IO2 | LED de diagnóstico | Salida, activa en bajo | D3 (rojo) con R5 | Pin de arranque: R6 de 10 kΩ lo mantiene en alto |
+| IO9 | Botón DIAG | Digital | Botón **BOOT** del módulo | Se lee después del arranque |
+| IO8 | Libre | — | — | LED azul del módulo |
+
+**Conectores de servo:** orden **S V G** de izquierda a derecha, viendo desde los componentes; GND es el pin cuadrado. Cable naranja a S, rojo a V, café a G.
 
 ### Cálculos de diseño
 
 | Punto | Cálculo | Resultado |
 |:------|:--------|:----------|
-| Corriente de los servos | 4 SG90 × ≈0.7 A al arrancar o bloquearse | ≈2.8 A de pico → fuente de **5 V, 3 A** |
-| Protección | Polifusible MF-RG300: 3.0 A de mantenimiento, 5.1 A de disparo | Corta antes de dañar pistas o fuente |
-| Alimentación del ESP32-C3 | 5 V − 0.45 V del 1N5819 a 0.35 A | ≈4.55 V a la entrada del regulador de 3.3 V del módulo |
-| Retorno al USB | D1 bloquea el paso de +5V_MOD hacia +5V | La computadora no alimenta a los servos |
-| Tope de los potenciómetros | 3.3 V × 3.33 kΩ / (1 kΩ + 3.33 kΩ), con los 3 pots de 10 kΩ en paralelo | **≈2.54 V**: dentro del rango útil del ADC del ESP32-C3 (0–2.5 V); 0.76 mA en total |
-| Filtro del ADC | 10 kΩ (máx. 2.5 kΩ de Thévenin) × 100 nF | τ ≤ 0.25 ms: quita ruido sin retraso visible |
-| LED de encendido | (5 V − 2.1 V) / 1 kΩ | ≈2.9 mA |
-| Pistas de potencia | 1.2 mm, 35 µm de cobre, capa externa | ≈2.7 A continuos con 10 °C de aumento (IPC-2221); el pico de 2.8 A dura milisegundos y la tierra va por los planos |
+| Tope de los potenciómetros | 3.3 V × 10 kΩ / (3.3 kΩ + 10 kΩ) | **≈2.48 V**: dentro del rango útil del ADC del ESP32-C3 (0–2.5 V); 0.25 mA por potenciómetro |
+| Corriente de los servos | 4 SG90 × ≈0.7 A al arrancar o bloquearse | ≈2.8 A de pico → canal 2 de **5–6 V, 3 A** |
+| Separación de alimentaciones | Lógica por J1, servos por J2, GND común | El ruido y las caídas de los servos no reinician el ESP32-C3 |
+| Protección de la lógica | 1N5819 en serie con J1 | Protege contra polaridad invertida y evita que el USB alimente de regreso a la fuente; ≈4.6 V al módulo |
+| Respaldo del Wi-Fi | C2 de 100 µF en +5V | Cubre los picos de corriente al transmitir |
+| Respaldo de los servos | C1 de 1000 µF en VSERVO | Cubre los arranques simultáneos |
+| LEDs | (3.3 V − 2.1 V) / 330 Ω y (3.3 V − 1.9 V) / 330 Ω | ≈3.6 mA (verde) y ≈4.2 mA (rojo), que el GPIO absorbe al ponerse en bajo |
+| Pista de servos | 1.6 mm, 35 µm de cobre | ≈3.4 A continuos con 10 °C de aumento (IPC-2221) |
+| Pistas de GND y 5 V | 1.2 mm | ≈2.7 A |
+| Pistas de señal | 0.8 mm | Amplias para fresar sin romperlas |
+| Aislamiento | 0.6 mm entre redes distintas | Lo que corta un V-bit de 20–30° en 2–3 pasadas |
 
 ---
 
@@ -102,39 +116,55 @@ flowchart LR
 
 Una tarjeta controla un brazo. Precios de referencia en pesos mexicanos, de tiendas de electrónica en línea.
 
-| Ref. | Componente | Valor o número de parte | Huella | Cant. | Precio ref. (MXN) |
-|:-----|:-----------|:------------------------|:-------|:-----:|------------------:|
-| U1 | Módulo ESP32-C3 Super Mini | ESP32-C3FH4, USB-C | 2 tiras hembra 1×8, 2.54 mm | 1 | 95 |
-| J1 | Bornera de 2 polos | Phoenix MKDS 1,5/2, paso 5.00 mm | TerminalBlock_Phoenix | 1 | 10 |
-| F1 | Polifusible | Bourns MF-RG300 (3 A) | Fuse_Bourns_MF-RG300 | 1 | 8 |
-| D1 | Diodo Schottky | 1N5819 (40 V, 1 A) | DO-41 | 1 | 3 |
-| C1 | Capacitor electrolítico | 1000 µF, 10 V | Radial D10 mm, P5 mm | 1 | 10 |
-| C2–C5 | Capacitor cerámico | 100 nF, 50 V | Disco 5 mm, P5 mm | 4 | 8 |
-| R1, R2 | Resistencia | 1 kΩ, ¼ W | Axial, P10.16 mm | 2 | 2 |
-| D2 | LED | Verde, 3 mm | LED_D3.0mm | 1 | 2 |
-| RV1–RV3 | Potenciómetro | 10 kΩ lineal (B10K), Alps RK09K | RK09K vertical | 3 | 45 |
-| SW1 | Interruptor deslizable | 1 polo 2 tiros, C&K OS102011MS2Q | SW_Slide_SPDT | 1 | 8 |
-| J2–J5 | Tira macho para servo | 1×3, 2.54 mm | PinHeader_1x03 | 4 | 8 |
-| M1–M4 | Servomotor | SG90, 9 g | — | 4 | 180 |
-| — | PCB de 2 capas | 90 × 66 mm, FR-4 1.6 mm | — | 1 | 60 |
-| — | Fuente de alimentación | 5 V, 3 A con plug o cables | — | 1 | 150 |
-| — | Cable USB-C | Datos | — | 1 | 50 |
-| | | | | **Total** | **≈639** |
-
-La misma lista sale del esquemático en formato XML: [bom.xml]({{ '/assets/brazos/electronica/fabricacion/bom.xml' | relative_url }}).
+| Cant. | Referencias | Valor | Huella | Función | Precio ref. (MXN) |
+|:-----:|:------------|:------|:-------|:--------|------------------:|
+| 1 | U1 | ESP32-C3 Super Mini | ESP32C3_SuperMini_Socket | Módulo en zócalo 2 × (1×08) hembra | 95 |
+| 2 | — | Tira hembra 1×08, 2.54 mm | — | Zócalo del módulo | 10 |
+| 1 | J1 | Bornera 2 polos, paso 5.08 mm | TerminalBlock_bornier-2_P5.08mm | Canal 1 de la fuente: lógica 5 V | 10 |
+| 1 | J2 | Bornera 2 polos, paso 5.08 mm | TerminalBlock_bornier-2_P5.08mm | Canal 2 de la fuente: servos 5–6 V | 10 |
+| 1 | D1 | 1N5819 | D_DO-41_SOD81_P7.62mm | Polaridad inversa y retroalimentación del USB | 3 |
+| 1 | C1 | 1000 µF 10 V | CP_Radial_D8.0mm_P3.50mm | Respaldo de los servos | 10 |
+| 1 | C2 | 100 µF 10 V | CP_Radial_D5.0mm_P2.50mm | Respaldo del ESP32-C3 (picos del Wi-Fi) | 4 |
+| 4 | J3–J6 | Tira macho 1×03 | PinHeader_1x03_P2.54mm_Servo | Servos base, hombro, codo y pinza (S V G) | 8 |
+| 3 | RV1–RV3 | 10 kΩ lineal, Alps RK09K | RK09K vertical | Potenciómetros de base, hombro y codo | 45 |
+| 3 | R1–R3 | 3.3 kΩ ¼ W | Axial vertical, 5.08 mm | Limitan el tope de cada potenciómetro a ≈2.5 V | 3 |
+| 2 | R4, R5 | 330 Ω ¼ W | Axial horizontal, 7.62 mm | LEDs de estado y diagnóstico | 2 |
+| 1 | R6 | 10 kΩ ¼ W | Axial horizontal, 7.62 mm | Pull-up del pin de arranque IO2 | 1 |
+| 1 | D2 | LED verde 3 mm | LED_D3.0mm | Estado (activo en bajo) | 2 |
+| 1 | D3 | LED rojo 3 mm | LED_D3.0mm | Diagnóstico (activo en bajo) | 2 |
+| 2 | SW1, SW2 | Deslizable 1P2T, Würth WS-SLTV | SW_Slide-03, 2.54 mm | PINZA y MODO | 16 |
+| 1 | — | Placa fenólica de una cara, 70 × 50 mm | — | Se fresa a 58 × 48 mm | 15 |
+| 4 | M1–M4 | Servo SG90 | — | Base, hombro, codo y pinza | 180 |
+| 1 | — | Fuente de laboratorio de 2 canales | — | Canal 1: 5 V lógica; canal 2: 5–6 V, 3 A servos | Del laboratorio |
+| 1 | — | Cable USB-C de datos | — | Programación y `brazo_gui.py` | 50 |
+| | | | | **Total** | **≈466** |
 
 ---
 
 ## 3) Esquemático (B15)
 
-[![Esquemático de la tarjeta de control]({{ '/assets/brazos/electronica/render/esquematico.png' | relative_url }})]({{ '/assets/brazos/electronica/render/esquematico.png' | relative_url }})
-**Figura 2:** Esquemático completo en KiCad 7. Haz clic para verlo a tamaño completo o descarga el [PDF]({{ '/assets/brazos/electronica/fabricacion/esquematico.pdf' | relative_url }}).
+[![Esquemático de la tarjeta brazo_control v3]({{ '/assets/brazos/electronica/render/esquematico.png' | relative_url }})]({{ '/assets/brazos/electronica/render/esquematico.png' | relative_url }})
+**Figura 2:** Esquemático `brazo_control.kicad_sch` (KiCad 7, hoja A3). Haz clic para verlo a tamaño completo o descarga el [PDF]({{ '/assets/brazos/electronica/brazo_control_pcb/docs/esquematico.pdf' | relative_url }}).
 
-El esquemático tiene seis bloques: **alimentación** (J1, F1, D1, C1, C2, R1, D2), **microcontrolador** (U1), **servos** (J2–J5), **potenciómetros** (RV1–RV3 alimentados por R2, con su filtro C3–C5), **interruptor** (SW1) y **barrenos de montaje** (H1–H4). Las conexiones entre bloques se hacen con etiquetas de red.
+El esquemático se organiza en: **alimentación** (J1, D1, C2 para la lógica; J2, C1 para los servos), **microcontrolador** (U1), **servos** (J3–J6), **potenciómetros** (RV1–RV3 con R1–R3), **indicadores** (D2, D3 con R4–R6) e **interruptores** (SW1, SW2). Las conexiones entre bloques se hacen con etiquetas de red; cada nota de diseño está escrita en la hoja.
 
-**Verificación de conectividad.** La netlist que calcula KiCad a partir del esquemático se compara pin por pin con la lista de conexiones del diseño: **62 pines, 15 redes, 0 diferencias** ([reporte]({{ '/assets/brazos/electronica/fabricacion/verificacion-netlist.txt' | relative_url }}), [netlist]({{ '/assets/brazos/electronica/fabricacion/netlist.net' | relative_url }})).
+**Redes:** 21 en total. **Verificación:** la netlist que exporta KiCad del esquemático se comparó pad por pad con las redes de la PCB: **69 pines, 0 diferencias**.
 
-**Biblioteca propia.** KiCad no trae el ESP32-C3 Super Mini, así que el proyecto incluye su símbolo (`brazo.kicad_sym`) y su huella (`brazo.pretty`): dos filas de 8 pines a 15.24 mm, con el número de GPIO en la serigrafía.
+| Red | Conecta |
+|:----|:--------|
+| VLOG_IN | J1.1 → ánodo de D1 |
+| +5V | Cátodo de D1, C2, pin 5V de U1 |
+| VSERVO | J2.1, C1 y el pin V de J3–J6 |
+| GND | J1.2, J2.2, C1, C2, pin G de J3–J6, RV1–RV3, SW1, SW2, U1 |
+| +3V3 | Pin 3V3 de U1 → R1–R6 |
+| VPOT_BASE / _HOMBRO / _CODO | R1–R3 → extremo superior de cada potenciómetro |
+| POT_BASE / _HOMBRO / _CODO | Cursor de RV1–RV3 → IO1, IO0, IO3 |
+| SRV_BASE / _HOMBRO / _CODO / _PINZA | IO5, IO6, IO7, IO10 → pin S de J3–J6 |
+| SW_PINZA / SW_MODO | Común de SW1 → IO21; común de SW2 → IO20 |
+| LED_STAT, LED_STAT_A | IO4 → cátodo de D2; ánodo de D2 → R4 |
+| LED_DIAG_K, LED_DIAG_A | IO2 y R6 → cátodo de D3; ánodo de D3 → R5 |
+
+**Biblioteca propia (`brazos`).** Incluye el símbolo del ESP32-C3 Super Mini, su huella de zócalo (dos filas de 8 pines a 15.24 mm) y la huella de los conectores de servo con GND en el pad cuadrado.
 
 ---
 
@@ -142,48 +172,60 @@ El esquemático tiene seis bloques: **alimentación** (J1, F1, D1, C1, C2, R1, D
 
 <div class="pasos" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
   <figure>
-    <img src="{{ '/assets/brazos/electronica/render/pcb-superior.png' | relative_url }}" alt="Cara superior de la PCB" loading="lazy">
-    <figcaption><strong>Cara superior.</strong> ESP32-C3 arriba al centro con el USB-C al borde, servos a la derecha, potenciómetros abajo y alimentación a la izquierda.</figcaption>
+    <img src="{{ '/assets/brazos/electronica/brazo_control_pcb/docs/vista.png' | relative_url }}" alt="Vista de la tarjeta desde el lado de los componentes" loading="lazy">
+    <figcaption><strong>Lado de componentes</strong>, con las pistas de B.Cu vistas a través de la placa. Arriba, las borneras y el ESP32-C3; abajo, los tres potenciómetros; a la derecha, los conectores de servo, PINZA y MODO.</figcaption>
   </figure>
   <figure>
-    <img src="{{ '/assets/brazos/electronica/render/pcb-inferior.png' | relative_url }}" alt="Cara inferior de la PCB" loading="lazy">
-    <figcaption><strong>Cara inferior</strong>, vista desde abajo. Plano de tierra en las dos caras.</figcaption>
+    <img src="{{ '/assets/brazos/electronica/render/pcb-cobre.png' | relative_url }}" alt="Lado del cobre de la tarjeta" loading="lazy">
+    <figcaption><strong>Lado del cobre</strong> (B.Cu), visto desde abajo. Render de los Gerber con tracespace.</figcaption>
   </figure>
 </div>
 
-**Figura 3:** Render de la tarjeta a partir de los Gerber (tracespace).
+**Figura 3:** Tarjeta `brazo_control` v3.
 
 | Característica | Valor |
 |:---------------|:------|
-| Medidas | **90 × 66 mm**, esquinas redondeadas de 3 mm, 4 barrenos M3 |
-| Capas | 2, cobre de 35 µm (1 oz), FR-4 de 1.6 mm |
-| Componentes | 20, todos de inserción (THT) para soldar a mano |
-| Pistas de potencia (VIN, +5V, +5V_MOD, GND) | **1.2 mm** |
-| Pistas de señal | **0.4 mm** |
-| Separación mínima | 0.25 mm |
-| Plano de tierra | Cara superior e inferior, con alivio térmico en los pads |
-| Ruteo | Freerouting 2.1, 100 % de las conexiones |
-| Revisión de reglas (DRC) | **0 violaciones, 0 pads sin conectar** ([reporte]({{ '/assets/brazos/electronica/fabricacion/drc.rpt' | relative_url }})) |
+| Medidas | **58 × 48 mm**, centrada en un blank de fenólica de 70 × 50 mm |
+| Capas | **Una cara** (B.Cu); componentes de inserción por arriba |
+| Vías y puentes | Ninguno |
+| Pistas | 0.8 mm señales · 1.2 mm GND y 5 V · 1.6 mm alimentación de servos |
+| Aislamiento mínimo | 0.6 mm entre redes distintas |
+| Cobre al contorno | ≥ 0.8 mm |
+| Componentes | 23 huellas |
+| Taladros | 75 |
+| Revisión de reglas (DRC) | **0 violaciones, 0 pads sin conectar** ([reporte]({{ '/assets/brazos/electronica/brazo_control_pcb/docs/drc_report.txt' | relative_url }})) |
+| Revisiones de geometría | Cada red forma una sola isla; los 75 taladros espejados caen sobre su pad |
 
-**Archivos de fabricación** ([.zip]({{ '/assets/brazos/electronica/fabricacion/gerber-tarjeta-brazo.zip' | relative_url }})): cobre (`.gtl`, `.gbl`), máscara (`.gts`, `.gbs`), serigrafía (`.gto`, `.gbo`), pasta (`.gtp`, `.gbp`), contorno (`.gm1`), barrenos con y sin metalizar (`.drl`) y sus mapas en PDF. Se suben tal cual a cualquier fabricante de PCB con las opciones por defecto: 2 capas, 1.6 mm, HASL, máscara verde.
+### Archivos de fabricación
 
-Todo el proyecto se genera con `tools/f7_tarjeta.py`: el script tiene una sola lista de componentes y conexiones, de la que salen el esquemático y la PCB, así que no pueden contradecirse.
+| Carpeta | Archivo | Uso |
+|:--------|:--------|:----|
+| `cnc/` | `cobre_espejado.gbr` | Aislamiento de pistas en la CNC |
+| `cnc/` | `taladros_espejado.drl` | Taladros, alineados con el cobre |
+| `cnc/` | `contorno_espejado.gbr` | Corte del contorno de 58 × 48 mm |
+| `cnc/` | `cobre_visto_desde_cobre.svg` | Revisión o impresión 1:1 |
+| `fabricacion/` | Gerber de B.Cu, B.Mask, F.Silkscreen, Edge.Cuts y taladros | Para fabricante externo, si se prefiere |
+| `docs/` | `vista.png`, `cobre_espejo.png` | Presentar las piezas reales a escala 1:1 antes de fresar |
 
-```bash
-python3 tools/f7_tarjeta.py esquematico   # esquemático y biblioteca
-python3 tools/f7_tarjeta.py pcb           # coloca componentes y asigna redes
-python3 tools/f7_tarjeta.py rutear        # Freerouting y planos de tierra
-python3 tools/f7_tarjeta.py exportar      # verificación, DRC, PDF, Gerber y barrenos
-```
+Los archivos de `cnc/` **ya vienen espejados**, vistos desde el lado del cobre: no se vuelven a espejar en FlatCAM.
 
 ---
 
 ## 5) Manufactura y montaje electrónico (B17)
 
-### Fabricación de la PCB
+### Fresado de la PCB en la Genmitsu Cubiko
 
-1. Subir el `.zip` de Gerber al fabricante. Opciones: 2 capas, FR-4 1.6 mm, 1 oz, HASL, máscara verde, serigrafía blanca.
-2. Revisar en el visor del fabricante que el contorno mida 90 × 66 mm y que los 4 barrenos M3 sean de 3.2 mm.
+| Paso | Operación | Herramienta y parámetros |
+|:----:|:----------|:-------------------------|
+| 1 | Colocar el blank de 70 × 50 mm con el **cobre hacia arriba**, el lado largo en X y el borde del USB hacia el fondo (+Y) | Clamps en las franjas libres de 6 mm de cada lado en X |
+| 2 | Fijar el origen (0, 0) en la **esquina frontal izquierda del blank** | — |
+| 3 | Mapa de alturas | Sonda de la máquina |
+| 4 | Aislamiento de pistas con `cobre_espejado.gbr` | V-bit de 20–30°, punta de 0.1 mm, 0.05–0.1 mm de profundidad (corta ≈0.13–0.16 mm); 2–3 pasadas sin pasar de 0.6 mm de ancho total |
+| 5 | Taladrado con `taladros_espejado.drl` | Brocas de 0.8 mm (resistencias, capacitores, interruptores, LEDs), 1.0 mm (módulo, servos, potenciómetros, D1), 1.5 mm (borneras) y 2.0 mm (anclajes de los potenciómetros) |
+| 6 | Contorno con `contorno_espejado.gbr`, al final | Fresa recta de 1–2 mm, por fuera de la línea, varias pasadas hasta 1.6 mm, con 2–4 pestañas |
+| 7 | Limpieza | Aspiradora durante todo el fresado: el polvo de fenólica irrita |
+
+Antes de fresar, se imprime `docs/vista.png` a escala 1:1 y se presentan encima las piezas reales: potenciómetros RK09K, interruptores a 2.54 mm, C1 de Ø8 mm, borneras de 5.08 mm y resistencias paradas a 5.08 mm.
 
 ### Orden de soldadura
 
@@ -191,23 +233,24 @@ De menor a mayor altura, para que la tarjeta se apoye plana en cada paso:
 
 | Paso | Componentes | Cuidado |
 |:----:|:------------|:--------|
-| 1 | R1, R2, D1 | D1: la franja (cátodo) va hacia el lado marcado **K** |
-| 2 | C2–C5 | Sin polaridad |
-| 3 | D2 | Pata larga (ánodo) hacia R1 |
-| 4 | Tiras hembra 1×8 de U1 | Soldar con el módulo puesto para que queden alineadas |
-| 5 | J2–J5, SW1 | Pin 1 de cada servo = GND (cable café) |
-| 6 | F1, C1 | C1: la pata `+` al pad cuadrado |
-| 7 | RV1–RV3 | También soldar las dos pestañas de sujeción |
-| 8 | J1 | Entrada de los cables hacia el borde |
+| 1 | R4, R5, R6 (acostadas) y D1 | D1: la franja (cátodo) hacia el lado marcado **K** |
+| 2 | R1–R3 (paradas, debajo de cada potenciómetro) | Cuerpo vertical, 5.08 mm entre patas |
+| 3 | D2 (verde) y D3 (rojo) | Pata larga (ánodo) hacia R4 y R5 |
+| 4 | Tiras hembra del zócalo de U1 | Soldar con el módulo puesto para que queden alineadas |
+| 5 | J3–J6 | GND en el pad cuadrado |
+| 6 | SW1 (PINZA, arriba) y SW2 (MODO, abajo) | |
+| 7 | C2 y C1 | La pata `+` al pad marcado |
+| 8 | J1 y J2 | J1 = lógica, J2 = servos; no intercambiarlas |
+| 9 | RV1–RV3 | También soldar las dos pestañas de sujeción |
 
 ### Revisión antes de energizar
 
 | Revisión | Cómo | Resultado esperado |
 |:---------|:-----|:-------------------|
-| Corto en la alimentación | Multímetro en continuidad entre +5V y GND, sin módulo | Sin continuidad (la lectura sube al cargarse C1) |
-| Polaridad de C1 y D1 | Inspección visual | `+` de C1 en el pad cuadrado; franja de D1 hacia K |
-| Puentes de soldadura | Lupa en las tiras de U1 | Sin estaño entre pines vecinos |
-| Primer encendido | Fuente de laboratorio a 5 V con límite de 0.3 A, sin módulo ni servos | D2 enciende; consumo < 10 mA |
+| Pistas cortadas o en corto | Continuidad entre redes vecinas, sobre todo en los pines del zócalo | Sin continuidad entre redes distintas |
+| Polaridad de C1, C2 y D1 | Inspección visual | `+` en el pad marcado; franja de D1 hacia K |
+| Corto en las alimentaciones | Continuidad VSERVO–GND y +5V–GND, sin módulo | Sin continuidad (sube al cargarse los capacitores) |
+| Primer encendido | Canal 1 a 5 V con límite de 0.3 A, sin módulo ni servos | Consumo < 5 mA |
 
 ---
 
@@ -217,30 +260,34 @@ Cada bloque se prueba antes de conectar los servos al brazo. Las pruebas de prog
 
 | Bloque | Prueba | Criterio de aceptación |
 |:-------|:-------|:-----------------------|
-| Alimentación | Medir +5V y +5V_MOD con la fuente de 5 V | +5V entre 4.75 y 5.25 V; +5V_MOD 0.3–0.5 V abajo de +5V |
+| Lógica | Medir +5V (cátodo de D1) con el canal 1 a 5 V | 4.5–4.7 V |
 | Regulador del módulo | Medir +3V3 con U1 puesto | 3.25–3.35 V |
-| Referencia de los potenciómetros | Medir V_POT (pata derecha de R2) | 2.45–2.65 V |
-| Potenciómetros | Orden `E` por USB girando cada potenciómetro de tope a tope | Su articulación recorre todo su rango sin saltos |
-| Interruptor | Orden `E` en las dos posiciones de SW1 | `"interruptor":true` y `false`; la pinza cambia una sola vez por movimiento |
-| PWM de cada servo | Orden `J <art> 0`, `J <art> 90`, `J <art> 180` con un servo suelto | El servo va a cada posición sin vibrar; el ángulo se recorta a los límites del brazo |
-| Cuatro servos a la vez | Orden `A 0 30 20 30` y luego `H` | El ESP32-C3 no se reinicia; +5V no baja de 4.5 V |
-| Wi-Fi | Conectar el celular a la red del brazo y abrir `http://192.168.4.1` | La app carga y muestra el modo de mando |
+| Referencia de los potenciómetros | Medir VPOT en el extremo superior de cada potenciómetro | 2.40–2.55 V |
+| Potenciómetros | Orden `E` por USB girando cada uno de tope a tope en modo Manual | Su articulación recorre todo su rango sin saltos |
+| Interruptor MODO | Orden `E` en las dos posiciones de SW2 | `"modo":"manual"` y `"modo":"app"` |
+| Interruptor PINZA | Orden `E` en las dos posiciones de SW1 | `"sw_pinza":true` y `false`; la pinza cambia una vez por movimiento |
+| LEDs | Encender la tarjeta en cada modo | D2 fijo en Manual, parpadeando en App |
+| Botón DIAG | Presionar BOOT con la tarjeta encendida | D3 encendido mientras cada servo va a su mínimo, a su máximo y a su inicio |
+| Servos | En App: `J <art> 0`, `J <art> 90`, `J <art> 180` con un servo suelto | Va a cada posición sin vibrar; el ángulo se recorta a los límites |
+| Cuatro servos a la vez | En App: `A 0 30 20 30` y luego `H` | El ESP32-C3 no se reinicia; VSERVO no baja de 4.5 V |
+| Wi-Fi | Conectar el celular a la red del brazo y abrir `http://192.168.4.1` | La app carga y muestra el modo; D3 no parpadea |
 
 ### Pruebas automáticas del firmware
 
-La lógica del firmware se prueba en la computadora: los mismos archivos `.cpp` se compilan con g++ contra un `Arduino.h` simulado, y un programa de prueba revisa 26 condiciones por brazo. Resultado actual:
+La lógica del firmware se prueba en la computadora: los mismos archivos `.cpp` se compilan con g++ contra un `Arduino.h` simulado, y un programa de prueba revisa 37 condiciones por brazo. Resultado actual:
 
 | Grupo | Qué comprueba | Impreso | Láser |
 |:------|:--------------|:-------:|:-----:|
-| Arranque | Modo manual, ángulos de inicio, pinza según el interruptor, PWM inicial | 4 / 4 | 4 / 4 |
+| Arranque | Modo según SW2, ángulos de inicio, pinza según SW1, PWM inicial en IO5 | 4 / 4 | 4 / 4 |
 | Conversión a PWM | 0° = 500 µs = 410 de 16 383; 180° = 2400 µs = 1966 de 16 383 | 2 / 2 | 2 / 2 |
-| Modo manual | Cada potenciómetro lleva su articulación a sus límites | 2 / 2 | 2 / 2 |
+| Modo Manual | Cada potenciómetro lleva su articulación a sus límites; el USB se rechaza | 4 / 4 | 4 / 4 |
 | Velocidad máxima | No avanza más de 12° en 100 ms (120 °/s) | 1 / 1 | 1 / 1 |
-| Mando por USB | `J`, `A`, `P`, `H`, `E`, recorte de ángulos y errores | 11 / 11 | 11 / 11 |
-| Regreso al manual | El ruido del ADC no quita el mando; girar un potenciómetro sí | 2 / 2 | 2 / 2 |
-| Mando web | Una orden de la app toma el control | 1 / 1 | 1 / 1 |
-| Interruptor | Un rebote de 20 ms se ignora; abrir y cerrar | 3 / 3 | 3 / 3 |
-| **Total** | | **26 / 26** | **26 / 26** |
+| Interruptor PINZA | Un rebote de 20 ms se ignora; SW1 abre la pinza | 2 / 2 | 2 / 2 |
+| Modo App por USB | Los potenciómetros no mueven el brazo; `J`, `A`, `P`, `H`, `E`, recorte de ángulos y errores | 13 / 13 | 13 / 13 |
+| Modo App por la app | Una orden de la app se acepta y queda registrada | 2 / 2 | 2 / 2 |
+| Regreso a Manual | El brazo vuelve a seguir a los potenciómetros y a SW1; la app se rechaza | 4 / 4 | 4 / 4 |
+| Diagnóstico | BOOT arranca la secuencia, recorre los 12 pasos, rechaza órdenes y termina sola | 5 / 5 | 5 / 5 |
+| **Total** | | **37 / 37** | **37 / 37** |
 
 ```bash
 cd assets/brazos/codigo/pruebas
@@ -257,9 +304,9 @@ Hay tres programas: el **firmware** del ESP32-C3, la **app web** (una página qu
 flowchart LR
   subgraph FW["Firmware del ESP32-C3"]
     direction TB
-    INO["firmware_brazo.ino<br/>setup() y loop()"]
-    CTRL["control<br/>arbitraje de fuentes"]
-    ENT["entradas<br/>ADC + antirrebote"]
+    INO["firmware_brazo.ino<br/>setup(), loop() y LEDs"]
+    CTRL["control<br/>modo, órdenes y diagnóstico"]
+    ENT["entradas<br/>ADC, SW1, SW2, BOOT"]
     ART["articulaciones<br/>límites, velocidad, PWM"]
     SER["puerto_serie<br/>protocolo de texto"]
     WEB["servidor_web<br/>Wi-Fi + rutas /api"]
@@ -270,25 +317,27 @@ flowchart LR
     CTRL --> ENT
     CTRL --> ART
   end
-  POT["Potenciómetros<br/>e interruptor"] --> ENT
+  POT["RV1–RV3, SW1, SW2<br/>y botón BOOT"] --> ENT
   APP["App web<br/>pagina_web.h"] <-- "HTTP GET / JSON" --> WEB
   GUI["brazo_gui.py"] <-- "USB 115200 baudios" --> SER
   ART -- "PWM 50 Hz" --> S["4 servos"]
+  INO -- "IO4, IO2" --> LED["D2 estado · D3 DIAG"]
 ```
 
-**Figura 4:** Módulos del firmware y su relación con las entradas, las interfaces y los servos.
+**Figura 4:** Módulos del firmware y su relación con las entradas, las interfaces, los servos y los LEDs.
 
 | Componente | Entradas | Procesamiento | Salidas |
 |:-----------|:---------|:--------------|:--------|
-| `entradas` | 3 potenciómetros, interruptor | Filtro exponencial del ADC (α = 0.2), antirrebote de 30 ms, conversión a grados dentro de los límites | Ángulos de los potenciómetros, estado y cambios del interruptor |
-| `control` | Entradas, órdenes de la app y del USB | Decide la fuente de mando: la última que dio una orden; girar un potenciómetro más de 4° devuelve el mando al modo manual | Ángulos objetivo |
-| `articulaciones` | Ángulos objetivo | Recorta a los límites y avanza hacia el objetivo a 120 °/s como máximo | PWM de 50 Hz y 14 bits en GPIO4–7 |
-| `puerto_serie` | Líneas de texto por USB | Interpreta `J`, `A`, `P`, `H`, `E`, `?` | Respuestas `OK` / `ERR` y estado en JSON |
-| `servidor_web` | Peticiones HTTP | Punto de acceso Wi-Fi y rutas `/api/...` | Página de la app y estado en JSON |
+| `entradas` | 3 potenciómetros, SW1, SW2, botón BOOT | Filtro exponencial del ADC (α = 0.2), antirrebote de 30 ms en las tres entradas digitales, conversión a grados | Ángulos de los potenciómetros, posición de SW1 y SW2, pulsación de BOOT |
+| `control` | Entradas, órdenes de la app y del USB | SW2 decide el modo: en Manual siguen a los potenciómetros y a SW1; en App acepta la app y el USB; BOOT corre el diagnóstico | Ángulos objetivo |
+| `articulaciones` | Ángulos objetivo | Recorta a los límites y avanza hacia el objetivo a 120 °/s como máximo | PWM de 50 Hz y 14 bits en IO5, IO6, IO7 e IO10 |
+| `puerto_serie` | Líneas de texto por USB | Interpreta `J`, `A`, `P`, `H`, `D`, `E`, `?` | Respuestas `OK` / `ERR` y estado en JSON |
+| `servidor_web` | Peticiones HTTP | Punto de acceso Wi-Fi y rutas `/api/...` | Página de la app, estado en JSON y error 409 en Manual |
+| `firmware_brazo.ino` | Modo y fuente de mando | Patrón de cada LED | D2 en IO4 y D3 en IO2 |
 
 ### Protocolo por USB
 
-Una orden por línea, a 115 200 baudios:
+Una orden por línea, a 115 200 baudios. Las órdenes de movimiento solo se aceptan con SW2 en **App**.
 
 | Orden | Ejemplo | Efecto | Respuesta |
 |:------|:--------|:-------|:----------|
@@ -296,18 +345,21 @@ Una orden por línea, a 115 200 baudios:
 | `A <b> <h> <c> <p>` | `A 90 60 100 30` | Mueve las cuatro articulaciones | `OK` |
 | `P A` / `P C` | `P C` | Abre o cierra la pinza | `OK` |
 | `H` | `H` | Posición de inicio | `OK` |
-| `E` | `E` | Estado | `OK {"brazo":"impreso","fuente":"serie",...}` |
+| `D` | `D` | Secuencia de diagnóstico | `OK` |
+| `E` | `E` | Estado | `OK {"brazo":"impreso","modo":"app","fuente":"serie",...}` |
 | `?` | `?` | Ayuda | `OK ordenes: ...` |
+| (en Manual) | `J 0 45` | No mueve el brazo | `ERR modo manual: pasa el interruptor MODO a App` |
 
 ### API de la app
 
-| Ruta | Parámetros | Efecto |
-|:-----|:-----------|:-------|
-| `GET /` | — | Página de la app |
-| `GET /api/estado` | — | Estado en JSON |
-| `GET /api/mover` | `art`, `grados` | Mueve una articulación |
-| `GET /api/pinza` | `accion=abrir` o `cerrar` | Abre o cierra la pinza |
-| `GET /api/inicio` | — | Posición de inicio |
+| Ruta | Parámetros | Efecto | En Manual |
+|:-----|:-----------|:-------|:----------|
+| `GET /` | — | Página de la app | — |
+| `GET /api/estado` | — | Estado en JSON | Responde |
+| `GET /api/mover` | `art`, `grados` | Mueve una articulación | 409 |
+| `GET /api/pinza` | `accion=abrir` o `cerrar` | Abre o cierra la pinza | 409 |
+| `GET /api/inicio` | — | Posición de inicio | 409 |
+| `GET /api/diagnostico` | — | Secuencia de diagnóstico | Responde |
 
 ---
 
@@ -315,24 +367,23 @@ Una orden por línea, a 115 200 baudios:
 
 ```mermaid
 flowchart TD
-  A([Encendido]) --> B["setup(): LED, USB serie,<br/>control::iniciar(), servidor_web::iniciar()"]
-  B --> B1["Servos a su ángulo de inicio;<br/>pinza según el interruptor"]
+  A([Encendido]) --> B["setup(): LEDs apagados, USB serie,<br/>control::iniciar(), servidor_web::iniciar()"]
+  B --> B1["Servos a su ángulo de inicio;<br/>modo según SW2; pinza según SW1"]
   B1 --> C["loop()"]
-  C --> D["Atender USB: ¿llegó una línea?"]
-  D -- Sí --> D1["Ejecutar orden<br/>fuente = SERIE"] --> E
-  D -- No --> E["Atender app: ¿hay petición HTTP?"]
-  E -- Sí --> E1["Responder y ejecutar<br/>fuente = WEB"] --> F
-  E -- No --> F{"¿Pasaron 20 ms?"}
+  C --> D["Atender USB y app:<br/>órdenes de movimiento solo si modo = App"]
+  D --> F{"¿Pasaron 20 ms?"}
   F -- No --> C
-  F -- Sí --> G["Leer potenciómetros (filtro)<br/>e interruptor (antirrebote)"]
-  G --> H{"¿Fuente remota y algún pot<br/>se movió más de 4°?"}
-  H -- Sí --> H1["fuente = MANUAL"] --> I
-  H -- No --> I{"¿fuente = MANUAL?"}
-  I -- Sí --> I1["Objetivo de base, hombro y codo<br/>= ángulo de su potenciómetro"] --> J
-  I -- No --> J{"¿Cambió el interruptor?"}
-  J -- Sí --> J1["Pinza a abierta o cerrada"] --> K
-  J -- No --> K["Avanzar cada servo hacia su objetivo<br/>(máx. 120 °/s) y escribir el PWM"]
-  K --> L["LED según la fuente"] --> C
+  F -- Sí --> G["Leer potenciómetros (filtro)<br/>y SW1, SW2, BOOT (antirrebote)"]
+  G --> H{"¿Se presionó BOOT?"}
+  H -- Sí --> H1["Iniciar diagnóstico"] --> I
+  H -- No --> I{"¿Cambió SW2?"}
+  I -- Sí --> I1["Cambiar de modo;<br/>al volver a Manual, pinza según SW1"] --> J
+  I -- No --> J{"¿Diagnóstico en curso?"}
+  J -- Sí --> J1["Cada 1 s: siguiente paso<br/>(mínimo, máximo, inicio de cada articulación)"] --> M
+  J -- No --> K{"¿Modo Manual?"}
+  K -- Sí --> K1["Base, hombro y codo = ángulo de su potenciómetro;<br/>si cambió SW1, abrir o cerrar la pinza"] --> M
+  K -- No --> M["Avanzar cada servo hacia su objetivo<br/>(máx. 120 °/s) y escribir el PWM"]
+  M --> N["LEDs: D2 según el modo, D3 según el diagnóstico"] --> C
 ```
 
 **Figura 5:** Flujo del firmware. El ciclo de control corre cada 20 ms, igual que el periodo del PWM de los servos; el USB y la app se atienden en cada vuelta de `loop()`.
@@ -341,15 +392,24 @@ flowchart TD
 
 ## 9) Interfaz y procedimiento de operación (B21)
 
-### Modos de mando
+### Controles de la tarjeta
 
-| Modo | Cómo se usa | LED de la placa |
-|:-----|:------------|:----------------|
-| **Manual** | Girar RV1 (base), RV2 (hombro), RV3 (codo); SW1 abre y cierra la pinza | Encendido fijo |
-| **App web** | Conectarse a la red del brazo y abrir la app | Parpadeo lento (1 Hz) |
-| **USB** | Ejecutar `brazo_gui.py` con el brazo conectado | Parpadeo rápido (4 Hz) |
+| Control | Función |
+|:--------|:--------|
+| **SW2 MODO** | **Manual**: los potenciómetros y SW1 mueven el brazo. **App**: lo mueven la app web o `brazo_gui.py` |
+| **RV1, RV2, RV3** | Base, hombro y codo, en modo Manual |
+| **SW1 PINZA** | Abre y cierra la pinza, en modo Manual |
+| **BOOT** (en el módulo) | Diagnóstico: cada articulación va a su mínimo, a su máximo y a su inicio. Si se mantiene presionado **al encender**, el módulo entra en modo de carga de programa |
 
-El brazo arranca en modo manual. Una orden de la app o del USB toma el mando; girar cualquier potenciómetro lo regresa al modo manual. El interruptor de la pinza funciona en cualquier modo.
+### LEDs
+
+| LED | Patrón | Significado |
+|:----|:-------|:------------|
+| D2 verde (estado) | Fijo | Modo Manual |
+| | Parpadeo lento (1 Hz) | Modo App, mandando la app web o en espera |
+| | Parpadeo rápido (4 Hz) | Modo App, la última orden llegó por USB |
+| D3 rojo (DIAG) | Encendido | Diagnóstico en curso |
+| | Parpadeo rápido | No se pudo crear la red Wi-Fi |
 
 ### Datos de acceso
 
@@ -361,16 +421,16 @@ El brazo arranca en modo manual. Una orden de la app o del USB toma el mando; gi
 | Puerto USB | `COM#` en Windows, `/dev/ttyACM0` en Linux, `/dev/cu.usbmodem*` en macOS | Igual |
 | Velocidad | 115 200 baudios | 115 200 baudios |
 
-### App web
+### App web y `brazo_gui.py`
 
 <div class="pasos" style="grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));">
   <figure>
     <img src="{{ '/assets/brazos/codigo/capturas/app-web.png' | relative_url }}" alt="App web del brazo en el celular" loading="lazy">
-    <figcaption><strong>App web</strong> en un celular. Deslizadores de base, hombro y codo con sus límites; botones de pinza e inicio; el encabezado muestra qué fuente tiene el mando.</figcaption>
+    <figcaption><strong>App web</strong> en un celular: modo y fuente de mando, deslizadores de base, hombro y codo con sus límites, botones de pinza, inicio y diagnóstico. En modo Manual los deslizadores se bloquean y la app explica por qué.</figcaption>
   </figure>
   <figure>
     <img src="{{ '/assets/brazos/codigo/capturas/gui-usb.png' | relative_url }}" alt="Ventana de brazo_gui.py" loading="lazy">
-    <figcaption><strong><code>brazo_gui.py</code></strong>: selección del puerto, deslizadores, botones de pinza e inicio, y el modo de mando actual.</figcaption>
+    <figcaption><strong><code>brazo_gui.py</code></strong>: selección del puerto, deslizadores, botones de pinza, inicio y diagnóstico, y el modo actual.</figcaption>
   </figure>
 </div>
 
@@ -378,12 +438,16 @@ El brazo arranca en modo manual. Una orden de la app o del USB toma el mando; gi
 
 ### Procedimiento de operación
 
-1. **Conectar:** los 4 servos a J2–J5 (cable café al pin G) y la fuente de 5 V, 3 A a J1. D2 enciende.
-2. **Arranque:** los servos van a su ángulo de inicio y el LED de la placa queda fijo (modo manual).
-3. **Modo manual:** girar los potenciómetros y usar el interruptor.
-4. **Modo app:** en el celular, conectarse a la red del brazo con la contraseña y abrir `http://192.168.4.1`.
-5. **Modo USB:** conectar el USB-C a la computadora y ejecutar `python brazo_gui.py`; elegir el puerto y oprimir **Conectar**.
-6. **Apagar:** oprimir **Inicio** (app o GUI) para dejar el brazo en reposo y desconectar la fuente.
+1. **Conectar:** los 4 servos a J3–J6 (S V G, GND en el pad cuadrado); el canal 1 de la fuente a 5 V en **J1 (LÓGICA)** y el canal 2 a 5–6 V en **J2 (VSERVO)**.
+2. **Arranque:** los servos van a su ángulo de inicio; D2 indica el modo.
+3. **Modo Manual (SW2 en Manual):** girar RV1–RV3 y usar SW1 para la pinza.
+4. **Modo App (SW2 en App):**
+   - **App web:** en el celular, conectarse a la red del brazo con la contraseña y abrir `http://192.168.4.1`.
+   - **USB:** conectar el USB-C del módulo, ejecutar `python brazo_gui.py`, elegir el puerto y oprimir **Conectar**.
+5. **Diagnóstico:** presionar BOOT (o el botón **Diagnóstico** de la app o de la GUI) con el brazo despejado.
+6. **Apagar:** en App, oprimir **Inicio**; en Manual, dejar los potenciómetros al centro. Apagar primero el canal 2 (servos) y después el 1.
+
+> **No conectar el USB y J1 al mismo tiempo sin D1.** D1 evita que el USB alimente de regreso a la fuente.
 
 ---
 
@@ -400,7 +464,8 @@ El brazo arranca en modo manual. Una orden de la app o del USB toma el mando; gi
 | `brazo_gui.py` | `tkinter` (incluida en Python) | Interfaz gráfica | Tk 8.6 |
 | App web | HTML, CSS y JavaScript sin librerías | Interfaz en el navegador | — |
 | Pruebas | g++ y make | Pruebas del firmware en la computadora | C++17 |
-| Tarjeta | KiCad | Esquemático y PCB | 7.0 |
+| Tarjeta | KiCad | Esquemático y PCB | 7.0.11 |
+| Tarjeta | FlatCAM y Genmitsu Cubiko | Fresado de la PCB | — |
 
 El firmware **no necesita librerías externas**: los servos se manejan directo con el periférico LEDC del ESP32-C3.
 
@@ -410,23 +475,24 @@ El firmware **no necesita librerías externas**: los servos se manejan directo c
 
 | Archivo | Función | Qué hace |
 |:--------|:--------|:---------|
-| `firmware_brazo.ino` | `setup()` | Inicia el LED, el USB, el control y el servidor web |
-| | `loop()` | Atiende USB y app en cada vuelta; cada 20 ms corre `control::ciclo()` y actualiza el LED |
-| | `actualizarLed()` | Fijo, lento o rápido según la fuente de mando |
-| `config.h` | — | Pines, límites de cada articulación, ángulos de la pinza, red Wi-Fi y constantes de tiempo; elige el brazo con `BRAZO` |
-| `control.cpp` | `iniciar()` | Inicia entradas y servos; pone la pinza según el interruptor |
-| | `ciclo(dt)` | Lee entradas, decide la fuente, aplica el interruptor y mueve los servos |
-| | `mover()`, `pinza()`, `inicio()` | Órdenes de la app y del USB; toman el mando |
+| `firmware_brazo.ino` | `setup()` | Configura los LEDs, el USB, el control y el servidor web |
+| | `loop()` | Atiende USB y app en cada vuelta; cada 20 ms corre `control::ciclo()` y actualiza los LEDs |
+| | `actualizarLeds()` | D2 según el modo y la fuente; D3 según el diagnóstico y el Wi-Fi |
+| `config.h` | — | Pines de la tarjeta v3, nivel de SW1 y SW2, límites de cada articulación, ángulos de la pinza, red Wi-Fi y tiempos; elige el brazo con `BRAZO` |
+| `control.cpp` | `iniciar()` | Inicia entradas y servos; toma el modo de SW2 y la pinza de SW1 |
+| | `ciclo(dt)` | Lee entradas, aplica el modo o el diagnóstico y mueve los servos |
+| | `mover()`, `pinza()`, `inicio()` | Órdenes de la app y del USB; devuelven si se aceptaron o por qué no |
+| | `diagnostico()` | Arranca la secuencia de 12 pasos |
 | | `estadoJson()` | Estado completo para la app, la GUI y las pruebas |
-| `articulaciones.cpp` | `iniciar()` | Configura el LEDC a 50 Hz y 14 bits en GPIO4–7 |
+| `articulaciones.cpp` | `iniciar()` | Configura el LEDC a 50 Hz y 14 bits en IO5, IO6, IO7 e IO10 |
 | | `fijarObjetivo()`, `limitar()` | Recorta el ángulo pedido al rango de la articulación |
 | | `actualizar(dt)` | Avanza hacia el objetivo a 120 °/s como máximo |
 | | `gradosADuty()` | 0–180° → pulso de 500–2400 µs → ciclo de trabajo |
-| `entradas.cpp` | `leer()` | Filtro exponencial del ADC y antirrebote del interruptor |
+| `entradas.cpp` | `leer()` | Filtro exponencial del ADC y antirrebote de SW1, SW2 y BOOT |
 | | `anguloPot()` | Lectura en mV → ángulo dentro de los límites |
-| | `interruptorCambio()` | Avisa una sola vez por cada cambio |
+| | `pinzaCambio()`, `botonDiagPresionado()` | Avisan una sola vez por cada cambio o pulsación |
 | `puerto_serie.cpp` | `atender()`, `ejecutar()` | Junta caracteres en líneas e interpreta las órdenes |
-| `servidor_web.cpp` | `iniciar()`, `atender()` | Crea la red Wi-Fi y registra las rutas `/api/...` |
+| `servidor_web.cpp` | `iniciar()`, `atender()`, `activo()` | Crea la red Wi-Fi, registra las rutas `/api/...` e informa si la red está activa |
 | `pagina_web.h` | — | HTML, CSS y JavaScript de la app, guardados en flash |
 | `brazo_gui.py` | `EnlaceSerie` | Puerto serie en un hilo aparte para no congelar la ventana |
 | | `Aplicacion` | Ventana, deslizadores y botones; pide el estado cada 500 ms |
@@ -460,8 +526,8 @@ arduino-cli upload -p /dev/ttyACM0 --fqbn esp32:esp32:esp32c3:CDCOnBoot=cdc firm
 
 | Compilación | Flash | RAM |
 |:------------|------:|----:|
-| Brazo impreso | 1 033 447 bytes (78 %) | 38 328 bytes (11 %) |
-| Brazo de láser | 1 033 439 bytes (78 %) | 38 328 bytes (11 %) |
+| Brazo impreso | 1 035 181 bytes (78 %) | 38 360 bytes (11 %) |
+| Brazo de láser | 1 035 181 bytes (78 %) | 38 360 bytes (11 %) |
 
 Las dos versiones compilan sin advertencias con el núcleo esp32 3.3.12 y `--warnings all`.
 

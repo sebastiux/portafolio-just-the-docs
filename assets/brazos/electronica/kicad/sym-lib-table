@@ -1,3 +1,0 @@
-(sym_lib_table
-  (lib (name "brazo")(type "KiCad")(uri "${KIPRJMOD}/brazo.kicad_sym")(options "")(descr "Simbolos del proyecto"))
-)

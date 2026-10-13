@@ -25,7 +25,7 @@ Brazo de **3 GDL más pinza**, cortado con láser en **MDF de 3 mm**. Es un **Me
 | Hojas de corte | 2 de **150 × 200 mm** |
 | Volumen de MDF | **94.8 cm³** sumando las 36 piezas |
 | Actuadores | **4 servos SG90** |
-| Control | **Tarjeta propia con ESP32-C3 Super Mini**: potenciómetros, app web y USB |
+| Control | **Tarjeta `brazo_control` v3 con ESP32-C3 Super Mini**: modo Manual (potenciómetros) y modo App (app web y USB) |
 | Envolvente del ensamble CAD | 264.1 × 95.2 × 156.8 mm en la pose exportada |
 | Alcance | ≈160 mm de eslabones (2 × ≈80 mm) más la pinza |
 | Masa estimada | 94.8 cm³ × 0.75 g/cm³ ≈ 71 g de MDF + 4 × 9 g de servos ≈ **107 g** sin tornillería ni tarjeta |
@@ -327,22 +327,35 @@ Los rangos son los límites programados para este brazo en `config.h`; son más 
 
 ### Electrónica
 
-La misma tarjeta de control del brazo impreso: [lista completa]({{ '/brazos/electronica-programacion/' | relative_url }}#2-lista-de-materiales-electrónicos-b14) (≈$459 sin los servos).
+La misma tarjeta de control del brazo impreso: [lista completa]({{ '/brazos/electronica-programacion/' | relative_url }}#2-lista-de-materiales-electrónicos-b14) (≈$286 sin los servos).
 
 ---
 
 ## 13) Electrónica y programación (B13–B24)
 
-Este brazo usa la [tarjeta de control con ESP32-C3]({{ '/brazos/electronica-programacion/' | relative_url }}) y el firmware común, compilado con `#define BRAZO BRAZO_LASER`. Diagrama de bloques, esquemático, PCB, código, diagramas de flujo e interfaces están en esa página.
+Este brazo usa la [tarjeta `brazo_control` v3 con ESP32-C3]({{ '/brazos/electronica-programacion/' | relative_url }}) y el firmware común, compilado con `#define BRAZO BRAZO_LASER`. Diagrama de bloques, esquemático, PCB, código, diagramas de flujo e interfaces están en esa página.
 
 ### Mapeo de los controles
 
 | Control | Señal | GPIO | Actúa sobre |
 |:--------|:------|:----:|:------------|
-| RV1 | Analógica, proporcional | 0 | Servo de la **base** (J2, GPIO4) |
-| RV2 | Analógica, proporcional | 1 | Servo del **hombro** (J3, GPIO5) |
-| RV3 | Analógica, proporcional | 3 | Servo del **codo** (J4, GPIO6) |
-| SW1 | Digital, dos posiciones | 10 | Servo de la **pinza** (J5, GPIO7) |
+| RV1 | Analógica, proporcional | IO1 | Servo de la **base** (J3, IO5) |
+| RV2 | Analógica, proporcional | IO0 | Servo del **hombro** (J4, IO6) |
+| RV3 | Analógica, proporcional | IO3 | Servo del **codo** (J5, IO7) |
+| SW1 | Digital, dos posiciones | IO21 | Servo de la **pinza** (J6, IO10) |
+
+Estos controles mandan con **SW2 MODO en Manual**. Con SW2 en App, el brazo lo mueven la app web o `brazo_gui.py`.
+
+### Conexión de los servos
+
+Los conectores siguen el orden **S V G** de izquierda a derecha, viendo desde los componentes; GND es el pad cuadrado.
+
+| Conector | GPIO | Servo | S (naranja) | V (rojo) | G (café) |
+|:--------:|:----:|:------|:-----------:|:--------:|:--------:|
+| J3 | IO5 | Base (giro) | Señal | VSERVO | GND |
+| J4 | IO6 | Hombro | Señal | VSERVO | GND |
+| J5 | IO7 | Codo | Señal | VSERVO | GND |
+| J6 | IO10 | Pinza | Señal | VSERVO | GND |
 
 El interruptor **no lleva el servo de la pinza de extremo a extremo de su recorrido**: alterna entre **dos ángulos fijos**, **20°** (cerrada) y **80°** (abierta). Eso evita que el SG90 quede empujando contra el tope mecánico de la mordaza, que es lo que lo calienta y le hace consumir corriente sin estar moviéndose.
 
@@ -369,10 +382,10 @@ El interruptor **no lleva el servo de la pinza de extremo a extremo de su recorr
 
 | Elemento | Montaje |
 |:---------|:--------|
-| Tarjeta de control | Atornillada con 4 separadores M3 de 10 mm sobre una base de MDF junto al brazo, con los potenciómetros al frente |
+| Tarjeta de control | Sobre una base de MDF junto al brazo, con cinta doble cara (la tarjeta no tiene barrenos de montaje); potenciómetros al frente |
 | Cables de servo | Los del hombro y el codo salen directo de la cuna; el de la pinza sube por el antebrazo con cinchos, con un bucle en cada articulación |
-| Cable del servo de giro | Por debajo de la base hasta J2 |
-| Alimentación | Fuente de 5 V, 3 A a la bornera J1 |
+| Cable del servo de giro | Por debajo de la base hasta J3 |
+| Alimentación | Canal 1 de la fuente (5 V) a **J1 LÓGICA**; canal 2 (5–6 V, 3 A) a **J2 VSERVO** |
 | USB | Solo para programar o para usar `brazo_gui.py` |
 
 [![Brazo de corte láser en vista lateral]({{ '/assets/brazos/laser/render/ensamble-lateral.png' | relative_url }}?v=2)]({{ '/assets/brazos/laser/render/ensamble-lateral.png' | relative_url }}?v=2)
@@ -382,20 +395,23 @@ El interruptor **no lleva el servo de la pinza de extremo a extremo de su recorr
 
 | Entrada | Acción esperada | Criterio de aceptación |
 |:--------|:----------------|:-----------------------|
-| RV1 de tope a tope | La base gira de 0° a 180° | Proporcional, sin saltos |
-| RV2 de tope a tope | El hombro va de 40° a 140° | Sin trabar el paralelogramo |
-| RV3 de tope a tope | El codo va de 40° a 140° | Sin trabar el paralelogramo |
-| SW1 | La pinza alterna entre 20° y 80° | Un solo movimiento por cambio |
-| Deslizadores de la app | Mueven la misma articulación | El encabezado de la app dice `web` |
-| `brazo_gui.py` | Mueve las cuatro articulaciones | La ventana dice `serie` |
+| RV1 de tope a tope (SW2 en Manual) | La base gira de 0° a 180° | Proporcional, sin saltos |
+| RV2 de tope a tope (SW2 en Manual) | El hombro va de 40° a 140° | Sin trabar el paralelogramo |
+| RV3 de tope a tope (SW2 en Manual) | El codo va de 40° a 140° | Sin trabar el paralelogramo |
+| SW1 (SW2 en Manual) | La pinza alterna entre 20° y 80° | Un solo movimiento por cambio |
+| SW2 a App | Los potenciómetros dejan de mover el brazo | D2 parpadea |
+| Deslizadores de la app (SW2 en App) | Mueven la misma articulación | La app dice `modo: app · mando: web` |
+| `brazo_gui.py` (SW2 en App) | Mueve las cuatro articulaciones | La ventana dice `mando: serie` |
+| BOOT | Secuencia de diagnóstico | D3 encendido; el paralelogramo no se traba en los extremos |
 
 ### Modos de operación (B27)
 
 | Modo | Cómo se accede | Qué se comprueba |
 |:-----|:---------------|:-----------------|
-| Manual | Encender la tarjeta | RV1–RV3 y SW1 mueven el brazo; LED fijo |
-| App web | Conectarse a `Brazo-Laser` y abrir `http://192.168.4.1` | El modo cambia a `web`; LED parpadea lento |
-| USB | `python brazo_gui.py` con el USB-C conectado | El modo cambia a `serie`; LED parpadea rápido |
+| Manual | SW2 en Manual | RV1–RV3 y SW1 mueven el brazo; D2 fijo |
+| App web | SW2 en App; conectarse a `Brazo-Laser` y abrir `http://192.168.4.1` | La app dice `mando: web`; D2 parpadea lento |
+| USB | SW2 en App; `python brazo_gui.py` con el USB-C conectado | La ventana dice `mando: serie`; D2 parpadea rápido |
+| Diagnóstico | Botón BOOT, en cualquier modo | Cada articulación recorre su rango; D3 encendido |
 
 ### Prueba funcional completa (B28)
 
@@ -411,7 +427,7 @@ El interruptor **no lleva el servo de la pinza de extremo a extremo de su recorr
 | 6 | Bajar y soltar | 150°, 60°, 120°, 80° |
 | 7 | Regresar al inicio | `H` |
 
-Secuencia por USB:
+Secuencia por USB (SW2 en App):
 
 ```
 A 90 90 90 80
