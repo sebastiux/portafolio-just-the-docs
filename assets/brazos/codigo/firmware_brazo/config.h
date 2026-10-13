@@ -16,17 +16,27 @@
 #endif
 
 // ---------------------------------------------------------------------------
-// 2) Pines de la tarjeta (ESP32-C3 Super Mini). Iguales en los dos brazos.
-//    Se evitan GPIO2, GPIO8 y GPIO9 (pines de arranque) para entradas y servos.
+// 2) Pines de la tarjeta brazo_control v3 (ESP32-C3 Super Mini en zócalo).
+//    Iguales en los dos brazos. Ver brazo_control_pcb/LEEME.md.
 // ---------------------------------------------------------------------------
 constexpr uint8_t NUM_ARTICULACIONES = 4;          // base, hombro, codo, pinza
-constexpr uint8_t PIN_SERVO[NUM_ARTICULACIONES] = {4, 5, 6, 7};
+constexpr uint8_t PIN_SERVO[NUM_ARTICULACIONES] = {5, 6, 7, 10};   // J3, J4, J5, J6
 
 constexpr uint8_t NUM_POTS = 3;                    // base, hombro, codo
-constexpr uint8_t PIN_POT[NUM_POTS] = {0, 1, 3};   // ADC1_CH0, ADC1_CH1, ADC1_CH3
+constexpr uint8_t PIN_POT[NUM_POTS] = {1, 0, 3};   // RV1 IO1 (ADC1_CH1), RV2 IO0 (ADC1_CH0), RV3 IO3 (ADC1_CH3)
 
-constexpr uint8_t PIN_INTERRUPTOR = 10;            // a GND, con pull-up interno
-constexpr uint8_t PIN_LED = 8;                     // LED azul de la placa, activo en bajo
+constexpr uint8_t PIN_SW_PINZA = 21;               // SW1: común a IO21, otro extremo a GND
+constexpr uint8_t PIN_SW_MODO  = 20;               // SW2: común a IO20, otro extremo a GND
+constexpr uint8_t PIN_BOTON_DIAG = 9;              // botón BOOT del módulo; se lee después del arranque
+
+constexpr uint8_t PIN_LED_ESTADO = 4;              // D2 verde, activo en bajo
+constexpr uint8_t PIN_LED_DIAG   = 2;              // D3 rojo, activo en bajo (pull-up R6 de arranque)
+
+// Posición de SW2 que activa el modo App (app web y USB). Si en tu tarjeta
+// queda al revés, cambia LOW por HIGH.
+constexpr int NIVEL_MODO_APP = LOW;
+// Posición de SW1 que abre la pinza.
+constexpr int NIVEL_PINZA_ABIERTA = LOW;
 
 // ---------------------------------------------------------------------------
 // 3) Servos SG90
@@ -86,12 +96,16 @@ constexpr const char* WIFI_CLAVE = "brazo2026";   // mínimo 8 caracteres
 // 6) Entradas manuales
 // ---------------------------------------------------------------------------
 constexpr float    POT_FILTRO_ALFA = 0.2f;         // filtro exponencial del ADC
-// En la tarjeta, R2 (1 kΩ) alimenta los 3 potenciómetros desde 3.3 V, así que
-// su tope queda en ≈2.54 V: dentro del rango útil del ADC del ESP32-C3 con la
-// atenuación por defecto (0–2500 mV). Se usa un poco menos para llegar al 100 %.
+// En la tarjeta, R1–R3 (3.3 kΩ) en serie con cada potenciómetro de 10 kΩ bajan
+// su tope a 3.3 V × 10 / 13.3 ≈ 2.48 V: dentro del rango útil del ADC del
+// ESP32-C3 con la atenuación por defecto (0–2500 mV). Se usa un poco menos
+// para que el giro completo llegue al 100 %.
 constexpr uint16_t POT_MV_MAX = 2450;
-constexpr uint8_t  UMBRAL_TOMA_MANUAL_GRADOS = 4;  // giro de pot que devuelve el mando al manual
 constexpr uint16_t ANTIRREBOTE_MS = 30;
+
+// Secuencia de diagnóstico (botón BOOT): cada articulación va a su mínimo, a
+// su máximo y a su inicio, una por una.
+constexpr uint16_t DIAG_PASO_MS = 1000;
 
 // ---------------------------------------------------------------------------
 // 7) Puerto serie (USB nativo del ESP32-C3)

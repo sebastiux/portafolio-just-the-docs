@@ -24,7 +24,7 @@ Brazo de **3 GDL más pinza**, fabricado por **impresión 3D (FDM) en PLA**. Par
 | Piezas impresas | **9** |
 | Volumen de PLA | **54.43 cm³**, masa máxima **67.5 g** sin servos ni tornillería |
 | Actuadores | **4 servos SG90** |
-| Control | **Tarjeta propia con ESP32-C3 Super Mini**: potenciómetros, app web y USB |
+| Control | **Tarjeta `brazo_control` v3 con ESP32-C3 Super Mini**: modo Manual (potenciómetros) y modo App (app web y USB) |
 | Envolvente del ensamble CAD | 174.0 × 58.1 × 117.5 mm en la pose exportada |
 | Alcance | 170 mm de eslabones (80 + 90) más 70 mm de pinza |
 | Masa estimada | ≈40 g de PLA impreso + 4 × 9 g de servos ≈ **76 g** sin tarjeta |
@@ -417,31 +417,33 @@ Los rangos de la tabla son los límites programados para este brazo en `config.h
 
 ### Electrónica
 
-Tarjeta de control con ESP32-C3 Super Mini, la misma del brazo de láser: [lista completa]({{ '/brazos/electronica-programacion/' | relative_url }}#2-lista-de-materiales-electrónicos-b14) (≈$459 sin los servos, que ya están en la lista mecánica).
+Tarjeta de control con ESP32-C3 Super Mini, la misma del brazo de láser: [lista completa]({{ '/brazos/electronica-programacion/' | relative_url }}#2-lista-de-materiales-electrónicos-b14) (≈$286 sin los servos, que ya están en la lista mecánica).
 
 ---
 
 ## 13) Electrónica y programación (B13–B24)
 
-Este brazo usa la [tarjeta de control con ESP32-C3]({{ '/brazos/electronica-programacion/' | relative_url }}) y el firmware común, compilado con `#define BRAZO BRAZO_IMPRESO`. Diagrama de bloques, esquemático, PCB, código, diagramas de flujo e interfaces están en esa página.
+Este brazo usa la [tarjeta `brazo_control` v3 con ESP32-C3]({{ '/brazos/electronica-programacion/' | relative_url }}) y el firmware común, compilado con `#define BRAZO BRAZO_IMPRESO`. Diagrama de bloques, esquemático, PCB, código, diagramas de flujo e interfaces están en esa página.
 
 ### Conexión de los servos
 
-| Conector | GPIO | Servo | Cable café | Cable rojo | Cable naranja |
-|:--------:|:----:|:------|:----------:|:----------:|:-------------:|
-| J2 | 4 | Base (giro) | G | + | S |
-| J3 | 5 | Hombro | G | + | S |
-| J4 | 6 | Codo | G | + | S |
-| J5 | 7 | Pinza | G | + | S |
+Los conectores siguen el orden **S V G** de izquierda a derecha, viendo desde los componentes; GND es el pad cuadrado.
+
+| Conector | GPIO | Servo | S (naranja) | V (rojo) | G (café) |
+|:--------:|:----:|:------|:-----------:|:--------:|:--------:|
+| J3 | IO5 | Base (giro) | Señal | VSERVO | GND |
+| J4 | IO6 | Hombro | Señal | VSERVO | GND |
+| J5 | IO7 | Codo | Señal | VSERVO | GND |
+| J6 | IO10 | Pinza | Señal | VSERVO | GND |
 
 ### Parámetros de este brazo en `config.h`
 
 | Articulación | Mínimo | Máximo | Inicio | Potenciómetro |
 |:-------------|:------:|:------:|:------:|:-------------:|
-| Base | 0° | 180° | 90° | RV1 |
-| Hombro | 30° | 150° | 90° | RV2 |
-| Codo | 20° | 160° | 90° | RV3 |
-| Pinza | 30° (cerrada) | 100° (abierta) | 100° | SW1 |
+| Base | 0° | 180° | 90° | RV1 (IO1) |
+| Hombro | 30° | 150° | 90° | RV2 (IO0) |
+| Codo | 20° | 160° | 90° | RV3 (IO3) |
+| Pinza | 30° (cerrada) | 100° (abierta) | 100° | SW1 (IO21) |
 
 | Dato | Valor |
 |:-----|:------|
@@ -457,11 +459,12 @@ Este brazo usa la [tarjeta de control con ESP32-C3]({{ '/brazos/electronica-prog
 
 | Elemento | Montaje |
 |:---------|:--------|
-| Tarjeta de control | Junto a la base, sobre 4 separadores M3 de 10 mm; los potenciómetros quedan al frente del operador |
+| Tarjeta de control | Junto a la base, sobre una base de MDF con cinta doble cara (la tarjeta no tiene barrenos de montaje); los potenciómetros quedan al frente del operador |
 | Cables de servo | Los del hombro, codo y pinza bajan por el costado de los eslabones con cinchos, dejando un bucle en cada articulación para que no se tensen al girar |
-| Cable del servo de giro | Sale por la ranura de la base, directo a J2 |
-| Alimentación | Fuente de 5 V, 3 A a la bornera J1 (+ a la izquierda) |
+| Cable del servo de giro | Sale por la ranura de la base, directo a J3 |
+| Alimentación | Canal 1 de la fuente (5 V) a **J1 LÓGICA**; canal 2 (5–6 V, 3 A) a **J2 VSERVO** |
 | USB | Solo para programar o para usar `brazo_gui.py`; el brazo funciona sin él |
+| SW2 MODO | Al alcance del operador, junto a SW1 |
 
 [![Brazo impreso en vista lateral]({{ '/assets/brazos/impreso3d/render/ensamble-lateral.png' | relative_url }}?v=2)]({{ '/assets/brazos/impreso3d/render/ensamble-lateral.png' | relative_url }}?v=2)
 **Figura 8:** Vista lateral del brazo, con el recorrido de las articulaciones que deben librar los cables.
@@ -470,21 +473,24 @@ Este brazo usa la [tarjeta de control con ESP32-C3]({{ '/brazos/electronica-prog
 
 | Entrada | Acción esperada | Criterio de aceptación |
 |:--------|:----------------|:-----------------------|
-| RV1 de tope a tope | La base gira de 0° a 180° | Proporcional, sin saltos |
-| RV2 de tope a tope | El hombro va de 30° a 150° | Proporcional, sin saltos |
-| RV3 de tope a tope | El codo va de 20° a 160° | Proporcional, sin saltos |
-| SW1 | La pinza abre y cierra | Un solo movimiento por cambio |
-| Deslizadores de la app | Mueven la misma articulación | El encabezado de la app dice `web` |
-| `brazo_gui.py` | Mueve las cuatro articulaciones | La ventana dice `serie` |
-| Girar un potenciómetro después de usar la app | El mando regresa al modo manual | El LED de la placa queda fijo |
+| RV1 de tope a tope (SW2 en Manual) | La base gira de 0° a 180° | Proporcional, sin saltos |
+| RV2 de tope a tope (SW2 en Manual) | El hombro va de 30° a 150° | Proporcional, sin saltos |
+| RV3 de tope a tope (SW2 en Manual) | El codo va de 20° a 160° | Proporcional, sin saltos |
+| SW1 (SW2 en Manual) | La pinza abre y cierra | Un solo movimiento por cambio |
+| SW2 a App | Los potenciómetros dejan de mover el brazo | D2 parpadea |
+| Deslizadores de la app (SW2 en App) | Mueven la misma articulación | La app dice `modo: app · mando: web` |
+| `brazo_gui.py` (SW2 en App) | Mueve las cuatro articulaciones | La ventana dice `mando: serie`; D2 parpadea rápido |
+| SW2 de regreso a Manual | El brazo vuelve a la posición de los potenciómetros | D2 fijo; la app avisa que está en Manual |
+| BOOT | Secuencia de diagnóstico | D3 encendido; cada articulación recorre su rango |
 
 ### Modos de operación (B27)
 
 | Modo | Cómo se accede | Qué se comprueba |
 |:-----|:---------------|:-----------------|
-| Manual | Encender la tarjeta | Las 3 articulaciones y la pinza responden a RV1–RV3 y SW1 |
-| App web | Conectarse a `Brazo-Impreso` y abrir `http://192.168.4.1` | Deslizadores, botones de pinza e inicio; el modo cambia a `web` |
-| USB | `python brazo_gui.py` con el USB-C conectado | Deslizadores y botones; el modo cambia a `serie` |
+| Manual | SW2 en Manual | Las 3 articulaciones y la pinza responden a RV1–RV3 y SW1; D2 fijo |
+| App web | SW2 en App; conectarse a `Brazo-Impreso` y abrir `http://192.168.4.1` | Deslizadores, botones de pinza, inicio y diagnóstico |
+| USB | SW2 en App; `python brazo_gui.py` con el USB-C conectado | Deslizadores y botones; la ventana dice `mando: serie` |
+| Diagnóstico | Botón BOOT, en cualquier modo | Cada articulación va a su mínimo, a su máximo y a su inicio; D3 encendido |
 
 ### Prueba funcional completa (B28)
 
@@ -500,7 +506,7 @@ Este brazo usa la [tarjeta de control con ESP32-C3]({{ '/brazos/electronica-prog
 | 6 | Bajar y soltar | 150°, 60°, 130°, 100° |
 | 7 | Regresar al inicio | `H` |
 
-La misma secuencia por USB, para repetirla igual en cada intento:
+La misma secuencia por USB (SW2 en App), para repetirla igual en cada intento:
 
 ```
 A 90 90 90 100

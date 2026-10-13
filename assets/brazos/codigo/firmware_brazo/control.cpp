@@ -7,65 +7,101 @@ namespace control {
 
 namespace {
 Fuente fuente_ = Fuente::MANUAL;
-float referencia_pot_[NUM_POTS];   // posición de los pots cuando un mando remoto tomó el control
+bool modo_app_ = false;
 
-void tomarControlRemoto(Fuente f) {
-  if (f == Fuente::MANUAL) return;
-  if (fuente_ == Fuente::MANUAL) {
-    for (uint8_t i = 0; i < NUM_POTS; i++) referencia_pot_[i] = entradas::anguloPot(i);
-  }
-  fuente_ = f;
+// Diagnóstico: por cada articulación, mínimo → máximo → inicio.
+constexpr uint8_t PASOS_DIAG = NUM_ARTICULACIONES * 3;
+bool diag_ = false;
+uint8_t paso_diag_ = 0;
+uint32_t inicio_paso_ms_ = 0;
+
+void aplicarPasoDiag() {
+  const uint8_t art = paso_diag_ / 3;
+  const LimitesArticulacion& l = LIMITES[art];
+  const uint8_t destino[3] = {l.minimo, l.maximo, l.inicio};
+  articulaciones::fijarObjetivo(art, destino[paso_diag_ % 3]);
+  inicio_paso_ms_ = millis();
 }
 
-bool potenciometroMovido() {
-  for (uint8_t i = 0; i < NUM_POTS; i++) {
-    if (fabsf(entradas::anguloPot(i) - referencia_pot_[i]) > UMBRAL_TOMA_MANUAL_GRADOS) return true;
+void avanzarDiag() {
+  if (millis() - inicio_paso_ms_ < DIAG_PASO_MS) return;
+  if (++paso_diag_ >= PASOS_DIAG) {
+    diag_ = false;
+    return;
   }
-  return false;
+  aplicarPasoDiag();
+}
+
+Resultado aceptar(Fuente fuente) {
+  if (diag_) return Resultado::EN_DIAGNOSTICO;
+  if (!modo_app_) return Resultado::MODO_MANUAL;
+  fuente_ = fuente;
+  return Resultado::ACEPTADA;
 }
 }  // namespace
 
 void iniciar() {
   entradas::iniciar();
   articulaciones::iniciar();
-  for (uint8_t i = 0; i < NUM_POTS; i++) referencia_pot_[i] = entradas::anguloPot(i);
-  articulaciones::fijarObjetivo(ART_PINZA, entradas::interruptorActivo() ? PINZA_ABIERTA : PINZA_CERRADA);
+  modo_app_ = entradas::modoApp();
+  fuente_ = modo_app_ ? Fuente::WEB : Fuente::MANUAL;
+  articulaciones::fijarObjetivo(ART_PINZA, entradas::pinzaAbierta() ? PINZA_ABIERTA : PINZA_CERRADA);
 }
 
 void ciclo(float dt_s) {
   entradas::leer();
 
-  if (fuente_ != Fuente::MANUAL && potenciometroMovido()) fuente_ = Fuente::MANUAL;
+  if (entradas::botonDiagPresionado() && !diag_) diagnostico();
 
-  if (fuente_ == Fuente::MANUAL) {
-    for (uint8_t i = 0; i < NUM_POTS; i++) articulaciones::fijarObjetivo(i, entradas::anguloPot(i));
+  // Cambio de modo con SW2. Al pasar a App el brazo se queda donde está;
+  // al regresar a Manual sigue otra vez a los potenciómetros.
+  const bool app = entradas::modoApp();
+  if (app != modo_app_) {
+    modo_app_ = app;
+    fuente_ = app ? Fuente::WEB : Fuente::MANUAL;
+    if (!app) articulaciones::fijarObjetivo(ART_PINZA, entradas::pinzaAbierta() ? PINZA_ABIERTA : PINZA_CERRADA);
   }
 
-  // El interruptor manda sobre la pinza en cuanto cambia, sin importar la fuente.
-  if (entradas::interruptorCambio()) {
-    articulaciones::fijarObjetivo(ART_PINZA, entradas::interruptorActivo() ? PINZA_ABIERTA : PINZA_CERRADA);
+  const bool cambio_pinza = entradas::pinzaCambio();
+  if (diag_) {
+    avanzarDiag();
+  } else if (!modo_app_) {
+    for (uint8_t i = 0; i < NUM_POTS; i++) articulaciones::fijarObjetivo(i, entradas::anguloPot(i));
+    if (cambio_pinza) {
+      articulaciones::fijarObjetivo(ART_PINZA, entradas::pinzaAbierta() ? PINZA_ABIERTA : PINZA_CERRADA);
+    }
   }
 
   articulaciones::actualizar(dt_s);
 }
 
-bool mover(uint8_t art, float grados, Fuente fuente) {
-  if (art >= NUM_ARTICULACIONES) return false;
-  tomarControlRemoto(fuente);
-  articulaciones::fijarObjetivo(art, grados);
-  return true;
+Resultado mover(uint8_t art, float grados, Fuente fuente) {
+  if (art >= NUM_ARTICULACIONES) return Resultado::INVALIDA;
+  const Resultado r = aceptar(fuente);
+  if (r == Resultado::ACEPTADA) articulaciones::fijarObjetivo(art, grados);
+  return r;
 }
 
-void pinza(bool abrir, Fuente fuente) {
-  tomarControlRemoto(fuente);
-  articulaciones::fijarObjetivo(ART_PINZA, abrir ? PINZA_ABIERTA : PINZA_CERRADA);
+Resultado pinza(bool abrir, Fuente fuente) {
+  const Resultado r = aceptar(fuente);
+  if (r == Resultado::ACEPTADA) articulaciones::fijarObjetivo(ART_PINZA, abrir ? PINZA_ABIERTA : PINZA_CERRADA);
+  return r;
 }
 
-void inicio(Fuente fuente) {
-  tomarControlRemoto(fuente);
-  articulaciones::irAInicio();
+Resultado inicio(Fuente fuente) {
+  const Resultado r = aceptar(fuente);
+  if (r == Resultado::ACEPTADA) articulaciones::irAInicio();
+  return r;
 }
 
+void diagnostico() {
+  diag_ = true;
+  paso_diag_ = 0;
+  aplicarPasoDiag();
+}
+
+bool modoApp() { return modo_app_; }
+bool enDiagnostico() { return diag_; }
 Fuente fuenteActual() { return fuente_; }
 
 const char* nombreFuente(Fuente f) {
@@ -76,9 +112,19 @@ const char* nombreFuente(Fuente f) {
   }
 }
 
+const char* textoResultado(Resultado r) {
+  switch (r) {
+    case Resultado::ACEPTADA:       return "OK";
+    case Resultado::MODO_MANUAL:    return "ERR modo manual: pasa el interruptor MODO a App";
+    case Resultado::EN_DIAGNOSTICO: return "ERR diagnostico en curso";
+    default:                        return "ERR articulacion invalida";
+  }
+}
+
 size_t estadoJson(char* destino, size_t tam) {
-  size_t n = snprintf(destino, tam, "{\"brazo\":\"%s\",\"fuente\":\"%s\",\"articulaciones\":[",
-                      NOMBRE_BRAZO, nombreFuente(fuente_));
+  size_t n = snprintf(destino, tam,
+                      "{\"brazo\":\"%s\",\"modo\":\"%s\",\"fuente\":\"%s\",\"diagnostico\":%s,\"articulaciones\":[",
+                      NOMBRE_BRAZO, modo_app_ ? "app" : "manual", nombreFuente(fuente_), diag_ ? "true" : "false");
   for (uint8_t i = 0; i < NUM_ARTICULACIONES && n < tam; i++) {
     n += snprintf(destino + n, tam - n,
                   "%s{\"nombre\":\"%s\",\"angulo\":%.1f,\"objetivo\":%.1f,\"min\":%u,\"max\":%u}",
@@ -86,8 +132,8 @@ size_t estadoJson(char* destino, size_t tam) {
                   articulaciones::objetivo(i), LIMITES[i].minimo, LIMITES[i].maximo);
   }
   if (n < tam) {
-    n += snprintf(destino + n, tam - n, "],\"pinza_abierta\":%u,\"pinza_cerrada\":%u,\"interruptor\":%s}",
-                  PINZA_ABIERTA, PINZA_CERRADA, entradas::interruptorActivo() ? "true" : "false");
+    n += snprintf(destino + n, tam - n, "],\"pinza_abierta\":%u,\"pinza_cerrada\":%u,\"sw_pinza\":%s}",
+                  PINZA_ABIERTA, PINZA_CERRADA, entradas::pinzaAbierta() ? "true" : "false");
   }
   return n;
 }

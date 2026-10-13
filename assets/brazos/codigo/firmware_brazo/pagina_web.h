@@ -22,19 +22,20 @@ const char PAGINA_WEB[] PROGMEM = R"HTML(<!doctype html>
   .fila b { font-size: 1rem; text-transform: capitalize; }
   .valor { font-variant-numeric: tabular-nums; color: var(--gris); }
   input[type=range] { width: 100%; accent-color: var(--rojo); height: 32px; }
-  .botones { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .botones { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   button { font: inherit; padding: 12px 8px; border-radius: 10px; border: 1px solid #d1d5db;
            background: #fff; cursor: pointer; }
   button.primario { background: var(--rojo); color: #fff; border-color: var(--rojo); }
   .fuente { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #fff;
             color: var(--rojo); font-weight: 600; font-size: .8rem; }
   .error { color: var(--rojo); font-size: .85rem; min-height: 1.2em; }
+  .aviso { background: #fff5f7; border: 1px solid var(--rojo); }
 </style>
 </head>
 <body>
 <header>
   <h1>Brazo <span id="brazo">…</span></h1>
-  <p>Mando actual: <span class="fuente" id="fuente">…</span></p>
+  <p>Modo: <span class="fuente" id="modo">…</span> · mando: <span class="fuente" id="fuente">…</span></p>
 </header>
 <main>
   <div id="articulaciones"></div>
@@ -43,6 +44,7 @@ const char PAGINA_WEB[] PROGMEM = R"HTML(<!doctype html>
       <button class="primario" id="abrir">Abrir pinza</button>
       <button class="primario" id="cerrar">Cerrar pinza</button>
       <button id="inicio">Inicio</button>
+      <button id="diag">Diagnóstico</button>
     </div>
   </div>
   <p class="error" id="error"></p>
@@ -80,19 +82,28 @@ function enviar(art, grados, forzar) {
 }
 
 async function pedir(url) {
+  const error = document.getElementById('error');
+  let r;
   try {
-    const r = await fetch(url);
-    if (!r.ok) throw new Error(await r.text());
-    mostrar(await r.json());
-    document.getElementById('error').textContent = '';
+    r = await fetch(url);
   } catch (e) {
-    document.getElementById('error').textContent = 'Sin conexión con el brazo: ' + e.message;
+    error.textContent = 'Sin conexión con el brazo.';
+    return;
   }
+  if (!r.ok) {                       // 409: interruptor MODO en Manual o diagnóstico en curso
+    error.textContent = await r.text();
+    pedir('/api/estado');
+    return;
+  }
+  mostrar(await r.json());
+  error.textContent = '';
 }
 
 function mostrar(e) {
   document.getElementById('brazo').textContent = e.brazo;
+  document.getElementById('modo').textContent = e.diagnostico ? 'diagnóstico' : e.modo;
   document.getElementById('fuente').textContent = e.fuente;
+  document.querySelectorAll('input[type=range]').forEach(r => r.disabled = e.modo !== 'app' || e.diagnostico);
   if (!contenedor.children.length) crearDeslizables(e.articulaciones);
   e.articulaciones.slice(0, NOMBRES_DESLIZABLES).forEach((a, i) => {
     if (i === arrastrando) return;
@@ -104,6 +115,7 @@ function mostrar(e) {
 document.getElementById('abrir').onclick  = () => pedir('/api/pinza?accion=abrir');
 document.getElementById('cerrar').onclick = () => pedir('/api/pinza?accion=cerrar');
 document.getElementById('inicio').onclick = () => pedir('/api/inicio');
+document.getElementById('diag').onclick   = () => pedir('/api/diagnostico');
 pedir('/api/estado');
 setInterval(() => { if (arrastrando < 0) pedir('/api/estado'); }, 500);
 </script>

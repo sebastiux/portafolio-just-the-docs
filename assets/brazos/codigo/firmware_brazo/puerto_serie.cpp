@@ -16,8 +16,8 @@ int articulacionPorNombre(const char* t) {
   return -1;
 }
 
-void ayuda() {
-  Serial.println(F("OK ordenes: J <art> <grados> | A <b> <h> <c> <p> | P A|C | H | E | ?"));
+void responder(Resultado r) {
+  Serial.println(control::textoResultado(r));
 }
 
 void ejecutar(char* l) {
@@ -29,11 +29,11 @@ void ejecutar(char* l) {
     char* a = strtok(nullptr, " \t");
     char* g = strtok(nullptr, " \t");
     const int art = a ? articulacionPorNombre(a) : -1;
-    if (!g || !control::mover(art < 0 ? 255 : art, atof(g), Fuente::SERIE)) {
+    if (!g || art < 0) {
       Serial.println(F("ERR uso: J <art> <grados>"));
       return;
     }
-    Serial.println(F("OK"));
+    responder(control::mover(static_cast<uint8_t>(art), atof(g), Fuente::SERIE));
   } else if (c == 'A') {
     float g[NUM_ARTICULACIONES];
     for (uint8_t i = 0; i < NUM_ARTICULACIONES; i++) {
@@ -41,23 +41,27 @@ void ejecutar(char* l) {
       if (!t) { Serial.println(F("ERR uso: A <b> <h> <c> <p>")); return; }
       g[i] = atof(t);
     }
-    for (uint8_t i = 0; i < NUM_ARTICULACIONES; i++) control::mover(i, g[i], Fuente::SERIE);
-    Serial.println(F("OK"));
+    Resultado r = Resultado::ACEPTADA;
+    for (uint8_t i = 0; i < NUM_ARTICULACIONES && r == Resultado::ACEPTADA; i++) {
+      r = control::mover(i, g[i], Fuente::SERIE);
+    }
+    responder(r);
   } else if (c == 'P') {
     char* t = strtok(nullptr, " \t");
     if (!t) { Serial.println(F("ERR uso: P A|C")); return; }
-    control::pinza(toupper(static_cast<unsigned char>(t[0])) == 'A', Fuente::SERIE);
-    Serial.println(F("OK"));
+    responder(control::pinza(toupper(static_cast<unsigned char>(t[0])) == 'A', Fuente::SERIE));
   } else if (c == 'H') {
-    control::inicio(Fuente::SERIE);
+    responder(control::inicio(Fuente::SERIE));
+  } else if (c == 'D') {
+    control::diagnostico();
     Serial.println(F("OK"));
   } else if (c == 'E') {
-    char json[400];
+    char json[460];
     control::estadoJson(json, sizeof(json));
     Serial.print(F("OK "));
     Serial.println(json);
   } else if (c == '?') {
-    ayuda();
+    Serial.println(F("OK ordenes: J <art> <grados> | A <b> <h> <c> <p> | P A|C | H | D | E | ?"));
   } else {
     Serial.println(F("ERR orden desconocida, envia ? para ayuda"));
   }

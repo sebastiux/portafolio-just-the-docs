@@ -4,23 +4,43 @@
 namespace entradas {
 
 namespace {
-float mv_filtrado_[NUM_POTS];
-bool estado_estable_ = false;
-bool lectura_anterior_ = false;
-uint32_t ultimo_cambio_ms_ = 0;
-bool hubo_cambio_ = false;
+// Entrada digital con antirrebote: el cambio cuenta solo si se mantiene ANTIRREBOTE_MS.
+struct Digital {
+  uint8_t pin;
+  bool estable;
+  bool anterior;
+  uint32_t desde_ms;
+  bool cambio;
 
-bool leerInterruptor() {
-  return digitalRead(PIN_INTERRUPTOR) == LOW;   // cerrado a GND = activo
-}
+  void iniciar() {
+    pinMode(pin, INPUT_PULLUP);
+    estable = anterior = digitalRead(pin);
+    desde_ms = millis();
+    cambio = false;
+  }
+  void leer(uint32_t ahora) {
+    const bool v = digitalRead(pin);
+    if (v != anterior) {
+      anterior = v;
+      desde_ms = ahora;
+    } else if (v != estable && ahora - desde_ms >= ANTIRREBOTE_MS) {
+      estable = v;
+      cambio = true;
+    }
+  }
+};
+
+float mv_filtrado_[NUM_POTS];
+Digital sw_pinza_{PIN_SW_PINZA, true, true, 0, false};
+Digital sw_modo_{PIN_SW_MODO, true, true, 0, false};
+Digital boton_{PIN_BOTON_DIAG, true, true, 0, false};
 }  // namespace
 
 void iniciar() {
-  pinMode(PIN_INTERRUPTOR, INPUT_PULLUP);
-  for (uint8_t i = 0; i < NUM_POTS; i++) {
-    mv_filtrado_[i] = analogReadMilliVolts(PIN_POT[i]);
-  }
-  estado_estable_ = lectura_anterior_ = leerInterruptor();
+  sw_pinza_.iniciar();
+  sw_modo_.iniciar();
+  boton_.iniciar();
+  for (uint8_t i = 0; i < NUM_POTS; i++) mv_filtrado_[i] = analogReadMilliVolts(PIN_POT[i]);
 }
 
 void leer() {
@@ -29,17 +49,10 @@ void leer() {
     const float mv = analogReadMilliVolts(PIN_POT[i]);
     mv_filtrado_[i] += POT_FILTRO_ALFA * (mv - mv_filtrado_[i]);
   }
-
-  // Antirrebote: el cambio cuenta solo si la lectura se mantiene ANTIRREBOTE_MS.
-  const bool lectura = leerInterruptor();
   const uint32_t ahora = millis();
-  if (lectura != lectura_anterior_) {
-    lectura_anterior_ = lectura;
-    ultimo_cambio_ms_ = ahora;
-  } else if (lectura != estado_estable_ && ahora - ultimo_cambio_ms_ >= ANTIRREBOTE_MS) {
-    estado_estable_ = lectura;
-    hubo_cambio_ = true;
-  }
+  sw_pinza_.leer(ahora);
+  sw_modo_.leer(ahora);
+  boton_.leer(ahora);
 }
 
 float anguloPot(uint8_t pot) {
@@ -51,11 +64,18 @@ float anguloPot(uint8_t pot) {
   return l.minimo + fraccion * (l.maximo - l.minimo);
 }
 
-bool interruptorActivo() { return estado_estable_; }
+bool pinzaAbierta() { return sw_pinza_.estable == NIVEL_PINZA_ABIERTA; }
+bool modoApp()      { return sw_modo_.estable == NIVEL_MODO_APP; }
 
-bool interruptorCambio() {
-  const bool c = hubo_cambio_;
-  hubo_cambio_ = false;
+bool pinzaCambio() {
+  const bool c = sw_pinza_.cambio;
+  sw_pinza_.cambio = false;
+  return c;
+}
+
+bool botonDiagPresionado() {
+  const bool c = boton_.cambio && boton_.estable == LOW;   // flanco de bajada: se presionó
+  boton_.cambio = false;
   return c;
 }
 

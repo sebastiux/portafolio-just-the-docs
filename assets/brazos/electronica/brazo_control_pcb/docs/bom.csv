@@ -1,0 +1,19 @@
+Cantidad,Referencias,Valor,Footprint,Funcion
+1,U1,ESP32-C3 Super Mini,ESP32C3_SuperMini_Socket,Modulo en zocalo 2x(1x08) hembra
+1,J1,LOGICA 5V,TerminalBlock_bornier-2_P5.08mm,Bornera canal 1 fuente: logica
+1,J2,VSERVO 5-6V,TerminalBlock_bornier-2_P5.08mm,Bornera canal 2 fuente: servos
+1,D1,1N5819,D_DO-41_SOD81_P7.62mm_Horizontal,Schottky: polaridad inversa y retroalimentacion USB
+1,C1,1000uF 10V,CP_Radial_D8.0mm_P3.50mm,Bulk servos
+1,C2,100uF 10V,CP_Radial_D5.0mm_P2.50mm,Bulk ESP32 (picos WiFi)
+1,J3,SERVO BASE,PinHeader_1x03_P2.54mm_Servo,GND V+ SIG
+1,J4,SERVO HOMBRO,PinHeader_1x03_P2.54mm_Servo,GND V+ SIG
+1,J5,SERVO CODO,PinHeader_1x03_P2.54mm_Servo,GND V+ SIG
+1,J6,SERVO PINZA,PinHeader_1x03_P2.54mm_Servo,GND V+ SIG
+3,RV1 RV2 RV3,10k,Potentiometer_Alps_RK09K_Single_Vertical,Pot base; Pot hombro; Pot codo
+3,R1 R2 R3,3.3k,R_Axial_DIN0207_L6.3mm_D2.5mm_P5.08mm_Vertical,Limita tope de RV1 a ~2.5 V; Limita tope de RV2 a ~2.5 V; Limita tope de RV3 a ~2.5 V
+2,R4 R5,330,R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,LED estado; LED diagnostico
+1,R6,10k,R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,Pull-up GPIO2 (strapping)
+1,D2,LED verde,LED_D3.0mm,Estado (activo en bajo)
+1,D3,LED rojo,LED_D3.0mm,Diagnostico
+1,SW1,PINZA,SW_Slide-03_Wuerth-WS-SLTV_10x2.5x6.4_P2.54mm,Abrir/cerrar pinza (manual)
+1,SW2,MODO,SW_Slide-03_Wuerth-WS-SLTV_10x2.5x6.4_P2.54mm,Manual / App WiFi
