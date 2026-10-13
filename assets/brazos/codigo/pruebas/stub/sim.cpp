@@ -6,5 +6,6 @@ uint32_t mv_adc[32] = {};
 uint32_t duty[32] = {};
 std::string entrada_serie;
 std::string salida_serie;
+esp_reset_reason_t razon_reinicio = ESP_RST_POWERON;
 }
 SerieSimulada Serial;

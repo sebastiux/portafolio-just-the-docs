@@ -1,20 +1,17 @@
-// puerto_serie.h — Protocolo de texto por el USB para brazo_gui.py.
+// puerto_serie.h — Consola de diagnóstico por el USB nativo del ESP32-C3.
 //
-// Una orden por línea, terminada en '\n'. Respuestas "OK ..." o "ERR ...".
-// Las órdenes de movimiento solo se aceptan con el interruptor MODO en App.
-//   J <art> <grados>      mover una articulación (art = 0..3 o base/hombro/codo/pinza)
-//   A <b> <h> <c> <p>     mover las cuatro articulaciones
-//   P A | P C             abrir | cerrar la pinza
-//   H                     posición de inicio
-//   D                     secuencia de diagnóstico (igual que el botón BOOT)
-//   E                     estado en JSON
-//   ?                     ayuda
+// Solo lectura: el control por USB se retiró, el mando lo decide el switch SW2.
+// Una orden por línea, terminada en '\n'.
+//   E   estado en JSON
+//   D   reporte de diagnóstico, igual que el botón DIAG
+//   ?   ayuda
+// Las órdenes de movimiento del protocolo viejo (J, A, P, H) responden ERR.
 #pragma once
 #include "config.h"
 
 namespace puerto_serie {
 
 void iniciar();
-void atender();   // leer y ejecutar las órdenes pendientes; llamar cada ciclo
+void atender(uint8_t clientes);   // leer y ejecutar las órdenes pendientes; llamar cada ciclo
 
 }  // namespace puerto_serie

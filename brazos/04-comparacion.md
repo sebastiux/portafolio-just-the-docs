@@ -51,18 +51,18 @@ Esta página compara las **dos versiones fabricadas** con los mismos criterios (
 
 | Criterio | Brazo impreso en 3D | Brazo cortado con láser |
 |:---------|:--------------------|:------------------------|
-| Tarjeta | `brazo_control` v3 con ESP32-C3 Super Mini (58 × 48 mm, una cara) | La misma |
+| Tarjeta | ESP32-C3 Super Mini, tarjeta propia | La misma |
 | Firmware | `firmware_brazo` con `BRAZO_IMPRESO` | `firmware_brazo` con `BRAZO_LASER` |
-| Modos de operación | Manual (potenciómetros) y App (app web y USB), con el interruptor MODO | Igual |
+| Modos de operación | MANUAL y APP, elegidos con el switch SW2 | MANUAL y APP, elegidos con el switch SW2 |
 | Rango de la base | 0–180° | 0–180° |
 | Rango del hombro | 30–150° (120°) | 40–140° (100°) |
 | Rango del codo | 20–160° (140°) | 40–140° (100°) |
 | Pinza (cerrada / abierta) | 30° / 100° | 20° / 80° |
 | Orientación de la pinza | Cambia con el hombro y el codo | Se mantiene horizontal (paralelogramo) |
 | Velocidad máxima por articulación | 120 °/s | 120 °/s |
-| Alimentación | 5 V lógica + 5–6 V, 3 A servos | Igual |
+| Alimentación | Dos canales: lógica 5–5.5 V y servos 5–6 V | Dos canales: lógica 5–5.5 V y servos 5–6 V |
 
-> **Para que la comparación sea justa,** la prueba de desempeño usa el **mismo objeto**, la **misma secuencia de órdenes** por USB (MODO en App) y el **mismo número de intentos** en los dos brazos (ver la prueba funcional de cada página).
+> **Para que la comparación sea justa,** la prueba de desempeño usa el **mismo objeto**, la **misma secuencia de ángulos** desde la app y el **mismo número de intentos** en los dos brazos (ver la prueba funcional de cada página).
 
 ---
 
@@ -72,14 +72,12 @@ Esta página compara las **dos versiones fabricadas** con los mismos criterios (
 2. **El paralelogramo del MeArm compensa las limitaciones del MDF.** Al llevar los servos del hombro y el codo a la base, los eslabones de 3 mm no cargan el peso de los motores y la pinza se mantiene horizontal. El precio es un rango menor (100° contra 120–140°), porque el paralelogramo se traba antes de los extremos del servo.
 3. **El brazo impreso carga más el hombro.** Un servo en cada articulación suma peso al final del brazo; para el uso continuo conviene subir paredes (3–4) y relleno (25–40 %) en Brazo 1, Brazo 2 y la Tapa.
 4. **Una sola tarjeta y un solo firmware sirven para los dos brazos.** La diferencia entre ellos se reduce a una tabla de límites en `config.h`, lo que permite comparar estructuras con el mismo control.
-5. **El ADC del ESP32-C3 condicionó el circuito de los potenciómetros.** Con la atenuación por defecto mide bien solo hasta ≈2.5 V; con los potenciómetros directo a 3.3 V, el último cuarto de su giro no movería nada. R1–R3 (3.3 kΩ) en serie bajan el tope a ≈2.48 V y el firmware toma 2450 mV como fondo de escala.
-6. **La alimentación de los servos se separa de la del microcontrolador.** Cuatro SG90 pueden pedir ≈2.8 A al arrancar juntos. La tarjeta tiene dos borneras: J2 lleva el canal de 5–6 V, 3 A directo a los servos por una pista de 1.6 mm, y J1 alimenta la lógica a través de D1, así que las caídas de los motores no reinician el ESP32-C3 y el USB nunca alimenta a la fuente. El firmware además limita la velocidad a 120 °/s para repartir los picos de corriente.
+5. **El ADC del ESP32-C3 obligó a cambiar el circuito.** Mide bien solo hasta ≈2.5 V; con los potenciómetros colgados directo de 3.3 V, el último cuarto de su giro no movería nada. Cada pot lleva su propia resistencia de 3.3 kΩ en serie (R1–R3), que baja el tope a ≈2.48 V, y el firmware toma 2400 mV como fondo de escala. **El valor exacto está [Pendiente] de medirse en la tarjeta armada.**
+6. **La alimentación de los servos se separa de la del microcontrolador.** Cuatro SG90 pueden pedir ≈2.8 A al arrancar juntos, estimado que **no está medido**. Entran por dos borneras y dos canales distintos de la fuente, con las tierras unidas en la tarjeta; el diodo D1 de la rama de lógica evita que el USB de la computadora alimente a los motores. El camino completo de la bornera de servos a cada conector se mantiene en pista de 1.6 mm, que por IPC-2221 aguanta 3.36 A. El firmware además limita la velocidad a 120 °/s para repartir los picos.
 7. **El modelo 3D descargado no es igual a lo que se cortó.** Al comparar el STEP de GrabCAD con las hojas DXF, 13 de 31 placas difieren más de 4 mm; la base mide 95.00 mm en el modelo y 90.70 mm en lo cortado. **Las medidas de fabricación válidas son las de los DXF.**
 8. **Las exportaciones del CAD tuvieron errores que se detectaron y corrigieron:** el STEP del brazo impreso salió sin sólidos (solo se usaron sus posiciones), tres exportaciones salieron 2.54 veces más grandes (pulgadas contra milímetros) y el STL de Brazo 2 es una malla abierta que hay que reparar antes de laminar.
 9. **La pinza se controla por dos ángulos fijos** en vez de llevar el servo a tope, para que el SG90 no se caliente empujando contra la mordaza.
-10. **Un interruptor de modo evita conflictos de mando.** Con SW2 el operador decide si mandan los potenciómetros o la app y la computadora; el firmware rechaza las órdenes remotas en Manual y lo avisa en la app y en la GUI.
-11. **Una placa de una cara se puede fabricar en el laboratorio.** Sin vías ni puentes, con pistas de 0.8 mm o más y 0.6 mm de aislamiento, la tarjeta se fresa en la Genmitsu Cubiko sobre fenólica de 70 × 50 mm.
-12. **El software se verificó antes de tener el hardware:** las 37 pruebas automáticas del firmware pasan en las dos configuraciones, y las dos interfaces (app y `brazo_gui.py`) se probaron contra el firmware compilado en la computadora.
+10. **El software se verificó antes de tener el hardware:** las **52 pruebas automáticas** del firmware pasan en las dos configuraciones. Eso cubre la lógica, no el hardware: queda pendiente la prueba con los brazos armados.
 
 ### Requisitos cubiertos por el diseño
 
@@ -89,12 +87,12 @@ Esta página compara las **dos versiones fabricadas** con los mismos criterios (
 | RQ2 | 4 servos SG90 | ✅ | ✅ | Listas de materiales |
 | RQ3 | Un proceso de fabricación cada uno | ✅ | ✅ | Registro de impresión y de corte |
 | RQ4 | Tomar y trasladar la pelota | ✅ | ✅ | Apertura de la pinza mayor que la pelota; secuencia y criterio de la prueba funcional en cada página |
-| RQ5 | Control manual | ✅ | ✅ | SW2, RV1–RV3 y SW1 en la tarjeta; pruebas 3, 5 y 8 del firmware |
-| RQ6 | App web | ✅ | ✅ | `servidor_web` y `pagina_web.h`; captura de la app |
-| RQ7 | Control por USB | ✅ | ✅ | `puerto_serie` y `brazo_gui.py`; prueba 6 del firmware |
-| RQ8 | Tarjeta propia | ✅ | ✅ | Proyecto de KiCad, archivos de CNC y DRC sin errores |
-| RQ9 | Alimentación de 2 canales con protección | ✅ | ✅ | Esquemático: J1, D1, C2 (lógica); J2, C1 (servos) |
-| RQ10 | Ángulos limitados y velocidad máxima | ✅ | ✅ | Pruebas 4 y 6 del firmware |
+| RQ5 | Control manual | ✅ | ✅ | Módulo `entradas` y el modo MANUAL; pruebas del grupo 4 |
+| RQ6 | App web | ✅ | ✅ | `servidor_web` y `pagina_web.h`; pruebas del grupo 7 |
+| RQ7 | Elegir el modo desde el hardware | ✅ | ✅ | SW2 y el código 409; pruebas de los grupos 4, 7 y 8 |
+| RQ8 | Tarjeta propia | ✅ | ✅ | Proyecto de KiCad y verificación geométrica independiente |
+| RQ9 | Alimentación separada y protegida | ✅ | ✅ | Dos borneras, diodo D1 y capacitores C1 y C2; cálculo de ampacidad del camino de servos |
+| RQ10 | Ángulos limitados y velocidad máxima | ✅ | ✅ | Pruebas de los grupos 4, 5 y 8 |
 
 ### Mejoras para una segunda versión
 
@@ -115,16 +113,16 @@ Cada entregable enlaza el archivo que lo respalda.
 | Evidencia | Brazo impreso | Brazo de láser | Común |
 |:----------|:--------------|:---------------|:------|
 | Planos de fabricación | [PDF de 9 páginas]({{ '/assets/brazos/impreso3d/planos/planos-brazo-impreso-completo.pdf' | relative_url }}) | [PDF de 38 páginas]({{ '/assets/brazos/laser/planos/planos-mearm-completo.pdf' | relative_url }}) | |
-| Archivos de fabricación | STL de cada pieza | [Hoja A]({{ '/assets/brazos/laser/corte/mearm-hoja-a.dxf' | relative_url }}) y [hoja B]({{ '/assets/brazos/laser/corte/mearm-hoja-b.dxf' | relative_url }}) | [Archivos de CNC de la tarjeta](https://github.com/sebastiux/portafolio-just-the-docs/tree/main/assets/brazos/electronica/brazo_control_pcb/cnc) |
+| Archivos de fabricación | STL de cada pieza | [Hoja A]({{ '/assets/brazos/laser/corte/mearm-hoja-a.dxf' | relative_url }}) y [hoja B]({{ '/assets/brazos/laser/corte/mearm-hoja-b.dxf' | relative_url }}) | [Fresado de la tarjeta]({{ '/assets/brazos/electronica/v3/cnc-tarjeta-v3.zip' | relative_url }}) · [Gerber]({{ '/assets/brazos/electronica/v3/gerber-tarjeta-v3.zip' | relative_url }}) |
 | Ensamble 3D | [Visor y STL]({{ '/brazos/impresion-3d/' | relative_url }}#7-visor-3d-r5) | [STEP]({{ '/assets/brazos/laser/cad/mearm-mdf-ensamble.step' | relative_url }}) | |
 | Secuencia de ensamblaje | [7 pasos con render]({{ '/brazos/impresion-3d/' | relative_url }}#9-secuencia-de-ensamblaje-b10) | [5 etapas]({{ '/brazos/corte-laser/' | relative_url }}#9-secuencia-de-ensamblaje-b10) | |
-| Esquemático y PCB | | | [Proyecto completo]({{ '/assets/brazos/electronica/brazo_control_pcb_v3_58x48.zip' | relative_url }}) · [PDF]({{ '/assets/brazos/electronica/brazo_control_pcb/docs/esquematico.pdf' | relative_url }}) |
-| Verificación eléctrica | | | [Esquemático contra PCB: 69 pines, 0 diferencias]({{ '/brazos/electronica-programacion/' | relative_url }}#3-esquemático-b15) · [DRC: 0 errores]({{ '/assets/brazos/electronica/brazo_control_pcb/docs/drc_report.txt' | relative_url }}) |
-| Código fuente | | | [Firmware]({{ '/assets/brazos/codigo/firmware_brazo.zip' | relative_url }}) · [brazo_gui.py]({{ '/assets/brazos/codigo/brazo_gui.zip' | relative_url }}) |
-| Pruebas del software | | | [37/37 por brazo]({{ '/brazos/electronica-programacion/' | relative_url }}#pruebas-automáticas-del-firmware) |
-| Interfaces | | | [Capturas de la app y la GUI]({{ '/brazos/electronica-programacion/' | relative_url }}#9-interfaz-y-procedimiento-de-operación-b21) |
+| Esquemático y PCB | | | [Proyecto de KiCad]({{ '/assets/brazos/electronica/v3/proyecto-kicad-v3.zip' | relative_url }}) · [PDF del esquemático]({{ '/assets/brazos/electronica/v3/esquematico.pdf' | relative_url }}) |
+| Verificación eléctrica | | | [DRC de KiCad: 0 violaciones]({{ '/assets/brazos/electronica/kicad-v3/docs/drc_report.txt' | relative_url }}) · [revisión geométrica independiente](https://github.com/sebastiux/portafolio-just-the-docs/blob/main/tools/f1_verificar_tarjeta_v3.py) |
+| Código fuente | | | [Firmware]({{ '/assets/brazos/codigo/firmware_brazo.zip' | relative_url }}) |
+| Pruebas del software | | | [52/52 por brazo]({{ '/brazos/electronica-programacion/' | relative_url }}#pruebas-automáticas-del-firmware) |
+| Interfaces | | | [Capturas de la app]({{ '/brazos/electronica-programacion/' | relative_url }}#9-interfaz-y-operación-b21) |
 
-Los planos, renders, secuencia de ensamblaje y bocetos salen de scripts en [`tools/`](https://github.com/sebastiux/portafolio-just-the-docs/tree/main/tools), así que se pueden regenerar si cambia el diseño.
+Todos los archivos generados (planos, renders, secuencia, bocetos, esquemático, PCB) salen de scripts en [`tools/`](https://github.com/sebastiux/portafolio-just-the-docs/tree/main/tools), así que se pueden regenerar si cambia el diseño.
 
 ---
 

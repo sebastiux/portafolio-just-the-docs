@@ -25,7 +25,7 @@ Brazo de **3 GDL más pinza**, cortado con láser en **MDF de 3 mm**. Es un **Me
 | Hojas de corte | 2 de **150 × 200 mm** |
 | Volumen de MDF | **94.8 cm³** sumando las 36 piezas |
 | Actuadores | **4 servos SG90** |
-| Control | **Tarjeta `brazo_control` v3 con ESP32-C3 Super Mini**: modo Manual (potenciómetros) y modo App (app web y USB) |
+| Control | **Tarjeta propia con ESP32-C3 Super Mini**: potenciómetros y switches, o app web; un switch elige cuál manda |
 | Envolvente del ensamble CAD | 264.1 × 95.2 × 156.8 mm en la pose exportada |
 | Alcance | ≈160 mm de eslabones (2 × ≈80 mm) más la pinza |
 | Masa estimada | 94.8 cm³ × 0.75 g/cm³ ≈ 71 g de MDF + 4 × 9 g de servos ≈ **107 g** sin tornillería ni tarjeta |
@@ -39,7 +39,7 @@ Brazo de **3 GDL más pinza**, cortado con láser en **MDF de 3 mm**. Es un **Me
 | **Base** (giro) | Servo SG90 | Plato giratorio sobre la base | Potenciómetro |
 | **Hombro** | Servo SG90 | Eslabón accionado desde la base | Potenciómetro |
 | **Codo** | Servo SG90 | Eslabón accionado desde la base | Potenciómetro |
-| **Pinza** | Servo SG90 | Mordazas accionadas por eslabones | Interruptor |
+| **Pinza** | Servo SG90 | Mordazas accionadas por eslabones | Switch SW1 |
 
 El MeArm resuelve el hombro y el codo con **eslabones en paralelogramo**: los dos servos van montados abajo, en la base, y mueven el brazo a distancia. Eso mantiene la **orientación de la pinza constante** sin importar la posición del brazo, y evita cargar los eslabones con el peso de los servos.
 
@@ -275,7 +275,7 @@ El armado sigue la **guía oficial de 13 pasos** del autor del MeArm [[3](#refer
 | A-06 | Part 25 - Left Hand Central lever | Palanca central del paralelogramo |
 | B-05, B-06, B-07 | Part 26 - Straight Lever | Palancas rectas del brazo |
 
-> **Antes de montar cada cuerno de servo:** llevar el servo a su ángulo de inicio con la orden `H` por USB, igual que en el brazo impreso, para que cada articulación quede centrada en su recorrido.
+> **Antes de montar cada cuerno de servo:** llevar el servo a su ángulo de inicio con el botón **Inicio** de la app, igual que en el brazo impreso, para que cada articulación quede centrada en su recorrido. Basta con energizar la tarjeta: al arrancar, el firmware deja las cuatro articulaciones en su ángulo de inicio.
 
 ---
 
@@ -296,15 +296,17 @@ El armado sigue la **guía oficial de 13 pasos** del autor del MeArm [[3](#refer
 
 ## 11) Pruebas mecánicas (B12)
 
+Cada articulación se mueve de tope a tope desde la app, con SW2 en APP, o con su potenciómetro, con el brazo armado y la pinza vacía.
+
 | Prueba | Procedimiento | Criterio de aceptación |
 |:-------|:--------------|:-----------------------|
-| Giro de la base | `J base 0` → `J base 180` | Recorre 0–180° sin rozar la base |
-| Hombro | `J hombro 40` → `J hombro 140` con el codo a 90° | El paralelogramo no se traba en ningún extremo |
-| Codo | `J codo 40` → `J codo 140` | El paralelogramo no se traba en ningún extremo |
+| Giro de la base | Base de 0° a 180° | Recorre 0–180° sin rozar la base |
+| Hombro | Hombro de 40° a 140°, con el codo a 90° | El paralelogramo no se traba en ningún extremo |
+| Codo | Codo de 40° a 140° | El paralelogramo no se traba en ningún extremo |
 | Orientación de la pinza | Mover hombro y codo por todo su rango | La pinza se mantiene horizontal (±10°) |
-| Apertura de la pinza | `P A` (80°) y `P C` (20°) | Abierta: más ancha que la pelota; cerrada: las mordazas se tocan sin forzar el servo |
+| Apertura de la pinza | Botones **Abrir** (80°) y **Cerrar** (20°) de la app, o SW1 | Abierta: más ancha que la pelota; cerrada: las mordazas se tocan sin forzar el servo |
 | Juego en los pivotes | Mover a mano cada eslabón con los servos detenidos | Juego menor a 1.5 mm en la punta de la pinza |
-| Repetibilidad | `A 90 70 110 20` → `H`, 5 veces | La punta vuelve al mismo punto con diferencia menor a 3 mm |
+| Repetibilidad | Ir a 90°, 70°, 110°, 20° y volver con el botón **Inicio**, 5 veces | La punta vuelve al mismo punto con diferencia menor a 3 mm |
 
 Los rangos son los límites programados para este brazo en `config.h`; son más cerrados que los del brazo impreso porque el paralelogramo se traba antes de llegar a los extremos del servo.
 
@@ -327,37 +329,37 @@ Los rangos son los límites programados para este brazo en `config.h`; son más 
 
 ### Electrónica
 
-La misma tarjeta de control del brazo impreso: [lista completa]({{ '/brazos/electronica-programacion/' | relative_url }}#2-lista-de-materiales-electrónicos-b14) (≈$286 sin los servos).
+La misma tarjeta de control del brazo impreso: [lista completa]({{ '/brazos/electronica-programacion/' | relative_url }}#2-lista-de-materiales-b14), 23 componentes sin contar los servos. **Precio: [Pendiente]**, igual que en la lista electrónica.
+<!-- PENDIENTE: precio de la tarjeta, con su fuente (pregunta 11) -->
 
 ---
 
 ## 13) Electrónica y programación (B13–B24)
 
-Este brazo usa la [tarjeta `brazo_control` v3 con ESP32-C3]({{ '/brazos/electronica-programacion/' | relative_url }}) y el firmware común, compilado con `#define BRAZO BRAZO_LASER`. Diagrama de bloques, esquemático, PCB, código, diagramas de flujo e interfaces están en esa página.
+Este brazo usa la [tarjeta de control con ESP32-C3]({{ '/brazos/electronica-programacion/' | relative_url }}) y el firmware común, compilado con `#define BRAZO BRAZO_LASER`. Diagrama de bloques, esquemático, PCB, código, diagramas de flujo e interfaces están en esa página.
+
+### Conexión de los servos
+
+| Conector | GPIO | Servo |
+|:--------:|:----:|:------|
+| J3 | 5 | Base (giro) |
+| J4 | 6 | Hombro |
+| J5 | 7 | Codo |
+| J6 | 10 | Pinza |
+
+Los cuatro conectores llevan el mismo orden. Vistos desde la cara de componentes, de izquierda a derecha: **señal** (cable naranja), **V+** (rojo) y **GND** (café). El pad **cuadrado**, el de la derecha, es el pin 1 y es GND.
 
 ### Mapeo de los controles
 
 | Control | Señal | GPIO | Actúa sobre |
 |:--------|:------|:----:|:------------|
-| RV1 | Analógica, proporcional | IO1 | Servo de la **base** (J3, IO5) |
-| RV2 | Analógica, proporcional | IO0 | Servo del **hombro** (J4, IO6) |
-| RV3 | Analógica, proporcional | IO3 | Servo del **codo** (J5, IO7) |
-| SW1 | Digital, dos posiciones | IO21 | Servo de la **pinza** (J6, IO10) |
+| RV1 | Analógica, proporcional | 1 | Servo de la **base**, J3 |
+| RV2 | Analógica, proporcional | 0 | Servo del **hombro**, J4 |
+| RV3 | Analógica, proporcional | 3 | Servo del **codo**, J5 |
+| SW1 | Digital, dos posiciones | 21 | Servo de la **pinza**, J6 |
+| SW2 | Digital, dos posiciones | 20 | Elige el modo: MANUAL o APP |
 
-Estos controles mandan con **SW2 MODO en Manual**. Con SW2 en App, el brazo lo mueven la app web o `brazo_gui.py`.
-
-### Conexión de los servos
-
-Los conectores siguen el orden **S V G** de izquierda a derecha, viendo desde los componentes; GND es el pad cuadrado.
-
-| Conector | GPIO | Servo | S (naranja) | V (rojo) | G (café) |
-|:--------:|:----:|:------|:-----------:|:--------:|:--------:|
-| J3 | IO5 | Base (giro) | Señal | VSERVO | GND |
-| J4 | IO6 | Hombro | Señal | VSERVO | GND |
-| J5 | IO7 | Codo | Señal | VSERVO | GND |
-| J6 | IO10 | Pinza | Señal | VSERVO | GND |
-
-El interruptor **no lleva el servo de la pinza de extremo a extremo de su recorrido**: alterna entre **dos ángulos fijos**, **20°** (cerrada) y **80°** (abierta). Eso evita que el SG90 quede empujando contra el tope mecánico de la mordaza, que es lo que lo calienta y le hace consumir corriente sin estar moviéndose.
+**SW1 no lleva el servo de la pinza de extremo a extremo de su recorrido**: alterna entre **dos ángulos fijos**, **20°** (cerrada) y **80°** (abierta). Eso evita que el SG90 quede empujando contra el tope mecánico de la mordaza, que es lo que lo calienta y le hace consumir corriente sin estar moviéndose.
 
 ### Parámetros de este brazo en `config.h`
 
@@ -367,6 +369,10 @@ El interruptor **no lleva el servo de la pinza de extremo a extremo de su recorr
 | Hombro | 40° | 140° | 90° |
 | Codo | 40° | 140° | 90° |
 | Pinza | 20° (cerrada) | 80° (abierta) | 80° |
+
+{: .warning }
+> Estos límites son **provisionales**: son valores de diseño, no medidos con el brazo armado. Los de la pinza sobre todo, porque dependen de hasta dónde cierran las mordazas sin forzar el servo.
+<!-- PENDIENTE: angulos reales de pinza abierta y cerrada de este brazo (pregunta 10) -->
 
 | Dato | Valor |
 |:-----|:------|
@@ -382,11 +388,12 @@ El interruptor **no lleva el servo de la pinza de extremo a extremo de su recorr
 
 | Elemento | Montaje |
 |:---------|:--------|
-| Tarjeta de control | Sobre una base de MDF junto al brazo, con cinta doble cara (la tarjeta no tiene barrenos de montaje); potenciómetros al frente |
+| Tarjeta de control | Sobre una base de MDF junto al brazo, con los potenciómetros al frente. **Cómo se fijó: [Pendiente]** — la tarjeta v3 no tiene barrenos de montaje |
 | Cables de servo | Los del hombro y el codo salen directo de la cuna; el de la pinza sube por el antebrazo con cinchos, con un bucle en cada articulación |
 | Cable del servo de giro | Por debajo de la base hasta J3 |
-| Alimentación | Canal 1 de la fuente (5 V) a **J1 LÓGICA**; canal 2 (5–6 V, 3 A) a **J2 VSERVO** |
-| USB | Solo para programar o para usar `brazo_gui.py` |
+| Alimentación | **Dos canales separados de la fuente**: el canal de lógica (5 a 5.5 V) a J1 y el de servos (5 a 6 V) a J2. Las tierras se unen en la tarjeta |
+| USB | Solo para programar y para leer el diagnóstico |
+<!-- PENDIENTE: como se fijo la tarjeta al brazo (pregunta 6) -->
 
 [![Brazo de corte láser en vista lateral]({{ '/assets/brazos/laser/render/ensamble-lateral.png' | relative_url }}?v=2)]({{ '/assets/brazos/laser/render/ensamble-lateral.png' | relative_url }}?v=2)
 **Figura 9:** Vista lateral con el paralelogramo del hombro y el codo.
@@ -395,27 +402,27 @@ El interruptor **no lleva el servo de la pinza de extremo a extremo de su recorr
 
 | Entrada | Acción esperada | Criterio de aceptación |
 |:--------|:----------------|:-----------------------|
-| RV1 de tope a tope (SW2 en Manual) | La base gira de 0° a 180° | Proporcional, sin saltos |
-| RV2 de tope a tope (SW2 en Manual) | El hombro va de 40° a 140° | Sin trabar el paralelogramo |
-| RV3 de tope a tope (SW2 en Manual) | El codo va de 40° a 140° | Sin trabar el paralelogramo |
-| SW1 (SW2 en Manual) | La pinza alterna entre 20° y 80° | Un solo movimiento por cambio |
-| SW2 a App | Los potenciómetros dejan de mover el brazo | D2 parpadea |
-| Deslizadores de la app (SW2 en App) | Mueven la misma articulación | La app dice `modo: app · mando: web` |
-| `brazo_gui.py` (SW2 en App) | Mueve las cuatro articulaciones | La ventana dice `mando: serie` |
-| BOOT | Secuencia de diagnóstico | D3 encendido; el paralelogramo no se traba en los extremos |
+| RV1 de tope a tope | La base gira de 0° a 180° | Proporcional, sin saltos |
+| RV2 de tope a tope | El hombro va de 40° a 140° | Sin trabar el paralelogramo |
+| RV3 de tope a tope | El codo va de 40° a 140° | Sin trabar el paralelogramo |
+| SW1 | La pinza alterna entre 20° y 80° | Un solo movimiento por cambio |
+| SW2 a APP | Los potenciómetros dejan de mover el brazo | D2 pasa a parpadear |
+| Deslizadores de la app, con SW2 en APP | Mueven la misma articulación | El encabezado de la app dice `app` |
+| Deslizadores de la app, con SW2 en MANUAL | No mueven nada | La app muestra el aviso de cambiar el switch |
+| SW2 de vuelta a MANUAL | El brazo va hacia donde estén las perillas | Sin saltos: tarda, no brinca |
 
 ### Modos de operación (B27)
 
 | Modo | Cómo se accede | Qué se comprueba |
 |:-----|:---------------|:-----------------|
-| Manual | SW2 en Manual | RV1–RV3 y SW1 mueven el brazo; D2 fijo |
-| App web | SW2 en App; conectarse a `Brazo-Laser` y abrir `http://192.168.4.1` | La app dice `mando: web`; D2 parpadea lento |
-| USB | SW2 en App; `python brazo_gui.py` con el USB-C conectado | La ventana dice `mando: serie`; D2 parpadea rápido |
-| Diagnóstico | Botón BOOT, en cualquier modo | Cada articulación recorre su rango; D3 encendido |
+| MANUAL | SW2 en MANUAL | RV1–RV3 y SW1 mueven el brazo; D2 encendido fijo |
+| APP | SW2 en APP, conectarse a `Brazo-Laser` y abrir `http://192.168.4.1` | D2 parpadea: lento sin celular conectado, rápido con uno |
+
+El USB **no es un modo de mando**: solo programa la tarjeta y, con la orden `D`, imprime el reporte de diagnóstico.
 
 ### Prueba funcional completa (B28)
 
-**Tarea:** tomar la pelota roja de espuma, levantarla, girar la base y soltarla en otro punto, una vez en cada modo.
+**Tarea:** tomar la pelota roja de espuma, levantarla, girar la base y soltarla en otro punto, una vez en cada uno de los dos modos.
 
 | Paso | Acción | Ángulos de referencia (base, hombro, codo, pinza) |
 |:----:|:-------|:-------------------------------------------------|
@@ -425,22 +432,11 @@ El interruptor **no lleva el servo de la pinza de extremo a extremo de su recorr
 | 4 | Levantar | 90°, 100°, 90°, 20° |
 | 5 | Girar la base | 150°, 100°, 90°, 20° |
 | 6 | Bajar y soltar | 150°, 60°, 120°, 80° |
-| 7 | Regresar al inicio | `H` |
+| 7 | Regresar al inicio | Botón **Inicio** de la app |
 
-Secuencia por USB (SW2 en App):
+La secuencia se ejecuta desde la app con SW2 en APP, usando los ángulos de la tabla para que cada intento sea igual.
 
-```
-A 90 90 90 80
-A 90 60 120 80
-P C
-A 90 100 90 20
-A 150 100 90 20
-A 150 60 120 20
-P A
-H
-```
-
-**Criterio de aceptación:** la pelota no se cae durante el traslado ni se deforma al cerrar la pinza, en **3 de 3 intentos** con cada modo de mando (manual, app y USB).
+**Criterio de aceptación:** la pelota no se cae durante el traslado ni se deforma al cerrar la pinza, en **3 de 3 intentos** con cada modo de mando (MANUAL y APP).
 
 ---
 

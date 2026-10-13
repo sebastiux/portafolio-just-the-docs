@@ -431,3 +431,14 @@ video {
 .pasos figure { margin: 0; }
 .pasos img { width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 8px; background: #f5f6f8; }
 .pasos figcaption { font-size: 0.85rem; color: #4B5563; margin-top: 0.3rem; }
+
+/* Diagramas Mermaid: evitar que el fuente empuje la página en pantallas chicas.
+   Antes de que Mermaid sustituya el bloque por su SVG —y si el CDN tarda o no
+   carga— el diagrama es un <pre> que cuelga directo de <main>, sin overflow, y
+   una línea larga desborda la página entera. Mermaid marca con data-processed
+   los bloques que ya convirtió, así que esta regla solo aplica mientras el
+   bloque sigue siendo texto y no toca el SVG resultante. */
+code.language-mermaid:not([data-processed]) {
+  display: block;
+  overflow-x: auto;
+}

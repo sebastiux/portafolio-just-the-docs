@@ -53,7 +53,7 @@ Construir un **manipulador de escritorio** capaz de **tomar un objeto pequeño y
 
 1. Fabricar **dos versiones** del brazo, una por **impresión 3D (FDM)** y otra por **corte láser**.
 2. Diseñar y fabricar una **tarjeta de control propia con ESP32-C3** que sirva para los dos brazos.
-3. Programar **dos modos de operación**, elegidos con un interruptor en la tarjeta: **Manual** con potenciómetros y **App**, desde el celular (app web) o desde la computadora por USB.
+3. Programar **tres modos de operación**: manual con potenciómetros, app web desde el celular y control desde la computadora por USB.
 4. Documentar cada versión de principio a fin: modelo, planos, parámetros de fabricación, ensamble, electrónica, programa y pruebas.
 5. **Comparar** las dos versiones con los mismos criterios de fabricación, ensamble y desempeño.
 
@@ -65,17 +65,17 @@ Construir un **manipulador de escritorio** capaz de **tomar un objeto pequeño y
 | RQ2 | Actuadores | **4 servos SG90**: uno por articulación y uno para la pinza | Lista de materiales |
 | RQ3 | Procesos de fabricación | Un brazo por **impresión 3D** y uno por **corte láser** | Registro de fabricación |
 | RQ4 | Tarea | Tomar la pelota de espuma, levantarla, girar la base y soltarla en otro punto | Prueba funcional |
-| RQ5 | Control manual | **3 potenciómetros** (base, hombro, codo) e **interruptor** (pinza), con el interruptor MODO en Manual | Prueba de modos |
-| RQ6 | Control inalámbrico | **App web** servida por el ESP32-C3 en su propia red Wi-Fi, con MODO en App | Prueba de modos |
-| RQ7 | Control desde la computadora | `brazo_gui.py` por **USB** | Prueba de modos |
-| RQ8 | Tarjeta propia | **PCB** diseñada y fresada por el equipo, de una cara, con archivos de fabricación | Proyecto de KiCad, archivos de CNC y Gerber |
-| RQ9 | Alimentación | Fuente de **2 canales**: 5 V para la lógica y **5–6 V, 3 A** para los servos, con tierra común; la lógica protegida con diodo | Esquemático |
+| RQ5 | Control manual | **3 potenciómetros** (base, hombro, codo) y un **switch** (pinza) | Prueba de modos |
+| RQ6 | Control inalámbrico | **App web** servida por el ESP32-C3 en su propia red Wi-Fi | Prueba de modos |
+| RQ7 | Elegir el modo desde el hardware | Un **switch** en la tarjeta decide quién manda; la app no puede quitarle el mando al operador | Prueba de modos |
+| RQ8 | Tarjeta propia | **PCB** diseñada por el equipo, fresada en el laboratorio | Proyecto de KiCad y archivos de fresado |
+| RQ9 | Alimentación | **Dos canales separados**: lógica y servos, con tierra común; el ESP32-C3 protegido contra retorno al USB | Esquemático |
 | RQ10 | Seguridad de movimiento | Ángulos limitados por software y velocidad máxima de **120 °/s** | Pruebas del firmware |
 
 ### Restricciones
 
 - **Diseños de terceros con licencia abierta:** se respetan autor y licencia (CC BY 4.0) y no se republican archivos cuya licencia no está confirmada.
-- **Máquinas del laboratorio:** impresora Creality Ender‑3 V3 KE (boquilla de 0.4 mm, cama de 220 × 220 mm), cortadora láser de CO₂ y fresadora CNC Genmitsu Cubiko para la PCB.
+- **Máquinas del laboratorio:** impresora Creality Ender‑3 V3 KE (boquilla de 0.4 mm, cama de 220 × 220 mm) y cortadora láser de CO₂.
 - **Material del láser:** MDF de 3 mm en hojas de 150 × 200 mm.
 - **Actuadores pequeños:** el SG90 da alrededor de 1.8 kg·cm a 4.8 V; los eslabones deben ser ligeros y el objeto, de pocos gramos.
 - **Corriente:** cuatro SG90 pueden pedir más de 2 A al arrancar juntos, más de lo que entrega un puerto USB.
@@ -109,7 +109,7 @@ Los bocetos se generan con `tools/f8_bocetos.py`.
 | Controlador | **ESP32-C3 Super Mini** | Wi-Fi integrado para la app, USB nativo, 13 GPIO, pequeño y económico | 3.3 V en el ADC | **Elegido** |
 | | Arduino Uno | Muy conocido | Sin Wi-Fi, más grande, sin modo inalámbrico | Descartado |
 | | ESP32 DevKit (WROOM) | Más pines y núcleos | Más grande de lo necesario | Descartado |
-| Interfaz | **Potenciómetros + app web + GUI USB, con interruptor MODO** | Cubre manual, celular y computadora con un solo firmware; el operador sabe siempre quién manda | Un interruptor más en la tarjeta | **Elegida** |
+| Interfaz | **Potenciómetros + app web, con un switch que elige** | Cubre manual y celular con un solo firmware, y el operador conserva el mando: la app no se lo puede quitar | Hay que acordarse de mover el switch | **Elegida** |
 | | Control con joystick o mando | Intuitivo | Hardware extra, sin modo remoto | Descartado |
 
 ### Matriz de decisión del controlador
@@ -147,14 +147,12 @@ Los dos brazos comparten la arquitectura completa; solo cambia la estructura mec
 ```mermaid
 flowchart LR
   subgraph OP["Operador"]
-    MAN["Potenciómetros ×3<br/>+ interruptor PINZA"]
-    MODO["Interruptor MODO<br/>Manual / App"]
+    MAN["Potenciómetros ×3<br/>+ switch de pinza"]
     APP["App web<br/>(celular o laptop)"]
-    PC["Computadora<br/>brazo_gui.py"]
+    SEL["Switch de modo<br/>MANUAL o APP"]
   end
-  subgraph CTRL["Tarjeta brazo_control v3"]
+  subgraph CTRL["Tarjeta de control"]
     ESP["ESP32-C3 Super Mini<br/>firmware_brazo"]
-    LED["LEDs de estado y DIAG"]
   end
   subgraph ACT["Actuación"]
     S["4 × servo SG90<br/>base · hombro · codo · pinza"]
@@ -164,32 +162,29 @@ flowchart LR
     E2["Estructura MDF 3 mm<br/>(corte láser)"]
     P["Pinza"]
   end
-  ALI1["Canal 1 · 5 V lógica"]
-  ALI2["Canal 2 · 5–6 V, 3 A servos"]
+  ALI["Fuente, 2 canales"]
   MAN -- "ADC y GPIO" --> ESP
-  MODO -- "GPIO" --> ESP
-  ESP --> LED
   APP -- "Wi-Fi (HTTP)" --> ESP
-  PC -- "USB serie" --> ESP
+  SEL -- "elige quién manda" --> ESP
   ESP -- "PWM ×4" --> S
   S --> E1
   S --> E2
   E1 --> P
   E2 --> P
-  ALI2 -- "J2 · VSERVO" --> S
-  ALI1 -- "J1 · por diodo" --> ESP
+  ALI -- "canal de servos" --> S
+  ALI -- "canal de lógica, por diodo" --> ESP
 ```
 
-**Figura 3:** Arquitectura general. La misma tarjeta y el mismo firmware controlan cualquiera de los dos brazos; el interruptor MODO decide si mandan los potenciómetros o la app y la computadora.
+**Figura 3:** Arquitectura general. La misma tarjeta y el mismo firmware controlan cualquiera de los dos brazos.
 
 | Subsistema | Brazo impreso | Brazo de láser |
 |:-----------|:--------------|:---------------|
 | Mecánica | 9 piezas de PLA | 36 piezas de MDF de 3 mm |
 | Actuación | 4 × SG90 | 4 × SG90 |
-| Control | Tarjeta `brazo_control` v3 con ESP32-C3 Super Mini (58 × 48 mm, una cara, fresada en CNC) | La misma tarjeta |
-| Interfaz | Modo Manual: potenciómetros e interruptor PINZA; modo App: app web y `brazo_gui.py` | Igual |
-| Comunicación | Wi-Fi propio (`Brazo-Impreso`) y USB | Wi-Fi propio (`Brazo-Laser`) y USB |
-| Alimentación | J1: 5 V lógica · J2: 5–6 V, 3 A servos | Igual |
+| Control | Tarjeta con ESP32-C3 Super Mini | La misma tarjeta |
+| Interfaz | Potenciómetros y switches, o app web; el switch de modo elige | Igual |
+| Comunicación | Wi-Fi propio (`Brazo-Impreso`); el USB solo programa y diagnostica | Wi-Fi propio (`Brazo-Laser`) |
+| Alimentación | Dos canales por bornera: lógica y servos | Igual |
 
 El detalle de la tarjeta y del programa está en [Electrónica y programación]({{ '/brazos/electronica-programacion/' | relative_url }}).
 
