@@ -417,7 +417,8 @@ Los rangos de la tabla son los límites programados para este brazo en `config.h
 
 ### Electrónica
 
-Tarjeta de control con ESP32-C3 Super Mini, la misma del brazo de láser: [lista completa]({{ '/brazos/electronica-programacion/' | relative_url }}#2-lista-de-materiales-electrónicos-b14) (≈$459 sin los servos, que ya están en la lista mecánica).
+Tarjeta de control con ESP32-C3 Super Mini, la misma del brazo de láser: [lista completa]({{ '/brazos/electronica-programacion/' | relative_url }}#2-lista-de-materiales-b14), 23 componentes sin contar los servos, que ya están en la lista mecánica. **Precio: [Pendiente]**, igual que en la lista electrónica.
+<!-- PENDIENTE: precio de la tarjeta, con su fuente (pregunta 11) -->
 
 ---
 
@@ -427,12 +428,24 @@ Este brazo usa la [tarjeta de control con ESP32-C3]({{ '/brazos/electronica-prog
 
 ### Conexión de los servos
 
-| Conector | GPIO | Servo | Cable café | Cable rojo | Cable naranja |
-|:--------:|:----:|:------|:----------:|:----------:|:-------------:|
-| J2 | 4 | Base (giro) | G | + | S |
-| J3 | 5 | Hombro | G | + | S |
-| J4 | 6 | Codo | G | + | S |
-| J5 | 7 | Pinza | G | + | S |
+| Conector | GPIO | Servo |
+|:--------:|:----:|:------|
+| J3 | 5 | Base (giro) |
+| J4 | 6 | Hombro |
+| J5 | 7 | Codo |
+| J6 | 10 | Pinza |
+
+Los cuatro conectores llevan el mismo orden. Vistos desde la cara de componentes, de izquierda a derecha: **señal** (cable naranja), **V+** (rojo) y **GND** (café). El pad **cuadrado**, el de la derecha, es el pin 1 y es GND: si el conector entra al revés, el café queda del lado equivocado.
+
+### Controles
+
+| Control | GPIO | Qué mueve |
+|:--------|:----:|:----------|
+| RV1 | 1 | Base |
+| RV2 | 0 | Hombro |
+| RV3 | 3 | Codo |
+| SW1 | 21 | Abre y cierra la pinza |
+| SW2 | 20 | Elige el modo: MANUAL o APP |
 
 ### Parámetros de este brazo en `config.h`
 
@@ -442,6 +455,10 @@ Este brazo usa la [tarjeta de control con ESP32-C3]({{ '/brazos/electronica-prog
 | Hombro | 30° | 150° | 90° | RV2 |
 | Codo | 20° | 160° | 90° | RV3 |
 | Pinza | 30° (cerrada) | 100° (abierta) | 100° | SW1 |
+
+{: .warning }
+> Estos límites son **provisionales**: son valores de diseño, no medidos con el brazo armado. Los de la pinza sobre todo, porque dependen de hasta dónde cierran las mordazas sin forzar el servo.
+<!-- PENDIENTE: angulos reales de pinza abierta y cerrada de este brazo (pregunta 10) -->
 
 | Dato | Valor |
 |:-----|:------|
@@ -457,11 +474,12 @@ Este brazo usa la [tarjeta de control con ESP32-C3]({{ '/brazos/electronica-prog
 
 | Elemento | Montaje |
 |:---------|:--------|
-| Tarjeta de control | Junto a la base, sobre 4 separadores M3 de 10 mm; los potenciómetros quedan al frente del operador |
+| Tarjeta de control | Junto a la base, con los potenciómetros al frente del operador. **Cómo se fijó: [Pendiente]** — la tarjeta v3 no tiene barrenos de montaje |
 | Cables de servo | Los del hombro, codo y pinza bajan por el costado de los eslabones con cinchos, dejando un bucle en cada articulación para que no se tensen al girar |
-| Cable del servo de giro | Sale por la ranura de la base, directo a J2 |
-| Alimentación | Fuente de 5 V, 3 A a la bornera J1 (+ a la izquierda) |
-| USB | Solo para programar o para usar `brazo_gui.py`; el brazo funciona sin él |
+| Cable del servo de giro | Sale por la ranura de la base, directo a J3 |
+| Alimentación | **Dos canales separados de la fuente**: el canal de lógica (5 a 5.5 V) a J1 y el de servos (5 a 6 V) a J2. Las tierras se unen en la tarjeta |
+| USB | Solo para programar y para leer el diagnóstico; el brazo funciona sin él |
+<!-- PENDIENTE: como se fijo la tarjeta al brazo (pregunta 6) -->
 
 [![Brazo impreso en vista lateral]({{ '/assets/brazos/impreso3d/render/ensamble-lateral.png' | relative_url }}?v=2)]({{ '/assets/brazos/impreso3d/render/ensamble-lateral.png' | relative_url }}?v=2)
 **Figura 8:** Vista lateral del brazo, con el recorrido de las articulaciones que deben librar los cables.
@@ -474,17 +492,19 @@ Este brazo usa la [tarjeta de control con ESP32-C3]({{ '/brazos/electronica-prog
 | RV2 de tope a tope | El hombro va de 30° a 150° | Proporcional, sin saltos |
 | RV3 de tope a tope | El codo va de 20° a 160° | Proporcional, sin saltos |
 | SW1 | La pinza abre y cierra | Un solo movimiento por cambio |
-| Deslizadores de la app | Mueven la misma articulación | El encabezado de la app dice `web` |
-| `brazo_gui.py` | Mueve las cuatro articulaciones | La ventana dice `serie` |
-| Girar un potenciómetro después de usar la app | El mando regresa al modo manual | El LED de la placa queda fijo |
+| SW2 a APP | Los potenciómetros dejan de mover el brazo | D2 pasa a parpadear |
+| Deslizadores de la app, con SW2 en APP | Mueven la misma articulación | El encabezado de la app dice `app` |
+| Deslizadores de la app, con SW2 en MANUAL | No mueven nada | La app muestra el aviso de cambiar el switch |
+| SW2 de vuelta a MANUAL | El brazo va hacia donde estén las perillas | Sin saltos: tarda, no brinca |
 
 ### Modos de operación (B27)
 
 | Modo | Cómo se accede | Qué se comprueba |
 |:-----|:---------------|:-----------------|
-| Manual | Encender la tarjeta | Las 3 articulaciones y la pinza responden a RV1–RV3 y SW1 |
-| App web | Conectarse a `Brazo-Impreso` y abrir `http://192.168.4.1` | Deslizadores, botones de pinza e inicio; el modo cambia a `web` |
-| USB | `python brazo_gui.py` con el USB-C conectado | Deslizadores y botones; el modo cambia a `serie` |
+| MANUAL | SW2 en MANUAL | Las 3 articulaciones y la pinza responden a RV1–RV3 y SW1; D2 queda encendido fijo |
+| APP | SW2 en APP, conectarse a `Brazo-Impreso` y abrir `http://192.168.4.1` | Deslizadores, botones de pinza e inicio; D2 parpadea |
+
+El USB **no es un modo de mando**: solo programa la tarjeta y, con la orden `D`, imprime el reporte de diagnóstico.
 
 ### Prueba funcional completa (B28)
 
@@ -498,20 +518,9 @@ Este brazo usa la [tarjeta de control con ESP32-C3]({{ '/brazos/electronica-prog
 | 4 | Levantar | 90°, 100°, 90°, 30° |
 | 5 | Girar la base | 150°, 100°, 90°, 30° |
 | 6 | Bajar y soltar | 150°, 60°, 130°, 100° |
-| 7 | Regresar al inicio | `H` |
+| 7 | Regresar al inicio | Botón **Inicio** de la app |
 
-La misma secuencia por USB, para repetirla igual en cada intento:
-
-```
-A 90 90 90 100
-A 90 60 130 100
-P C
-A 90 100 90 30
-A 150 100 90 30
-A 150 60 130 30
-P A
-H
-```
+La secuencia se ejecuta desde la app con SW2 en APP, usando los ángulos de la tabla para que cada intento sea igual.
 
 **Criterio de aceptación:** la pelota no se cae durante el traslado ni se deforma al cerrar la pinza, en **3 de 3 intentos** seguidos.
 
