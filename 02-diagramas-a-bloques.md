@@ -17,59 +17,110 @@ Esta página documenta la arquitectura del rover en dos vistas: **mecánica** y 
 
 ## 1) Diagrama eléctrico / electrónico
 
-Arquitectura de control y potencia. Las líneas **azules** son señal/datos y las líneas **rojas** son alimentación.
+Hay **dos versiones** del diagrama. La **v2** es la vigente; la v1 se conserva abajo para ver de dónde salió cada decisión.
 
-[![Figura 1 — Diagrama de componentes eléctricos]({{ '/assets/img/rover/diagrama-electrico.svg' | relative_url }})]({{ '/assets/img/rover/diagrama-electrico.svg' | relative_url }})
-**Figura 1:** Diagrama de componentes eléctricos (arquitectura de control y potencia). Haz clic en la imagen para verla a tamaño completo.
+### Versión 2 (vigente)
 
-### Lectura del diagrama
+Las líneas **azules** son señal y datos, las **verdes** el bus I2C y las **rojas** alimentación. Las líneas **punteadas** son lo que todavía no está decidido.
 
-**Visión y control**
+[![Figura 1 — Diagrama de componentes eléctricos, versión 2]({{ '/assets/img/rover/diagrama-electrico-v2.svg' | relative_url }})]({{ '/assets/img/rover/diagrama-electrico-v2.svg' | relative_url }})
 
-- La **cámara** (5 V · 3 A) entrega el video a la **CPU**, una **Raspberry Pi**, que lo transmite a la estación del operador y recibe los comandos del control Xbox.
-- De la CPU cuelgan **tres subsistemas**, cada uno con su propio **ESP32** a 3.3 V: velocidad, dirección y brazo.
+**Figura 1:** Diagrama de componentes eléctricos, **versión 2** (19-oct-2026). Haz clic para verlo a tamaño completo.
 
-**Velocidad (12 V · 12 A, 6 motores DC)**
+#### Qué cambió respecto a la v1
 
-- Un ESP32 comanda **3 puentes H** (12 V · 4 A cada uno).
-- Cada puente H mueve **2 motores DC** (2 A por motor): un par delantero, un par medio y un par trasero.
+| | Versión 1 | Versión 2 |
+|:--|:--|:--|
+| Comunicación Pi ↔ ESP32 | Sin definir | **Bus I2C** a 100 kHz, con direcciones `0x10`, `0x11` y `0x12` |
+| Wi-Fi de los ESP32 | Encendido | **Apagado**: solo la Raspberry Pi transmite |
+| Alimentación | Un regulador con tres salidas | **Cuatro rieles separados**: VBAT directo, dos BEC de servos y un buck de lógica |
+| ESP32 | 3.3 V directos | 5 V al pin de entrada, y su propio LDO baja a 3.3 V |
+| Batería | 11.7 V · 18 A, sin más detalle | LiPo **3S de 5000 mAh**, con **fusible de 30 A** e interruptor |
+| Paro de emergencia | No aparecía | Corta los actuadores, **no la lógica** |
+| Brazo | 3 servos | 5 servos: base, hombro, codo, pinza y tolva, con su par declarado |
+| Sensores | Solo cámara | IMU, INA219, sensor de color, ToF, celda de carga y LIDAR como opcional |
+| Presupuesto de corriente | No había | **19.0 A continuos** en el peor caso, ≈3.8C |
 
-**Dirección (5 V · 4 A, 4 servos)**
+### Lectura del diagrama (v2)
 
-- Un ESP32 controla **4 servos** de 1 A · 5 V, uno por rueda direccional: delantera izquierda, delantera derecha, trasera izquierda y trasera derecha.
+**Control central**
 
-**Brazo (5 V · 3 A, 3 servos)**
+- La **Raspberry Pi 4** es el maestro: recibe los comandos de la estación por **Wi-Fi 2.4 GHz** y le devuelve video y telemetría.
+- Cuelgan de ella la **cámara** (USB o CSI), la **IMU BNO055** y el **INA219**, que mide voltaje y corriente de batería. El **LIDAR 2D** está dibujado punteado porque todavía no está decidido.
 
-- Un ESP32 controla **3 servos** de 1 A · 5 V para las articulaciones del brazo.
+**Bus I2C**
+
+- Un solo bus a **100 kHz y 3.3 V** conecta la Pi con los tres ESP32, con direcciones `0x10` (tracción), `0x11` (dirección) y `0x12` (brazo).
+- Los pull-ups de 1.8 kΩ **ya vienen en la Pi**, en GPIO2 y GPIO3, así que no hay que agregarlos.
+- Como el mando va por I2C, el **Wi-Fi de los ESP32 queda apagado**: menos consumo y menos interferencia con el enlace de la Pi.
+
+**Tracción** — ESP32 `0x10`, VBAT directo
+
+- Tres **drivers duales** mueven los 6 motores de 12 V, dos por driver.
+- Los encoders de las ruedas medias entran al ESP32 por su periférico de pulsos, y los ultrasónicos también.
+- **Failsafe:** si pasan 300 ms sin tráfico I2C, el ESP32 para los motores por su cuenta.
+
+**Dirección** — ESP32 `0x11`, riel de servos A
+
+- Cuatro **MG996R**, uno por rueda de esquina. Las ruedas centrales no giran.
+
+**Brazo** — ESP32 `0x12`, riel de servos B
+
+- Cinco servos: base, hombro, codo, pinza y tolva, con el par que necesita cada articulación.
+- El sensor de color y el de distancia cuelgan de un **segundo bus I2C del propio ESP32**, no del bus de la Pi, así que sus direcciones no pueden chocar con las de los esclavos.
 
 **Alimentación**
 
-- **Batería** de 11.7 V · 18 A conectada a un **regulador de 3 salidas**:
+| Riel | Tensión | Alimenta a |
+|:--|:--|:--|
+| VBAT directo | 11.1 V nominal · 12 A | Los 3 drivers duales → 6 motores, sin regulador de por medio |
+| BEC A | 6 V · ≥10 A | Los 4 servos de dirección |
+| BEC B | 6–7.4 V · ≥10 A | Los 5 servos del brazo |
+| Buck | 5.1 V · 5 A | Raspberry Pi, cámara, los 3 ESP32 y los sensores |
 
-| Salida | Alimenta a |
-|:-------|:-----------|
-| **12 V · 12 A** (salida directa de batería) | 3 puentes H (4 A cada uno) → 6 motores DC |
-| **5 V · 10 A** | Todos los servos (brazo + dirección), Raspberry Pi y cámara |
-| **3.3 V · 0.5 A** | Los tres ESP32 (velocidad, dirección, brazo) |
+- La tierra es **común en un punto estrella**, no encadenada.
+- El **paro de emergencia** corta los cuatro rieles de actuadores pero deja la lógica viva, así que la Pi sigue reportando por qué se detuvo.
 
 ### Nomenclatura
 
 | Etiqueta | Significado |
 |:---------|:------------|
 | DI / DD | Delantero izquierdo / delantero derecho |
-| M I / M D | Medio izquierdo / medio derecho |
+| MI / MD | Medio izquierdo / medio derecho |
 | TI / TD | Trasero izquierdo / trasero derecho |
-| Servo B / M / C | Servos de las articulaciones del brazo (base, medio y codo/pinza, según se defina en el diseño mecánico) |
+| VBAT | Tensión de batería sin regular |
+| BEC | Regulador de servos (*battery eliminator circuit*) |
+| `0x10` · `0x11` · `0x12` | Direcciones I2C de tracción, dirección y brazo |
 
 ### Consistencia con las especificaciones
 
-Puntos del diagrama que conviene revisar contra la [tabla de métricas]({{ '/01-especificaciones/' | relative_url }}):
+Revisado contra la [tabla de métricas]({{ '/01-especificaciones/' | relative_url }}). **La v2 arregla unas cosas y deja otras igual**, y las que siguen abiertas se dicen como tales:
 
-- **Bus de 12 V**: coincide con la métrica 59 (tensión nominal del bus de potencia).
-- **Lógica separada de potencia**: los ESP32 van en la salida de 3.3 V y los motores en la de 12 V, lo que cubre la métrica 64 (alimentación lógica aislada del bus de motores).
-- **Corriente de batería**: el diagrama considera 18 A; la métrica 61 pide **≥25 A** de descarga continua (ideal ≥40 A). Verificar la batería seleccionada.
-- **Drivers de tracción**: cada puente H entrega 4 A (2 A por motor); la métrica 28 pide **≥5 A continuos por canal** y la 29 **≥15 A pico**. Verificar el driver contra el par de bloqueo de los motores.
-- **Grados de libertad del brazo**: el diagrama contempla 3 servos; la métrica 30 pide **≥4 GDL** sin contar la pinza. Definir si se agregan servos (brazo y pinza) y ajustar el presupuesto de corriente de la salida de 5 V.
+| Métrica | Qué pide | Qué trae la v2 | |
+|:--|:--|:--|:--|
+| 64 · Lógica aislada del bus de motores | Sí | Cuatro rieles separados y tierra en estrella. La v1 lo cumplía a medias con un regulador de tres salidas | ✅ |
+| 59 · Tensión del bus de potencia | 12 V | 11.1 V nominal, que es lo que da un LiPo 3S. Baja a 9.9 V al final de la descarga | ⚠️ |
+| 61 · Descarga continua de la batería | ≥25 A | El consumo estimado es de 19.0 A, pero **el diagrama no dice de cuántos C es el pack**. Para 25 A hacen falta ≥5C | ⚠️ |
+| 28 · Corriente continua por canal del driver | ≥5 A | ≥4 A por canal. **Sigue sin cumplirse**, igual que en la v1 | ❌ |
+| 29 · Corriente pico del driver | ≥15 A | No aparece en el diagrama | ❓ |
+| 30 · Grados de libertad del brazo | ≥4 sin contar la pinza | 3 GDL: base, hombro y codo. **Sigue sin cumplirse** | ❌ |
+
+**Lo que hay que resolver antes de comprar:**
+
+1. **Driver de tracción.** Elegir uno de ≥5 A continuos y ≥15 A pico por canal, contra el par de bloqueo real de los motores.
+2. **C de la batería.** Un pack de 5000 mAh a 19 A trabaja a 3.8C; para cubrir la métrica 61 hay que comprar ≥5C y dejarlo escrito.
+3. **Cuarto grado de libertad del brazo.** O se agrega, o se cambia la métrica 30 con una justificación.
+
+{: .note }
+> Las corrientes de motor y de servo del diagrama están marcadas como **hipótesis**: salen de valores típicos, no de las hojas de datos de las piezas que se van a comprar ni de una medición. El INA219 está justamente para medir lo que de verdad consume el rover.
+
+### Versión 1 (anterior)
+
+Se conserva para comparar. **No describe lo que se va a construir**: su alimentación, el brazo de 3 servos y la ausencia de bus I2C quedaron sustituidos por la v2.
+
+[![Figura 2 — Diagrama de componentes eléctricos, versión 1]({{ '/assets/img/rover/diagrama-electrico.svg' | relative_url }})]({{ '/assets/img/rover/diagrama-electrico.svg' | relative_url }})
+
+**Figura 2:** Diagrama de componentes eléctricos, **versión 1**. Primera arquitectura, con un regulador de tres salidas y sin bus de comunicación definido.
 
 ---
 
@@ -77,8 +128,8 @@ Puntos del diagrama que conviene revisar contra la [tabla de métricas]({{ '/01-
 
 Versión preliminar entregada por el equipo (fecha anotada en la hoja: **26/08/26**). Es un diagrama de bloques por **iconos**, sin texto ni leyenda.
 
-[![Figura 2 — Diagrama mecánico a bloques (versión preliminar)]({{ '/assets/img/rover/diagrama-mecanico.jpg' | relative_url }})]({{ '/assets/img/rover/diagrama-mecanico.jpg' | relative_url }})
-**Figura 2:** Diagrama mecánico a bloques, versión preliminar. Haz clic en la imagen para verla a tamaño completo.
+[![Figura 3 — Diagrama mecánico a bloques (versión preliminar)]({{ '/assets/img/rover/diagrama-mecanico.jpg' | relative_url }})]({{ '/assets/img/rover/diagrama-mecanico.jpg' | relative_url }})
+**Figura 3:** Diagrama mecánico a bloques, versión preliminar. Haz clic en la imagen para verla a tamaño completo.
 
 ### Lectura del diagrama
 

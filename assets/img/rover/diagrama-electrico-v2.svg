@@ -1,0 +1,217 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1340" width="1600" height="1340" role="img" aria-labelledby="t d">
+<title id="t">Diagrama de componentes eléctricos del rover (v2)</title>
+<desc id="d">Raspberry Pi como maestro I2C de tres ESP32 esclavos (tracción, dirección y brazo); batería LiPo 3S con fusible, interruptor y paro de emergencia; cuatro rieles: VBAT para motores, dos BEC de servos separados y un buck de 5.1 V para la lógica.</desc>
+<defs><marker id="arrow-navy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#1f2a5a"/></marker><marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#c0392b"/></marker><marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2e7d4f"/></marker></defs>
+<rect width="1600" height="1340" fill="#f7f5f0"/>
+<text x="60" y="82" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="28" font-weight="700" fill="#1f2a5a" text-anchor="start">Diagrama de componentes eléctricos — v2</text>
+<text x="60" y="106" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="normal" fill="#6b7280" text-anchor="start">Raspberry Pi maestro I2C · 3 subsistemas ESP32 esclavos · rieles de potencia separados · 19-oct-2026</text>
+<line x1="960" y1="102" x2="980" y2="102" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="987" y="106" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="normal" fill="#6b7280" text-anchor="start">Señal / datos</text>
+<line x1="1110" y1="102" x2="1130" y2="102" stroke="#2e7d4f" stroke-width="3"/>
+<text x="1137" y="106" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="normal" fill="#6b7280" text-anchor="start">Bus I2C</text>
+<line x1="1260" y1="102" x2="1280" y2="102" stroke="#c0392b" stroke-width="1.5"/>
+<text x="1287" y="106" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="normal" fill="#6b7280" text-anchor="start">Alimentación</text>
+<line x1="1410" y1="102" x2="1430" y2="102" stroke="#1f2a5a" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="1437" y="106" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="normal" fill="#6b7280" text-anchor="start">Futuro / opcional</text>
+<line x1="60" y1="120" x2="1540" y2="120" stroke="#1f2a5a" stroke-width="1"/>
+<rect x="60" y="140" width="1480" height="190" rx="6" fill="#faf8f3" stroke="#c0392b" stroke-width="1.5"/>
+<text x="82" y="172" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#c0392b" text-anchor="start" letter-spacing="1.5">CONTROL CENTRAL</text>
+<text x="82" y="190" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">Raspberry Pi 4 · teleoperación por WiFi 2.4 GHz · video y telemetría hacia la estación</text>
+<rect x="85" y="215" width="170" height="70" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="170.0" y="247.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a5a" text-anchor="middle">Estación (PC)</text>
+<text x="170.0" y="264.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="middle">fuera de la arena</text>
+<rect x="390" y="200" width="220" height="100" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="500.0" y="247.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a5a" text-anchor="middle">Raspberry Pi 4</text>
+<text x="500.0" y="264.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">maestro I2C · 5.1 V · 3 A</text>
+<rect x="745" y="190" width="170" height="46" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="830.0" y="210.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2a5a" text-anchor="middle">Cámara</text>
+<text x="830.0" y="227.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="middle">USB o CSI</text>
+<rect x="745" y="250" width="170" height="46" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="830.0" y="270.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2a5a" text-anchor="middle">IMU (BNO055)</text>
+<text x="830.0" y="287.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="middle">I2C · cerca del CG</text>
+<rect x="960" y="190" width="170" height="46" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="1045.0" y="210.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2a5a" text-anchor="middle">INA219</text>
+<text x="1045.0" y="227.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="middle">I2C · V e I de batería</text>
+<rect x="960" y="250" width="170" height="46" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="1045.0" y="270.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2a5a" text-anchor="middle">LIDAR 2D</text>
+<text x="1045.0" y="287.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="middle">USB · mapeo futuro</text>
+<path d="M257 250 H388" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<path d="M388 262 H257" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<text x="322" y="243" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">WiFi 2.4 GHz</text>
+<text x="322" y="278" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="middle">video · telemetría</text>
+<path d="M743 213 H612" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<path d="M743 273 H612" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<path d="M958 213 H935 V243 H612" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<path d="M958 273 H940 V316 H500 V302" fill="none" stroke="#1f2a5a" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#arrow-navy)"/>
+<text x="1160" y="206" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="normal" fill="#6b7280" text-anchor="start">IMU e INA219 van en el bus I2C-1 de la Pi.</text>
+<text x="1160" y="224" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="normal" fill="#6b7280" text-anchor="start">La cámara y el LIDAR van por USB/CSI.</text>
+<text x="1160" y="250" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="normal" fill="#6b7280" text-anchor="start">Con I2C, el WiFi de los ESP32 queda</text>
+<text x="1160" y="268" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="normal" fill="#6b7280" text-anchor="start">APAGADO: menos consumo y menos</text>
+<text x="1160" y="286" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="normal" fill="#6b7280" text-anchor="start">interferencia. Solo la Pi transmite.</text>
+<line x1="140" y1="372" x2="1460" y2="372" stroke="#2e7d4f" stroke-width="4"/>
+<path d="M500 332 V368" fill="none" stroke="#2e7d4f" stroke-width="4"/>
+<text x="520" y="360" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="normal" fill="#2e7d4f" text-anchor="start">Bus I2C · 100 kHz · 3.3 V · SDA/SCL/GND trenzados · pull-ups de 1.8 kΩ ya en la Pi (GPIO2/3) · tramos &lt; 1 m, lejos de cables de motor</text>
+<path d="M270 374 V448" fill="none" stroke="#2e7d4f" stroke-width="3"/>
+<text x="300" y="412" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#2e7d4f" text-anchor="start">0x10</text>
+<path d="M800 374 V448" fill="none" stroke="#2e7d4f" stroke-width="3"/>
+<text x="830" y="412" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#2e7d4f" text-anchor="start">0x11</text>
+<path d="M1290 374 V448" fill="none" stroke="#2e7d4f" stroke-width="3"/>
+<text x="1320" y="412" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#2e7d4f" text-anchor="start">0x12</text>
+<rect x="60" y="400" width="480" height="470" rx="6" fill="#faf8f3" stroke="#c0392b" stroke-width="1.5"/>
+<text x="82" y="432" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#c0392b" text-anchor="start" letter-spacing="1.5">TRACCIÓN</text>
+<text x="82" y="450" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">ESP32 esclavo 0x10 · VBAT directo · 6 motores DC 12 V</text>
+<rect x="195" y="465" width="150" height="60" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="270.0" y="492.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a5a" text-anchor="middle">ESP32</text>
+<text x="270.0" y="509.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">5 V → su LDO · WiFi off</text>
+<rect x="110" y="555" width="140" height="52" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="180.0" y="578.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2a5a" text-anchor="middle">Driver dual</text>
+<text x="180.0" y="595.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">≥ 4 A/canal · 1 de 3</text>
+<path d="M195 495 H90 V581 H108" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<rect x="330" y="551" width="160" height="28" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="410.0" y="570.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2a5a" text-anchor="middle">Motor DI</text>
+<path d="M252 581 H290 V565 H328" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<rect x="330" y="583" width="160" height="28" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="410.0" y="602.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2a5a" text-anchor="middle">Motor DD</text>
+<path d="M252 581 H290 V597 H328" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<rect x="110" y="655" width="140" height="52" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="180.0" y="678.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2a5a" text-anchor="middle">Driver dual</text>
+<text x="180.0" y="695.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">≥ 4 A/canal · 2 de 3</text>
+<path d="M195 495 H90 V681 H108" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<rect x="330" y="651" width="160" height="28" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="410.0" y="670.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2a5a" text-anchor="middle">Motor MI</text>
+<path d="M252 681 H290 V665 H328" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<rect x="330" y="683" width="160" height="28" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="410.0" y="702.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2a5a" text-anchor="middle">Motor MD</text>
+<path d="M252 681 H290 V697 H328" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<rect x="110" y="755" width="140" height="52" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="180.0" y="778.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2a5a" text-anchor="middle">Driver dual</text>
+<text x="180.0" y="795.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">≥ 4 A/canal · 3 de 3</text>
+<path d="M195 495 H90 V781 H108" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<rect x="330" y="751" width="160" height="28" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="410.0" y="770.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2a5a" text-anchor="middle">Motor TI</text>
+<path d="M252 781 H290 V765 H328" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<rect x="330" y="783" width="160" height="28" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="410.0" y="802.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2a5a" text-anchor="middle">Motor TD</text>
+<path d="M252 781 H290 V797 H328" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<text x="85" y="830" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" fill="#6b7280">2 A por motor (HIPÓTESIS) · encoders MI y MD → ESP32</text>
+<text x="85" y="846" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" fill="#6b7280">(PCNT) · ultrasónicos → ESP32 · failsafe: sin I2C 300 ms = paro</text>
+<rect x="570" y="400" width="460" height="300" rx="6" fill="#faf8f3" stroke="#c0392b" stroke-width="1.5"/>
+<text x="592" y="432" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#c0392b" text-anchor="start" letter-spacing="1.5">DIRECCIÓN</text>
+<text x="592" y="450" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">ESP32 esclavo 0x11 · riel de servos A (BEC 6 V ≥ 10 A)</text>
+<rect x="725" y="465" width="150" height="60" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="800.0" y="492.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a5a" text-anchor="middle">ESP32</text>
+<text x="800.0" y="509.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">5 V → su LDO · WiFi off</text>
+<rect x="595" y="575" width="95" height="52" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="642.5" y="598.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2a5a" text-anchor="middle">Servo DI</text>
+<text x="642.5" y="615.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">MG996R</text>
+<path d="M800 527 V550 H642 V573" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<rect x="700" y="575" width="95" height="52" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="747.5" y="598.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2a5a" text-anchor="middle">Servo DD</text>
+<text x="747.5" y="615.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">MG996R</text>
+<path d="M800 527 V550 H747 V573" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<rect x="805" y="575" width="95" height="52" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="852.5" y="598.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2a5a" text-anchor="middle">Servo TI</text>
+<text x="852.5" y="615.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">MG996R</text>
+<path d="M800 527 V550 H852 V573" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<rect x="910" y="575" width="95" height="52" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="957.5" y="598.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2a5a" text-anchor="middle">Servo TD</text>
+<text x="957.5" y="615.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">MG996R</text>
+<path d="M800 527 V550 H957 V573" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<text x="800" y="652" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">1 A prom. · ~2.5 A bloqueado (HIPÓTESIS)</text>
+<text x="595" y="676" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">Solo esquinas; las ruedas centrales no giran.</text>
+<rect x="1060" y="400" width="480" height="470" rx="6" fill="#faf8f3" stroke="#c0392b" stroke-width="1.5"/>
+<text x="1082" y="432" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#c0392b" text-anchor="start" letter-spacing="1.5">BRAZO 3 GDL + PINZA</text>
+<text x="1082" y="450" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">ESP32 esclavo 0x12 · riel de servos B (BEC 6–7.4 V ≥ 10 A)</text>
+<rect x="1215" y="465" width="150" height="60" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="1290.0" y="492.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a5a" text-anchor="middle">ESP32</text>
+<text x="1290.0" y="509.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">5 V → su LDO · WiFi off</text>
+<rect x="1085" y="550" width="190" height="40" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="1180.0" y="567.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2a5a" text-anchor="middle">Base (giro)</text>
+<text x="1180.0" y="584.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">20 kg·cm</text>
+<path d="M1290 527 V570 H1277" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<rect x="1085" y="600" width="190" height="40" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="1180.0" y="617.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2a5a" text-anchor="middle">Hombro</text>
+<text x="1180.0" y="634.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">60 kg·cm</text>
+<path d="M1290 527 V620 H1277" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<rect x="1085" y="650" width="190" height="40" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="1180.0" y="667.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2a5a" text-anchor="middle">Codo</text>
+<text x="1180.0" y="684.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">35 kg·cm</text>
+<path d="M1290 527 V670 H1277" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<rect x="1085" y="700" width="190" height="40" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="1180.0" y="717.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2a5a" text-anchor="middle">Pinza</text>
+<text x="1180.0" y="734.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">MG90S</text>
+<path d="M1290 527 V720 H1277" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<rect x="1085" y="750" width="190" height="40" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="1180.0" y="767.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2a5a" text-anchor="middle">Tolva</text>
+<text x="1180.0" y="784.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">MG996R</text>
+<path d="M1290 527 V770 H1277" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<rect x="1330" y="570" width="185" height="46" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="1422.5" y="590.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2a5a" text-anchor="middle">TCS34725</text>
+<text x="1422.5" y="607.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="middle">color · en la pinza</text>
+<rect x="1330" y="630" width="185" height="46" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="1422.5" y="650.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2a5a" text-anchor="middle">VL53L1X</text>
+<text x="1422.5" y="667.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="middle">ToF · en la pinza</text>
+<rect x="1330" y="690" width="185" height="46" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="1422.5" y="710.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2a5a" text-anchor="middle">HX711 + celda</text>
+<text x="1422.5" y="727.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="middle">peso · bajo la tolva</text>
+<path d="M1340 527 V545 H1316 V593 H1328" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<path d="M1316 593 V653 H1328" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<path d="M1316 653 V713 H1328" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
+<text x="1330" y="762" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">TCS34725 y VL53L1X en el 2.º bus I2C</text>
+<text x="1330" y="778" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">del ESP32 (maestro local), no en el</text>
+<text x="1330" y="794" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">bus de la Pi. HX711 usa 2 GPIO.</text>
+<text x="1085" y="830" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">Tolva: de la especificación v1 (descarga en el</text>
+<text x="1085" y="846" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">contenedor). Si no se usa, se quita este canal.</text>
+<rect x="60" y="900" width="1480" height="410" rx="6" fill="#faf8f3" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="82" y="932" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a5a" text-anchor="start" letter-spacing="1.5">ALIMENTACIÓN</text>
+<text x="82" y="950" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">LiPo 3S · GND común en un punto estrella · el paro corta actuadores, no la lógica</text>
+<rect x="85" y="990" width="170" height="80" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="170.0" y="1027.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#1f2a5a" text-anchor="middle">Batería LiPo 3S</text>
+<text x="170.0" y="1044.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">5000 mAh · 9.9–12.6 V</text>
+<rect x="300" y="995" width="120" height="70" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="360.0" y="1027.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a5a" text-anchor="middle">Fusible</text>
+<text x="360.0" y="1044.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">30 A</text>
+<rect x="465" y="995" width="140" height="70" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="535.0" y="1027.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a5a" text-anchor="middle">Interruptor</text>
+<text x="535.0" y="1044.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">principal</text>
+<path d="M257 1030 H298" fill="none" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+<path d="M422 1030 H463" fill="none" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+<rect x="660" y="1005" width="150" height="50" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
+<text x="735.0" y="1027.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a5a" text-anchor="middle">Bus VBAT</text>
+<text x="735.0" y="1044.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">11.1 V nominal</text>
+<path d="M607 1030 H658" fill="none" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+<rect x="870" y="940" width="150" height="56" rx="3" fill="#fff4f2" stroke="#c0392b" stroke-width="1.5"/>
+<text x="945.0" y="965.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a5a" text-anchor="middle">Paro de</text>
+<text x="945.0" y="982.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">emergencia</text>
+<rect x="1060" y="960" width="455" height="52" rx="3" fill="#ffffff" stroke="#c0392b" stroke-width="1.5"/>
+<text x="1076" y="982" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a5a" text-anchor="start">VBAT directo · 12 A</text>
+<text x="1076" y="1000" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">3 drivers duales → 6 motores (sin regulador)</text>
+<path d="M1022 968 H1040 V986 H1058" fill="none" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+<rect x="1060" y="1030" width="455" height="52" rx="3" fill="#ffffff" stroke="#c0392b" stroke-width="1.5"/>
+<text x="1076" y="1052" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a5a" text-anchor="start">BEC A · 6 V · ≥ 10 A</text>
+<text x="1076" y="1070" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">4 servos de dirección</text>
+<path d="M1022 968 H1040 V1056 H1058" fill="none" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+<rect x="1060" y="1100" width="455" height="52" rx="3" fill="#ffffff" stroke="#c0392b" stroke-width="1.5"/>
+<text x="1076" y="1122" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a5a" text-anchor="start">BEC B · 6–7.4 V · ≥ 10 A</text>
+<text x="1076" y="1140" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">5 servos del brazo (base, hombro, codo, pinza, tolva)</text>
+<path d="M1022 968 H1040 V1126 H1058" fill="none" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+<rect x="1060" y="1170" width="455" height="52" rx="3" fill="#ffffff" stroke="#c0392b" stroke-width="1.5"/>
+<text x="1076" y="1192" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a5a" text-anchor="start">Buck 5.1 V · 5 A</text>
+<text x="1076" y="1210" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">Raspberry Pi, cámara, 3 ESP32 (pin 5V), sensores</text>
+<path d="M812 1030 H840 V1196 H1058" fill="none" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+<path d="M812 1030 H840 V968 H868" fill="none" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+<text x="85" y="1120" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2a5a" text-anchor="start">Presupuesto de corriente de batería (eficiencia 90 %, 11.1 V)</text>
+<text x="85" y="1144" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="normal" fill="#6b7280" text-anchor="start">Motores 6 × 2 A</text>
+<text x="560" y="1144" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="normal" fill="#c0392b" text-anchor="end">12.0 A</text>
+<text x="85" y="1164" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="normal" fill="#6b7280" text-anchor="start">Servos dirección 4 × 1 A @ 6 V</text>
+<text x="560" y="1164" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="normal" fill="#c0392b" text-anchor="end">2.4 A</text>
+<text x="85" y="1184" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="normal" fill="#6b7280" text-anchor="start">Servos brazo 4.5 A @ 6 V</text>
+<text x="560" y="1184" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="normal" fill="#c0392b" text-anchor="end">2.7 A</text>
+<text x="85" y="1204" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="normal" fill="#6b7280" text-anchor="start">Lógica 3.75 A @ 5.1 V</text>
+<text x="560" y="1204" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="normal" fill="#c0392b" text-anchor="end">1.9 A</text>
+<text x="85" y="1224" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="700" fill="#1f2a5a" text-anchor="start">Total continuo (peor caso)</text>
+<text x="560" y="1224" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" font-weight="700" fill="#c0392b" text-anchor="end">19.0 A ≈ 3.8C</text>
+<text x="85" y="1262" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">Autonomía a 19 A: ≈ 16 min (cota inferior; medir con el INA219).</text>
+<text x="85" y="1280" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">Corrientes de servo y motor = HIPÓTESIS: verificar con hoja de datos.</text>
+<text x="85" y="1298" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">Monitoreo de batería: INA219 en I2C → corte por bajo voltaje (9.9 V).</text>
+</svg>
