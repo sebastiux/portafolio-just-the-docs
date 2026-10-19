@@ -61,8 +61,9 @@
 <text x="82" y="432" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#c0392b" text-anchor="start" letter-spacing="1.5">TRACCIÓN</text>
 <text x="82" y="450" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">ESP32 esclavo 0x10 · VBAT directo · 6 motores DC 12 V</text>
 <rect x="195" y="465" width="150" height="60" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
-<text x="270.0" y="492.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a5a" text-anchor="middle">ESP32</text>
-<text x="270.0" y="509.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">5 V → su LDO · WiFi off</text>
+<text x="270.0" y="488.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a5a" text-anchor="middle">ESP32</text>
+<text x="270.0" y="504.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">5 V → su LDO</text>
+<text x="270.0" y="518.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">WiFi apagado</text>
 <rect x="110" y="555" width="140" height="52" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
 <text x="180.0" y="578.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2a5a" text-anchor="middle">Driver dual</text>
 <text x="180.0" y="595.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">≥ 4 A/canal · 1 de 3</text>
@@ -99,8 +100,9 @@
 <text x="592" y="432" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#c0392b" text-anchor="start" letter-spacing="1.5">DIRECCIÓN</text>
 <text x="592" y="450" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">ESP32 esclavo 0x11 · riel de servos A (BEC 6 V ≥ 10 A)</text>
 <rect x="725" y="465" width="150" height="60" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
-<text x="800.0" y="492.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a5a" text-anchor="middle">ESP32</text>
-<text x="800.0" y="509.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">5 V → su LDO · WiFi off</text>
+<text x="800.0" y="488.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a5a" text-anchor="middle">ESP32</text>
+<text x="800.0" y="504.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">5 V → su LDO</text>
+<text x="800.0" y="518.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">WiFi apagado</text>
 <rect x="595" y="575" width="95" height="52" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
 <text x="642.5" y="598.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#1f2a5a" text-anchor="middle">Servo DI</text>
 <text x="642.5" y="615.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">MG996R</text>
@@ -123,8 +125,9 @@
 <text x="1082" y="432" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#c0392b" text-anchor="start" letter-spacing="1.5">BRAZO 3 GDL + PINZA</text>
 <text x="1082" y="450" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">ESP32 esclavo 0x12 · riel de servos B (BEC 6–7.4 V ≥ 10 A)</text>
 <rect x="1215" y="465" width="150" height="60" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
-<text x="1290.0" y="492.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a5a" text-anchor="middle">ESP32</text>
-<text x="1290.0" y="509.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">5 V → su LDO · WiFi off</text>
+<text x="1290.0" y="488.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1f2a5a" text-anchor="middle">ESP32</text>
+<text x="1290.0" y="504.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">5 V → su LDO</text>
+<text x="1290.0" y="518.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">WiFi apagado</text>
 <rect x="1085" y="550" width="190" height="40" rx="3" fill="#ffffff" stroke="#1f2a5a" stroke-width="1.5"/>
 <text x="1180.0" y="567.0" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#1f2a5a" text-anchor="middle">Base (giro)</text>
 <text x="1180.0" y="584.0" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#c0392b" text-anchor="middle">20 kg·cm</text>
@@ -157,9 +160,10 @@
 <path d="M1340 527 V545 H1316 V593 H1328" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
 <path d="M1316 593 V653 H1328" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
 <path d="M1316 653 V713 H1328" fill="none" stroke="#1f2a5a" stroke-width="1.5" marker-end="url(#arrow-navy)"/>
-<text x="1330" y="762" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">TCS34725 y VL53L1X en el 2.º bus I2C</text>
-<text x="1330" y="778" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">del ESP32 (maestro local), no en el</text>
-<text x="1330" y="794" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">bus de la Pi. HX711 usa 2 GPIO.</text>
+<text x="1330" y="752" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">TCS34725 y VL53L1X van en el</text>
+<text x="1330" y="768" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">2.º bus I2C del ESP32 (maestro</text>
+<text x="1330" y="784" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">local), no en el de la Pi.</text>
+<text x="1330" y="800" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">HX711 usa 2 GPIO.</text>
 <text x="1085" y="830" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">Tolva: de la especificación v1 (descarga en el</text>
 <text x="1085" y="846" font-family="ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" font-weight="normal" fill="#6b7280" text-anchor="start">contenedor). Si no se usa, se quita este canal.</text>
 <rect x="60" y="900" width="1480" height="410" rx="6" fill="#faf8f3" stroke="#1f2a5a" stroke-width="1.5"/>
