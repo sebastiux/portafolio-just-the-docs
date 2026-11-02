@@ -1,0 +1,212 @@
+{
+ "parametros": {
+  "tubo_od": 30.0,
+  "tubo_id": 27.0,
+  "barreno_casquillo": 30.4,
+  "pared": 4.0,
+  "profundidad": 35.0,
+  "tope": 21.0
+ },
+ "piezas": {
+  "uniones/codo-90.stl": {
+   "volumen_cm3": 68.2,
+   "envolvente_mm": [
+    75.2,
+    38.4,
+    75.2
+   ],
+   "estanca": true,
+   "kb": 247,
+   "material": "PETG",
+   "masa_solida_g": 86.6
+  },
+  "uniones/codo-120.stl": {
+   "volumen_cm3": 69.5,
+   "envolvente_mm": [
+    100.6,
+    38.4,
+    77.3
+   ],
+   "estanca": true,
+   "kb": 248,
+   "material": "PETG",
+   "masa_solida_g": 88.2
+  },
+  "uniones/union-t.stl": {
+   "volumen_cm3": 87.1,
+   "envolvente_mm": [
+    112.0,
+    38.4,
+    75.2
+   ],
+   "estanca": true,
+   "kb": 239,
+   "material": "PETG",
+   "masa_solida_g": 110.7
+  },
+  "uniones/cople-recto.stl": {
+   "volumen_cm3": 35.3,
+   "envolvente_mm": [
+    76.0,
+    38.4,
+    38.4
+   ],
+   "estanca": true,
+   "kb": 172,
+   "material": "PETG",
+   "masa_solida_g": 44.9
+  },
+  "uniones/pivote.stl": {
+   "volumen_cm3": 81.5,
+   "envolvente_mm": [
+    110.5,
+    44.0,
+    69.9
+   ],
+   "estanca": true,
+   "kb": 253,
+   "material": "PETG",
+   "masa_solida_g": 103.5
+  },
+  "uniones/terminal-eje.stl": {
+   "volumen_cm3": 34.0,
+   "envolvente_mm": [
+    38.4,
+    38.4,
+    61.0
+   ],
+   "estanca": true,
+   "kb": 80,
+   "material": "PETG",
+   "masa_solida_g": 43.2
+  },
+  "uniones/terminal-motor.stl": {
+   "volumen_cm3": 45.7,
+   "envolvente_mm": [
+    46.4,
+    38.4,
+    96.4
+   ],
+   "estanca": true,
+   "kb": 127,
+   "material": "PETG",
+   "masa_solida_g": 58.1
+  },
+  "uniones/probeta-ajuste.stl": {
+   "volumen_cm3": 11.2,
+   "envolvente_mm": [
+    120.4,
+    36.6,
+    12.0
+   ],
+   "estanca": true,
+   "kb": 125,
+   "material": "PETG",
+   "masa_solida_g": 14.2
+  },
+  "rueda/rin.stl": {
+   "volumen_cm3": 137.1,
+   "envolvente_mm": [
+    130.0,
+    130.0,
+    64.0
+   ],
+   "estanca": true,
+   "kb": 228,
+   "material": "PETG",
+   "masa_solida_g": 174.1
+  },
+  "rueda/llanta-ecoflex.stl": {
+   "volumen_cm3": 196.0,
+   "envolvente_mm": [
+    152.0,
+    152.0,
+    64.0
+   ],
+   "estanca": true,
+   "kb": 109,
+   "material": "Ecoflex 00-20",
+   "masa_solida_g": 209.8
+  },
+  "rueda/molde-llanta-mitad.stl": {
+   "volumen_cm3": 213.4,
+   "envolvente_mm": [
+    81.8,
+    186.0,
+    67.0
+   ],
+   "estanca": true,
+   "kb": 61,
+   "material": "PETG",
+   "masa_solida_g": 271.0
+  },
+  "ensamble/tubo-300.stl": {
+   "volumen_cm3": 40.3,
+   "envolvente_mm": [
+    30.0,
+    30.0,
+    300.0
+   ],
+   "estanca": true,
+   "kb": 38,
+   "material": "Al 6063",
+   "masa_solida_g": 108.7
+  },
+  "ensamble/tubo-150.stl": {
+   "volumen_cm3": 20.1,
+   "envolvente_mm": [
+    30.0,
+    30.0,
+    150.0
+   ],
+   "estanca": true,
+   "kb": 38,
+   "material": "Al 6063",
+   "masa_solida_g": 54.4
+  },
+  "ensamble/tubo-trasero.stl": {
+   "volumen_cm3": 15.4,
+   "envolvente_mm": [
+    30.0,
+    30.0,
+    115.0
+   ],
+   "estanca": true,
+   "kb": 38,
+   "material": "Al 6063",
+   "masa_solida_g": 41.7
+  },
+  "ensamble/motor-37.stl": {
+   "volumen_cm3": 81.3,
+   "envolvente_mm": [
+    37.0,
+    37.0,
+    101.0
+   ],
+   "estanca": true,
+   "kb": 26
+  }
+ },
+ "ensamble": {
+  "semiangulo_deg": 50.0,
+  "pivote_balancin_mm": [
+   0.0,
+   42.0,
+   299.5
+  ],
+  "pivote_bogie_mm": [
+   -114.9,
+   0.0,
+   203.1
+  ],
+  "ejes_x_mm": {
+   "delantera": 266.4,
+   "media": 36.5,
+   "trasera": -266.4
+  },
+  "distancia_entre_ejes_mm": 532.7,
+  "largo_total_mm": 684.7,
+  "largo_tubo_trasero_mm": 115.0,
+  "altura_pivote_balancin_mm": 299.5
+ }
+}

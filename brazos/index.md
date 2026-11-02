@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Brazos robóticos
-nav_order: 4
+nav_order: 7
 has_children: true
 has_toc: false
 permalink: /brazos/

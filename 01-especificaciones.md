@@ -14,7 +14,7 @@ Fuente: tabla de especificaciones objetivo del equipo, versión preliminar para 
 
 ---
 
-## 1) Necesidades que debe cubrir el proyecto
+## 1) Necesidades que debe cubrir el proyecto (B01)
 
 Cada necesidad tiene una importancia de 1 (baja) a 5 (crítica). La columna **Nec.** de las tablas de métricas se refiere a estos números.
 
