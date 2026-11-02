@@ -10,12 +10,12 @@ Esta página documenta la arquitectura del rover en dos vistas: **mecánica** y 
 
 | Diagrama | Estado |
 |:---------|:-------|
-| Eléctrico / electrónico | Versión 1 publicada (sección 1) |
+| Eléctrico / electrónico | Versión 2 vigente, v1 conservada (sección 1) |
 | Mecánico | Versión preliminar publicada, sin nomenclatura (sección 2) |
 
 ---
 
-## 1) Diagrama eléctrico / electrónico
+## 1) Diagrama eléctrico / electrónico (B13)
 
 Hay **dos versiones** del diagrama. La **v2** es la vigente; la v1 se conserva abajo para ver de dónde salió cada decisión.
 
@@ -124,7 +124,7 @@ Se conserva para comparar. **No describe lo que se va a construir**: su alimenta
 
 ---
 
-## 2) Diagrama mecánico
+## 2) Diagrama mecánico (B05)
 
 Versión preliminar entregada por el equipo (fecha anotada en la hoja: **26/08/26**). Es un diagrama de bloques por **iconos**, sin texto ni leyenda.
 
@@ -150,8 +150,11 @@ Este diagrama todavía **no es interpretable sin la persona que lo dibujó**. Fa
 4. **Correspondencia con la sección 1.** El diagrama eléctrico declara **6 motores DC**, **4 servos de dirección** y **3 servos de brazo**. Este diagrama muestra cadenas de bloques repetidas en dos agrupaciones simétricas; hay que confirmar si el conteo de actuadores coincide con esa arquitectura o si hay una discrepancia.
 5. **Versión vectorial.** La sección 1 usa SVG (texto seleccionable, escala sin pérdida). Esta es una imagen rasterizada; conviene redibujarla en el mismo formato una vez que existan las etiquetas.
 
+{: .note }
+> La **propuesta de suspensión balancín-bogie** con tubo de aluminio, uniones de PETG y llantas de Ecoflex, con sus cotas, ya está en [Mecánica y materiales]({{ '/03-mecanica-materiales/' | relative_url }}#2-arquitectura-y-dimensiones-mecánicas-b05). Sirve de referencia para ponerle nombres a los bloques de este diagrama.
+
 ---
 
-## Sección anterior
+## Navegación
 
-[Características técnicas y necesidades]({{ '/01-especificaciones/' | relative_url }})
+[← Características técnicas y necesidades]({{ '/01-especificaciones/' | relative_url }}) · [Mecánica y materiales →]({{ '/03-mecanica-materiales/' | relative_url }})

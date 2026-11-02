@@ -1,0 +1,385 @@
+{
+ "note": "Un lado de la suspensión balancín-bogie con tubo de Al 6063 Ø30 × 1.5 y uniones de PETG. Lo genera tools/r1_uniones_rover.py.",
+ "parts": [
+  {
+   "name": "Pivote del balancín (PETG)",
+   "file": "../uniones/pivote.stl",
+   "color": "#E00034",
+   "position": [
+    0.0,
+    42.0,
+    248.79
+   ],
+   "rotation": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "explode": [
+    0.0,
+    0.0,
+    60.0
+   ]
+  },
+  {
+   "name": "Tubo delantero 300 mm (Al 6063)",
+   "file": "tubo-300.stl",
+   "color": "#CBD5E1",
+   "position": [
+    16.09,
+    42.0,
+    286.0
+   ],
+   "rotation": [
+    0.0,
+    130.0,
+    0.0
+   ],
+   "explode": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Tubo trasero 115 mm (Al 6063)",
+   "file": "tubo-trasero.stl",
+   "color": "#CBD5E1",
+   "position": [
+    -16.09,
+    42.0,
+    286.0
+   ],
+   "rotation": [
+    0.0,
+    -130.0,
+    0.0
+   ],
+   "explode": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Terminal de eje (PETG)",
+   "file": "../uniones/terminal-eje.stl",
+   "color": "#E00034",
+   "position": [
+    -124.1,
+    42.0,
+    195.37
+   ],
+   "rotation": [
+    0.0,
+    50.0,
+    0.0
+   ],
+   "explode": [
+    -40.0,
+    0.0,
+    20.0
+   ]
+  },
+  {
+   "name": "Terminal de motor delantero (PETG)",
+   "file": "../uniones/terminal-motor.stl",
+   "color": "#E00034",
+   "position": [
+    292.94,
+    42.0,
+    53.7
+   ],
+   "rotation": [
+    0.0,
+    -50.0,
+    0.0
+   ],
+   "explode": [
+    40.0,
+    0.0,
+    -20.0
+   ]
+  },
+  {
+   "name": "Pivote del bogie (PETG)",
+   "file": "../uniones/pivote.stl",
+   "color": "#F59E0B",
+   "position": [
+    -114.91,
+    0.0,
+    152.37
+   ],
+   "rotation": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "explode": [
+    0.0,
+    -60.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Pata del bogie 150 mm (Al 6063)",
+   "file": "tubo-150.stl",
+   "color": "#CBD5E1",
+   "position": [
+    -98.82,
+    0.0,
+    189.58
+   ],
+   "rotation": [
+    0.0,
+    130.0,
+    0.0
+   ],
+   "explode": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Pata del bogie 150 mm (Al 6063)",
+   "file": "tubo-150.stl",
+   "color": "#CBD5E1",
+   "position": [
+    -130.99,
+    0.0,
+    189.58
+   ],
+   "rotation": [
+    0.0,
+    -130.0,
+    0.0
+   ],
+   "explode": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Terminal de motor medio (PETG)",
+   "file": "../uniones/terminal-motor.stl",
+   "color": "#F59E0B",
+   "position": [
+    63.12,
+    0.0,
+    53.7
+   ],
+   "rotation": [
+    0.0,
+    -50.0,
+    0.0
+   ],
+   "explode": [
+    20.0,
+    -60.0,
+    -20.0
+   ]
+  },
+  {
+   "name": "Terminal de motor trasero (PETG)",
+   "file": "../uniones/terminal-motor.stl",
+   "color": "#F59E0B",
+   "position": [
+    -292.94,
+    0.0,
+    53.7
+   ],
+   "rotation": [
+    0.0,
+    50.0,
+    0.0
+   ],
+   "explode": [
+    -20.0,
+    -60.0,
+    -20.0
+   ]
+  },
+  {
+   "name": "Motorreductor Ø37 delantera (referencia)",
+   "file": "motor-37.stl",
+   "color": "#4B5563",
+   "position": [
+    266.35,
+    -13.0,
+    76.0
+   ],
+   "rotation": [
+    -90.0,
+    0.0,
+    0.0
+   ],
+   "explode": [
+    0.0,
+    60.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Rin delantera (PETG)",
+   "file": "../rueda/rin.stl",
+   "color": "#1D4ED8",
+   "position": [
+    266.35,
+    60.0,
+    76.0
+   ],
+   "rotation": [
+    -90.0,
+    0.0,
+    0.0
+   ],
+   "explode": [
+    0.0,
+    140.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Llanta delantera (Ecoflex 00-20)",
+   "file": "../rueda/llanta-ecoflex.stl",
+   "color": "#1F2937",
+   "position": [
+    266.35,
+    60.0,
+    76.0
+   ],
+   "rotation": [
+    -90.0,
+    0.0,
+    0.0
+   ],
+   "explode": [
+    0.0,
+    200.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Motorreductor Ø37 media (referencia)",
+   "file": "motor-37.stl",
+   "color": "#4B5563",
+   "position": [
+    36.54,
+    -13.0,
+    76.0
+   ],
+   "rotation": [
+    -90.0,
+    0.0,
+    0.0
+   ],
+   "explode": [
+    0.0,
+    60.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Rin media (PETG)",
+   "file": "../rueda/rin.stl",
+   "color": "#1D4ED8",
+   "position": [
+    36.54,
+    60.0,
+    76.0
+   ],
+   "rotation": [
+    -90.0,
+    0.0,
+    0.0
+   ],
+   "explode": [
+    0.0,
+    140.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Llanta media (Ecoflex 00-20)",
+   "file": "../rueda/llanta-ecoflex.stl",
+   "color": "#1F2937",
+   "position": [
+    36.54,
+    60.0,
+    76.0
+   ],
+   "rotation": [
+    -90.0,
+    0.0,
+    0.0
+   ],
+   "explode": [
+    0.0,
+    200.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Motorreductor Ø37 trasera (referencia)",
+   "file": "motor-37.stl",
+   "color": "#4B5563",
+   "position": [
+    -266.35,
+    -13.0,
+    76.0
+   ],
+   "rotation": [
+    -90.0,
+    0.0,
+    0.0
+   ],
+   "explode": [
+    0.0,
+    60.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Rin trasera (PETG)",
+   "file": "../rueda/rin.stl",
+   "color": "#1D4ED8",
+   "position": [
+    -266.35,
+    60.0,
+    76.0
+   ],
+   "rotation": [
+    -90.0,
+    0.0,
+    0.0
+   ],
+   "explode": [
+    0.0,
+    140.0,
+    0.0
+   ]
+  },
+  {
+   "name": "Llanta trasera (Ecoflex 00-20)",
+   "file": "../rueda/llanta-ecoflex.stl",
+   "color": "#1F2937",
+   "position": [
+    -266.35,
+    60.0,
+    76.0
+   ],
+   "rotation": [
+    -90.0,
+    0.0,
+    0.0
+   ],
+   "explode": [
+    0.0,
+    200.0,
+    0.0
+   ]
+  }
+ ]
+}
